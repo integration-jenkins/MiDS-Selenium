@@ -85,21 +85,29 @@ public class Launch  {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        System.out.println("Mids Testing Started");
+    public static   void dprPage(String startPoint, String endPoint) {
         try {
-//            MSPartner("JK_MS_PT_1", "adm@123");
-//            MWPlanner("Z_Bhanu", "adm@123");
-            MWPlanner mw=new MWPlanner();
+            MWPlanner mw = new MWPlanner();
             mw.MWPlannerLogin("Z_Bhanu", "adm@123");
-            mw.MWPlannerDPRTrack("SR Pending","AT Accepted");
-//            DPRAutomate dpr= new DPRAutomate();
-//            DPRAutomate.dprPlan("MW-N-AP-23012025-2",1);
-//            dpr.dprStage("SR Pending","HOP Alignment Pending/Phy-AT Pending","ManualBoth");
-
-        } catch (Exception e) {
+            mw.MWPlannerDPRTrack(startPoint, endPoint);
+        }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public static void main(String[] args) {
+        System.out.println("Mids Testing Started");
+//        try {
+////            MSPartner("JK_MS_PT_1", "adm@123");
+////            MWPlanner("Z_Bhanu", "adm@123");
+//            MWPlanner mw=new MWPlanner();
+//            mw.MWPlannerLogin("Z_Bhanu", "adm@123");
+//            mw.MWPlannerDPRTrack("SR Pending","AT Accepted");
+////            DPRAutomate dpr= new DPRAutomate();
+////            DPRAutomate.dprPlan("MW-N-AP-23012025-2",1);
+////            dpr.dprStage("SR Pending","HOP Alignment Pending/Phy-AT Pending","ManualBoth");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }

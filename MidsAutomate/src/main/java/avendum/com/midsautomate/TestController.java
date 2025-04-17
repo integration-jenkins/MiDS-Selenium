@@ -1,5 +1,8 @@
 package avendum.com.midsautomate;
 
+import avendum.com.midsauto.AutomationUtils;
+
+import avendum.com.midsauto.Launch;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +29,14 @@ public class TestController {
         private String endPoint;
         private String executionTime;
         private String status;
+    }
 
+    //Calling Launch Method from MidsAuto Selenium Project
+    public static void fun(){
+         Launch.dprPage("","");
+        // Add your Selenium test logic here
+        // Example:
+        // WebDriver driver = new ChromeDriver();
+        // driver.get("http://localhost:8080");
     }
 }
