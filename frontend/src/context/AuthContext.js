@@ -1,4 +1,3 @@
-// src/context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,32 +6,21 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [loading, setLoading] = useState(true); // Add loading state
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('jwtToken');
         const role = localStorage.getItem('userRole');
 
-        console.log('useEffect triggered:', { token, role });
-
         if (token && role) {
-            setUser((prevUser) => {
-                if (prevUser?.role !== role) {
-                    console.log('Updating user state');
-                    return { role };
-                }
-                return prevUser;
-            });
-
-            setIsAuthenticated((prevAuth) => {
-                if (!prevAuth) {
-                    console.log('Updating isAuthenticated state');
-                    return true;
-                }
-                return prevAuth;
-            });
+            setUser({ role });
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
         }
-    }, []); // Runs only once/ Add an empty dependency array
+        setLoading(false); // Update loading state after check
+    }, []);
 
     const login = (token, role) => {
         localStorage.setItem('jwtToken', token);
@@ -51,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, login, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,68 +1,84 @@
 import React, { useState } from 'react';
-import { FaUserCircle, FaChartLine, FaRobot,FaMoon,FaSun, FaCog, FaComments, FaRegChartBar } from 'react-icons/fa';
+import { FaUserCircle, FaChartLine, FaRobot, FaMoon, FaSun, FaCog, FaComments } from 'react-icons/fa';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import '../css/Dashboard.css';
 
-const data = [
-  { name: 'Jan', efficiency: 65, engagement: 75 },
-  { name: 'Feb', efficiency: 78, engagement: 82 },
-  { name: 'Mar', efficiency: 82, engagement: 88 },
-  { name: 'Apr', efficiency: 90, engagement: 85 },
-  { name: 'May', efficiency: 88, engagement: 90 },
-];
-
-const testResults = [
-  { scenario: 'SR to SP', success: 98, failures: 2 },
-  { scenario: 'MO Delivery', success: 95, failures: 5 },
-  { scenario: 'PHY-AT', success: 92, failures: 8 },
-  { scenario: 'TS Complete', success: 99, failures: 1 },
-];
-
 const Dashboard = () => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const chartData = [
+    { name: 'Jan', efficiency: 65, engagement: 75 },
+    { name: 'Feb', efficiency: 78, engagement: 82 },
+    { name: 'Mar', efficiency: 82, engagement: 88 },
+    { name: 'Apr', efficiency: 90, engagement: 85 },
+    { name: 'May', efficiency: 88, engagement: 90 },
+  ];
+
+  const testResults = [
+    { scenario: 'SR to SP', success: 98, failures: 2 },
+    { scenario: 'MO Delivery', success: 95, failures: 5 },
+    { scenario: 'PHY-AT', success: 92, failures: 8 },
+    { scenario: 'TS Complete', success: 99, failures: 1 },
+  ];
+
   return (
     <div className={`dashboard-container ${isDarkMode ? 'dark' : 'light'}`}>
-    <div className="background-blobs">
-      {/* Same blob background as login */}
+      <div className="dashboard-background">
+        <div className="gradient-overlay"></div>
+        <div className="particle-effect"></div>
       </div>
 
-      <nav className="glass-nav">
-        <div className="nav-brand">
-          <h1 className="dashboard-title">
-            <span className="gradient-text">MIDS AUTOMATION</span>
-          </h1>
-        </div>
-        
-        <div className="nav-controls">
-          <div className="theme-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
-            {isDarkMode ? <FaSun /> : <FaMoon />}
-          </div>
-          
-          <div className="nav-menu">
-            <div className="nav-item" onMouseEnter={() => setMenuOpen(true)} onMouseLeave={() => setMenuOpen(false)}>
-              <FaUserCircle className="nav-icon" />
-              {menuOpen && (
-                <div className="profile-menu">
-                  <div className="menu-item">Profile</div>
-                  <div className="menu-item">Settings</div>
-                  <div className="menu-item">Logout</div>
-                </div>
-              )}
-            </div>
-            <div className="nav-item"><FaComments className="nav-icon" /></div>
-            <div className="nav-item"><FaCog className="nav-icon" /></div>
-          </div>
-        </div>
-      </nav>
+      <nav className="dashboard-nav">
+  <div className="nav-brand">
+    <h1 className="gradient-logo">MIDS AUTOMATION</h1>
+  </div>
 
-      <div className="main-content">
-        <div className="action-cards">
-          <div className="glass-card main-action">
-            <FaRobot className="action-icon" />
-            <h2>Automation Testing</h2>
-            <p>Run full scenario tests and validate workflows</p>
-            <div className="stats">
+  <div className="nav-controls">
+   
+
+    <div className="nav-menu">
+      <button className="nav-item">
+        <FaComments className="nav-icon" />
+      </button>
+    
+      <button className="nav-item">
+        <FaCog className="nav-icon" />
+      </button>
+      <div 
+        className="nav-item profile-menu" 
+        onMouseEnter={() => setMenuOpen(true)}
+        onMouseLeave={() => setMenuOpen(false)}
+      >
+        <FaUserCircle className="nav-icon" />
+        {menuOpen && (
+          <div className="dropdown-menu">
+            <button className="menu-item">Profile</button>
+            <button className="menu-item">Settings</button>
+            <button className="menu-item">Logout</button>
+          </div>
+        )}
+      </div>
+      <button 
+      className="theme-of-toggle" 
+      onClick={() => setIsDarkMode(!isDarkMode)}
+      aria-label="Toggle theme"
+    >
+      {isDarkMode ? <FaSun /> : <FaMoon />}
+    </button>
+
+    </div>
+  </div>
+</nav>
+
+      <main className="dashboard-content">
+        <div className="metrics-grid">
+          <div className="metric-card primary">
+            <div className="card-header">
+              <FaRobot className="card-icon" />
+              <h2>Automation Testing</h2>
+            </div>
+            <div className="card-stats">
               <div className="stat">
                 <div className="stat-value">98%</div>
                 <div className="stat-label">Success Rate</div>
@@ -72,13 +88,15 @@ const Dashboard = () => {
                 <div className="stat-label">Avg. Runtime</div>
               </div>
             </div>
+            <div className="card-glow"></div>
           </div>
 
-          <div className="glass-card main-action">
-            <FaChartLine className="action-icon" />
-            <h2>Automation Analytics</h2>
-            <p>Analyze performance and optimization metrics</p>
-            <div className="stats">
+          <div className="metric-card secondary">
+            <div className="card-header">
+              <FaChartLine className="card-icon" />
+              <h2>Automation Analytics</h2>
+            </div>
+            <div className="card-stats">
               <div className="stat">
                 <div className="stat-value">32%</div>
                 <div className="stat-label">Efficiency Gain</div>
@@ -88,105 +106,148 @@ const Dashboard = () => {
                 <div className="stat-label">Speed Boost</div>
               </div>
             </div>
+            <div className="card-glow"></div>
           </div>
         </div>
 
-        <div className="charts-grid">
-          <div className="glass-card chart-card">
+        <div className="visualization-grid">
+          <div className="chart-card">
             <h3>Performance Trends</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={data}>
-                  <XAxis dataKey="name" stroke="#fff" />
-                  <YAxis stroke="#fff" />
+                <LineChart data={chartData}>
+                  <XAxis 
+                    dataKey="name" 
+                    stroke={isDarkMode ? '#e2e8f0' : '#1e293b'} 
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    stroke={isDarkMode ? '#e2e8f0' : '#1e293b'} 
+                    tickLine={false}
+                  />
                   <Tooltip 
-                    contentStyle={{ 
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      backdropFilter: 'blur(10px)'
-                    }}
+                    content={({ payload }) => (
+                      <div className="custom-tooltip">
+                        {payload?.map((entry, index) => (
+                          <div key={index} className="tooltip-item">
+                            <span className="tooltip-label">{entry.name}</span>
+                            <span className="tooltip-value">{entry.value}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   />
                   <Line 
                     type="monotone" 
                     dataKey="efficiency" 
-                    stroke="#6366f1" 
+                    stroke="url(#efficiencyGradient)"
                     strokeWidth={2}
-                    dot={{ fill: '#4f46e5' }}
+                    dot={false}
                   />
                   <Line 
                     type="monotone" 
                     dataKey="engagement" 
-                    stroke="#10b981" 
+                    stroke="url(#engagementGradient)"
                     strokeWidth={2}
-                    dot={{ fill: '#059669' }}
+                    dot={false}
                   />
+                  <defs>
+                    <linearGradient id="efficiencyGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
+                    <linearGradient id="engagementGradient" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#059669" />
+                    </linearGradient>
+                  </defs>
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="glass-card chart-card">
+          <div className="chart-card">
             <h3>Test Success Rates</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={testResults}>
-                  <XAxis dataKey="scenario" stroke="#fff" />
-                  <YAxis stroke="#fff" />
+                  <XAxis 
+                    dataKey="scenario" 
+                    stroke={isDarkMode ? '#e2e8f0' : '#1e293b'} 
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    stroke={isDarkMode ? '#e2e8f0' : '#1e293b'} 
+                    tickLine={false}
+                  />
                   <Tooltip 
-                    contentStyle={{ 
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      border: 'none',
-                      borderRadius: '8px',
-                      backdropFilter: 'blur(10px)'
-                    }}
+                    content={({ payload }) => (
+                      <div className="custom-tooltip">
+                        {payload?.map((entry, index) => (
+                          <div key={index} className="tooltip-item">
+                            <span className="tooltip-label">{entry.name}</span>
+                            <span className="tooltip-value">{entry.value}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   />
                   <Bar 
                     dataKey="success" 
-                    fill="#6366f1" 
+                    fill="url(#successGradient)"
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar 
                     dataKey="failures" 
-                    fill="#f472b6" 
+                    fill="url(#failureGradient)"
                     radius={[4, 4, 0, 0]}
                   />
+                  <defs>
+                    <linearGradient id="successGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="100%" stopColor="#4f46e5" />
+                    </linearGradient>
+                    <linearGradient id="failureGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#f472b6" />
+                      <stop offset="100%" stopColor="#db2777" />
+                    </linearGradient>
+                  </defs>
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
         </div>
 
-        <div className="quick-info">
-          <div className="glass-card system-health">
+        <div className="status-grid">
+          <div className="status-card system-health">
             <h3>System Health</h3>
-            <div className="health-metric">
-              <div className="metric-label">API Response</div>
-              <div className="metric-value success">98ms</div>
-            </div>
-            <div className="health-metric">
-              <div className="metric-label">Test Queue</div>
-              <div className="metric-value warning">12 pending</div>
+            <div className="health-metrics">
+              <div className="metric">
+                <div className="metric-label">API Response</div>
+                <div className="metric-value success">98ms</div>
+              </div>
+              <div className="metric">
+                <div className="metric-label">Test Queue</div>
+                <div className="metric-value warning">12 pending</div>
+              </div>
             </div>
           </div>
 
-          <div className="glass-card recent-activity">
+          <div className="status-card recent-activity">
             <h3>Recent Activity</h3>
-            <div className="activity-item">
-              <div className="activity-icon success">✓</div>
-              <div className="activity-text">
-                SR → SP test completed (0.8s)
+            <div className="activity-list">
+              <div className="activity-item success">
+                <div className="activity-icon">✓</div>
+                <div className="activity-text">SR → SP test completed (0.8s)</div>
               </div>
-            </div>
-            <div className="activity-item">
-              <div className="activity-icon failed">✕</div>
-              <div className="activity-text">
-                PHY-AT validation failed (retry)
+              <div className="activity-item failed">
+                <div className="activity-icon">✕</div>
+                <div className="activity-text">PHY-AT validation failed (retry)</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

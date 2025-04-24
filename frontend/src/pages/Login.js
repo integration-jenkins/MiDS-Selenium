@@ -18,37 +18,6 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
-    // try {
-    //   const response = await fetch('http://localhost:6083/auth/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       username: formData.username, // Assuming email is used as username
-    //       password: formData.password
-    //     }),
-    //   });
-    //   // const response = await instance.post('/auth/login', {
-    //   //   username: formData.username,
-    //   //   password: formData.password,
-    //   // });
-    //
-    //   // if (!response.ok) {
-    //   //   throw new Error(data.message || 'Login failed');
-    //   // }
-    //   // const { token, role } = response.data;
-    //   const data = await response.json();
-    //   console.
-    //   login(data.token, data.role);
-    //   // login(token, role);
-    //   navigate('/dashboard');
-    // } catch (err) {
-    //   setError(err.message || 'Failed to authenticate. Please try again.');
-    //   setIsLoading(false);
-    // }
-
     try {
       const response = await fetch('http://localhost:6083/auth/login', {
         method: 'POST',

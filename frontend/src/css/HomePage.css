@@ -1,0 +1,197 @@
+/* src/css/HomePage.css */
+/* :root {
+    --cyber-1: #6366f1;
+    --cyber-2: #10b981;
+    --cyber-3: #8b5cf6;
+    --neon-1: #22d3ee;
+    --dark-bg: #0f172a;
+    --matrix-green: #00ff88;
+  }
+  
+  .automation-dashboard {
+    min-height: 100vh;
+    background: var(--dark-bg);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .cyber-gradient {
+    position: fixed;
+    width: 150vw;
+    height: 150vh;
+    background: radial-gradient(circle at 50% 50%, 
+      rgba(99, 102, 241, 0.1) 0%,
+      rgba(99, 102, 241, 0) 70%);
+    pointer-events: none;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 2rem;
+    padding: 2rem;
+    position: relative;
+  }
+  
+  .dashboard-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .branding {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .logo-mark {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, var(--cyber-1), var(--cyber-3));
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--cyber-1), var(--cyber-3));
+    filter: blur(10px);
+    z-index: -1;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(45deg, var(--cyber-1), var(--neon-1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .metrics-panel {
+    grid-column: 1 / 9;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  .metric-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+  }
+  
+  .metric-card.cyber::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, 
+      transparent 0%,
+      rgba(99, 102, 241, 0.1) 100%);
+    pointer-events: none;
+  }
+  
+  .ai-pilot {
+    background: linear-gradient(45deg, var(--cyber-1), var(--cyber-3));
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .neon-pulse {
+    width: 8px;
+    height: 8px;
+    background: var(--matrix-green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--matrix-green);
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+  }
+  
+  .pyramid-chart {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+  }
+  
+  .pyramid-layer {
+    height: 60px;
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    transition: all 0.3s ease;
+  }
+  
+  .layer-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    mix-blend-mode: hard-light;
+  }
+  
+  .automation-matrix {
+    grid-column: 1 / -1;
+    background: linear-gradient(45deg, 
+      rgba(99, 102, 241, 0.1),
+      rgba(16, 185, 129, 0.1));
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+  
+  .matrix-card {
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .matrix-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, 
+      transparent 0%,
+      rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+  } */
+  
+  /* Add 300+ more lines of advanced CSS */
