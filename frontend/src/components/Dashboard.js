@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import { FaUserCircle, FaChartLine, FaRobot, FaMoon, FaSun, FaCog, FaComments } from 'react-icons/fa';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import '../css/Dashboard.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+   const { logout } = useAuth();
+  const handleTestCardClick=()=>{
+    navigate('/testing'); 
+  }
 
   const chartData = [
     { name: 'Jan', efficiency: 65, engagement: 75 },
@@ -55,7 +62,7 @@ const Dashboard = () => {
           <div className="dropdown-menu">
             <button className="menu-item">Profile</button>
             <button className="menu-item">Settings</button>
-            <button className="menu-item">Logout</button>
+            <button className="menu-item" onClick={logout}>Logout</button>
           </div>
         )}
       </div>
@@ -73,7 +80,7 @@ const Dashboard = () => {
 
       <main className="dashboard-content">
         <div className="metrics-grid">
-          <div className="metric-card primary">
+          <div className="metric-card primary"  onClick={handleTestCardClick}>
             <div className="card-header">
               <FaRobot className="card-icon" />
               <h2>Automation Testing</h2>

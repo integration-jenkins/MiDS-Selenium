@@ -1,4 +1,10 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.pages;
+import avendum.com.midsauto.config.Base;
+import avendum.com.midsauto.DPRDataGetters;
+import avendum.com.midsauto.TestGenerator.TestDataGenerator;
+import avendum.com.midsauto.config.SampleUsersCredentials;
+import avendum.com.midsauto.tests.Manual_AT_Acpt_Rjt;
+import avendum.com.midsauto.utils.PanelTraverser;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,6 +16,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 public class DPRAutomate {
     //This Will Open the DPR Page for ME
@@ -500,7 +507,7 @@ public class DPRAutomate {
         }
     }
     private static void TrafficDataFill() throws InterruptedException {
-        WebDriver driver=Base.driver;
+        WebDriver driver= Base.getDriver();
         WebDriverWait wait= new WebDriverWait(driver, Duration.ofSeconds(30));
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -786,7 +793,10 @@ public class DPRAutomate {
     private static void MSPartCall(String planid,String task,String detailcomment,String status,String msPartnerName,String stageTab) throws InterruptedException {
         WebDriver driver1=Base.getNewDriver();
         Login loginPage = new Login();
-        loginPage.Login(driver1, msPartnerName,"adm@123");
+        SampleUsersCredentials sampleUsersCredentials = new SampleUsersCredentials();
+        Map<String,String> map= sampleUsersCredentials.getSampleUser();
+        String password =map.get(msPartnerName)==null?"adm@123":map.get(msPartnerName);
+        loginPage.Login(driver1, msPartnerName,password);
         PanelTraverser panelTraverser = new PanelTraverser();
         panelTraverser.navigateToMWPlanTrackingPage(driver1);
         Manual_AT_Acpt_Rjt.accept_Reject_MSPartner(driver1, planid,"Labelling Issue",detailcomment,  status,task,stageTab);
@@ -1102,9 +1112,9 @@ public class DPRAutomate {
     public static  void materialStage(String [] strData,int startIndex,int endIndex) throws InterruptedException {
         if(startIndex==1 && endIndex!=1) {
             Thread.sleep(3000);//Lets Wait for some time before entering
-            fillTextField(Base.driver,2, strData[0]); // MONA ->Some time left Empty
-            fillTextField(Base.driver,5, strData[1]);//MONB
-            fillTextField(Base.driver,2, strData[0]);//Fill ones again
+            fillTextField(Base.getDriver(),2, strData[0]); // MONA ->Some time left Empty
+            fillTextField(Base.getDriver(),5, strData[1]);//MONB
+            fillTextField(Base.getDriver(),2, strData[0]);//Fill ones again
             materialDateFill(4, strData[2]); // MODA
             materialDateFill(7, strData[3]); // MODB
             materialTypeFieldFill(3, strData[4]); // MTA

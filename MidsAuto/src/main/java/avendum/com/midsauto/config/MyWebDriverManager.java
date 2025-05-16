@@ -1,32 +1,30 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.config;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
-//import org.junit.AfterClass;
-//import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class Base {
-    static WebDriver driver;
-//    @BeforeClass
-    public static void setup() {
+public class MyWebDriverManager {
+    private static WebDriver driver;
+
+    public  void setup() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-web-security");
         options.addArguments("--allow-running-insecure-content");
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.get("http://localhost:6086/");
     }
-//    @AfterClass
-    public static void  tearDown() {
-        driver.quit();
+    public static void quitDriver() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
     }
-    public static WebDriver getDriver() {
+    public  WebDriver getDriver() {
         return driver;
     }
-    //Here When i want separate other driver for using in program
     public static WebDriver getNewDriver() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
@@ -34,10 +32,7 @@ public class Base {
         options.addArguments("--allow-running-insecure-content");
         options.addArguments("--remote-allow-origins=*");
         WebDriver driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-        driver.get("http://localhost:6086/");
         return driver;
     }
-
 
 }

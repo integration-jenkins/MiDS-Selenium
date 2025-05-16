@@ -1,4 +1,5 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.utils;
+import avendum.com.midsauto.config.Base;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;

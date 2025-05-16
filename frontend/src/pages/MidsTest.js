@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FiCheck, FiPlay, FiSearch, FiSettings, FiBox } from 'react-icons/fi';
 import { MdAutoMode, MdOutlineComputer } from 'react-icons/md';
 import '../css/MidsTest.css';
 import {FiMoon, FiSun} from 'react-icons/fi';
-
+import axios from 'axios';
+import api from '../api/axiosConfig'; 
 const MidsTest = () => {
   const [selectedTests, setSelectedTests] = useState([]);
   const [showModeDialog, setShowModeDialog] = useState(false);
   const [showExecutionDialog, setShowExecutionDialog] = useState(false);
   const [executionMode, setExecutionMode] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [testData, setTestData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [state, setState] = useState({
     selectedTests: new Set(),
     darkMode: false,
@@ -19,19 +24,61 @@ const MidsTest = () => {
     batchSelections: {},
     columnSort: { field: 'priority', order: 'desc' }
   });
+  useEffect(() => {
+    fetchTestData();
+  }, []);
+
+const fetchTestData = async () => {
+  try {
+    setLoading(true);
+    const response = await api.get('/api/midstests'); // Use configured axios instance
+    // const response = await axios.get('/api/midstests');
+    // console.log("response "+response.data);
+    const transformedData = transformBackendData(response.data);
+    setTestData(transformedData);
+    setLoading(false);
+  } catch (err) {
+    // handleApiError(err);
+    setError('Failed to fetch test data');
+        setLoading(false);
+  }
+};
+
+// Data transformation function
+const transformBackendData = (backendData) => {
+  return backendData.reduce((acc, test) => {
+    const category = test.pageName;
+    if (!acc[category]) acc[category] = [];
+    acc[category].push({
+      id: test.id,
+      name: test.testName,
+      success: test.successfulCount || 0,
+      failure: test.failedCount || 0,
+      priority: test.priority.toLowerCase(),
+      lastExecution: test.lastExecutionDate ? 
+        new Date(test.lastExecutionDate).toLocaleDateString() : 'Never',
+      status: test.executionStatus || 'pending',
+      doneBy: test.doneBy || 'N/A',
+    });
+    return acc;
+  }, {});
+};
+  if (loading) return <div className="loading-spinner">Loading...</div>;
+  if (error) return <div className="error-message">{error}</div>;
+
 
   // Sample test data
-  const testCategories = {
-    'MW Plan Tracking': [
-      { id: 1, name: 'PHY AT Manual Rejection', success: 98, failure: 2, priority: 'High' },
-      { id: 2, name: 'AT Status Report Sync', success: 95, failure: 5, priority: 'Medium' },
-      { id: 3, name: 'Bulk AT Status Upload (Reject)', success: 92, failure: 8, priority: 'Critical' },
-    ],
-    'LB Report': [
-      { id: 4, name: 'Load Balancing Validation', success: 99, failure: 1, priority: 'High' },
-      { id: 5, name: 'Traffic Distribution Test', success: 97, failure: 3, priority: 'Medium' },
-    ],
-  };
+  // const testCategories = {
+  //   'MW Plan Tracking': [
+  //     { id: 1, name: 'PHY AT Manual Rejection', success: 10000, failure: 2, priority: 'High' },
+  //     { id: 2, name: 'AT Status Report Sync', success: 95, failure: 5, priority: 'Medium' },
+  //     { id: 3, name: 'Bulk AT Status Upload (Reject)', success: 92, failure: 8, priority: 'Critical' },
+  //   ],
+  //   'LB Report': [
+  //     { id: 4, name: 'Load Balancing Validation', success: 60, failure: 1, priority: 'High' },
+  //     { id: 5, name: 'Traffic Distribution Test', success: 97, failure: 3, priority: 'Medium' },
+  //   ],
+  // };
   const toggleTestSelection = (testId) => {
     setSelectedTests(prev => 
       prev.includes(testId) 
@@ -44,6 +91,43 @@ const MidsTest = () => {
     setExecutionMode(mode);
     setShowModeDialog(false);
     setShowExecutionDialog(true);
+  };
+
+  const handlePassExecute = async (mode) => {
+    try {
+      // Group selected tests by `doneBy`
+      const groupedTests = selectedTests.reduce((acc, testId) => {
+        const test = Object.values(testData).flat().find((t) => t.id === testId);
+        if (!acc[test.doneBy]) acc[test.doneBy] = [];
+        acc[test.doneBy].push({ id: test.id, name: test.name });
+        return acc;
+      }, {});
+  
+      console.log('Grouped Tests by doneBy:', groupedTests);
+  
+      const executionPromises = Object.entries(groupedTests).map(async ([doneBy, tests]) => {
+        console.log(`Fetching credentials for doneBy: ${doneBy}`);
+        const userData = await api.post('/api/sampleUserCredentials/getUserCredentials', { doneBy });
+        console.log('User Data:', userData.data);
+  
+        const payload = {
+          executionMode: mode,
+          userName: userData.data[0],
+          password: userData.data[1],
+          tests, // List of tests for this `doneBy`
+        };
+  
+        console.log('Payload for doneBy:', doneBy, payload);
+  
+        const response = await api.post('/api/midstests/executeTests', payload);
+        console.log(`Execution Response for doneBy ${doneBy}:`, response.data);
+        return response.data;
+      });
+      const results = await Promise.all(executionPromises);
+      console.log('All Execution Results:', results);
+    } catch (error) {
+      console.error('Error during execution:', error);
+    }
   };
 
   return (
@@ -73,7 +157,7 @@ const MidsTest = () => {
       </div>
 
       {/* Test Categories Grid */}
-      {Object.entries(testCategories).map(([category, tests]) => (
+      {Object.entries(testData).map(([category, tests]) => (
         <div key={category} className="glass-panel mb-8 p-6 rounded-xl">
           <div className="flex items-center gap-3 mb-4">
             <FiBox className="text-xl" />
@@ -116,10 +200,27 @@ const MidsTest = () => {
                       {test.priority}
                     </span>
                   </td>
+                  <td className="py-3">{test.lastExecutionUser || 'N/A'}</td>
+                  <td className="py-3">
+                    {test.lastExecutionDate
+                        ? new Date(test.lastExecutionDate).toLocaleDateString()
+                        : 'N/A'}
+                  </td>
+                  <td className="py-3">{test.executionStatus || 'Not Started'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+            {/* Floating Action Button */}
+      {selectedTests.length > 0 && (
+        <button 
+          className="floating-execute-btn"
+          onClick={() => setShowModeDialog(true)}
+        >
+          <FiPlay />
+          Execute Selected ({selectedTests.length})
+        </button>
+      )}
         </div>
       ))}
 
@@ -171,7 +272,7 @@ const MidsTest = () => {
               </thead>
               <tbody>
                 {selectedTests.map(testId => {
-                  const test = Object.values(testCategories)
+                  const test = Object.values(testData)
                     .flat()
                     .find(t => t.id === testId);
                   return (
@@ -196,7 +297,7 @@ const MidsTest = () => {
                 )}
               </tbody>
             </table>
-            <button className="execute-btn">
+            <button className="execute-btn" onClick={() => handlePassExecute(executionMode)}>
               <FiPlay className="mr-2" />
               Start Execution
             </button>
@@ -204,16 +305,7 @@ const MidsTest = () => {
         </div>
       )}
 
-      {/* Floating Action Button */}
-      {selectedTests.length > 0 && (
-        <button 
-          className="floating-execute-btn"
-          onClick={() => setShowModeDialog(true)}
-        >
-          <FiPlay />
-          Execute Selected ({selectedTests.length})
-        </button>
-      )}
+    
     </div>
   );
 };

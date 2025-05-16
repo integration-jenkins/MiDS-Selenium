@@ -1,4 +1,9 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.controller;
+import avendum.com.midsauto.config.Base;
+import avendum.com.midsauto.pages.DPRAutomate;
+import avendum.com.midsauto.pages.Login;
+import avendum.com.midsauto.utils.PanelTraverser;
+import avendum.com.midsauto.utils.PlanIdGetter;
 import org.openqa.selenium.WebDriver;
 
 import java.text.ParseException;

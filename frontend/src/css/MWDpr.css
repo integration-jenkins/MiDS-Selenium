@@ -1,0 +1,231 @@
+.glass-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    margin: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+  }
+  
+  .glass-cardd {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    z-index: 1;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-select {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: inherit;
+    appearance: none;
+  }
+  
+  .select-wrapper {
+    position: relative;
+  }
+  
+  .select-arrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-top-color: currentColor;
+    pointer-events: none;
+  }
+  
+  .gradient-button {
+    width: 100%;
+    padding: 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .button-hover-effect {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.2);
+    width: 50px;
+    height: 100%;
+    left: -60%;
+    top: 0;
+    transform: skewX(-15deg);
+    transition: left 0.3s ease;
+  }
+  
+  .gradient-button:hover .button-hover-effect {
+    left: 150%;
+  }
+  
+  .results-table {
+    margin-top: 2rem;
+    padding: 1.5rem;
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .status-chip {
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-chip.success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+  }
+  
+  .status-chip.failed {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+  }
+  
+  .table-container {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th {
+    padding: 1rem;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+  }
+  
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+
+
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .loading-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+    font-size: 3rem;
+    color: #6366f1;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes spin {
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-text {
+    font-size: 1.2rem;
+    color: white;
+    margin-top: 1rem;
+  }
+
+  .result-overlay {
+    /* Same as loading-overlay */
+  }
+  
+  .result-content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .result-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .success-icon {
+    color: #10b981;
+  }
+  
+  .error-icon {
+    color: #ef4444;
+  }
+  
+  .result-message {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+    color: white;
+  }
+  
+  .retry-button {
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .retry-button:hover {
+    transform: scale(1.05);
+  }

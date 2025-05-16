@@ -29,14 +29,15 @@ const Login = () => {
           password: formData.password,
         }),
       });
-
+      //Store the username and password in local storage
+      localStorage.setItem('username', formData.username);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Login failed');
       }
 
       const data = await response.json();
-      login(data.token, data.role); // Use the token and role from the response
+      login(data.jwt); // Use the token and role from the response
       // navigate('/dashboard'); // Redirect to the dashboard
     } catch (err) {
       setError(err.message || 'Failed to authenticate. Please try again.');

@@ -1,4 +1,4 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.tests;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

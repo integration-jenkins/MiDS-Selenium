@@ -7,6 +7,12 @@ import Dashboard from './components/Dashboard';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import MidsTest from './pages/MidsTest';
+import MWDPRPage from './pages/MWDPRPage';
+import TestingPage from './pages/TestingPage';
+import TestReports from './pages/TestReports';
+import BasicTestReports from './pages/BasicTestReports';
+import DownloadReportTests from './pages/DownloadReportTests';
+import AdvanceLoader from './pages/AdvanceLoader';
 const AppRoutes = () => {
     const { isAuthenticated, loading } = useAuth();
 
@@ -24,6 +30,14 @@ const AppRoutes = () => {
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
             <Route path="/signup" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />} />
             <Route path="/midstest" element={isAuthenticated ? <MidsTest /> : <Navigate to="/login" />} />
+            <Route path="/testing" element={isAuthenticated ? <TestingPage /> : <Navigate to="/login" />} />
+            <Route path="/mwdpr" element={isAuthenticated ? <MWDPRPage /> : <Navigate to="/login" />} />
+            <Route path="/testreports" element={isAuthenticated ? <TestReports /> : <Navigate to="/login" />} />
+            <Route path="/download-report" element={isAuthenticated ? <DownloadReportTests /> : <Navigate to="/login" />} />
+            <Route path="/basic-test-report" element={isAuthenticated ? <BasicTestReports /> : <Navigate to="/login" />} />
+            <Route path="/hypnotic-loader" element={isAuthenticated ? <AdvanceLoader /> : <Navigate to="/login" />} />
+            
+
             {/* Add more routes as needed */}
         </Routes>
     );

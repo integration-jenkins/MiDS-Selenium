@@ -19,7 +19,6 @@ public class User {
     private  String email;
     private String username;
     private String password;
-    private String role;
     private String firstName;
     private String lastName;
     @Column(name = "created_date", updatable = false)

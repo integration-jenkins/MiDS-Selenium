@@ -1,4 +1,4 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.utils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 //import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.BeforeAll;

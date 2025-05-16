@@ -1,4 +1,5 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.pages;
+import avendum.com.midsauto.config.Base;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,12 +8,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-class Login extends Base {
+public class Login extends Base {
 
     public void Login(String username, String password) throws InterruptedException {
         // Initialize WebDriver
         Base base = new Base();
         setup();
+        WebDriver driver = getDriver();
         // Enter credentials
         Thread.sleep(2000);
         driver.findElement(By.name("username")).sendKeys(username);

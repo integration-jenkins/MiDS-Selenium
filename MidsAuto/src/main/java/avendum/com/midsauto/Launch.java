@@ -1,4 +1,10 @@
 package avendum.com.midsauto;
+import avendum.com.midsauto.config.Base;
+import avendum.com.midsauto.controller.MWPlanner;
+import avendum.com.midsauto.pages.DPRAutomate;
+import avendum.com.midsauto.pages.Login;
+import avendum.com.midsauto.tests.Manual_AT_Acpt_Rjt;
+import avendum.com.midsauto.utils.PlanIdGetter;
 import org.openqa.selenium.WebDriver;
 
 public class Launch  {
@@ -96,18 +102,18 @@ public class Launch  {
     }
     public static void main(String[] args) {
         System.out.println("Mids Testing Started");
-//        try {
+        try {
 ////            MSPartner("JK_MS_PT_1", "adm@123");
-////            MWPlanner("Z_Bhanu", "adm@123");
-//            MWPlanner mw=new MWPlanner();
-//            mw.MWPlannerLogin("Z_Bhanu", "adm@123");
-//            mw.MWPlannerDPRTrack("SR Pending","AT Accepted");
-////            DPRAutomate dpr= new DPRAutomate();
+//            MWPlanner("Z_Bhanu", "adm@123");
+            MWPlanner mw=new MWPlanner();
+            mw.MWPlannerLogin("Z_Bhanu", "adm@123");
+            mw.MWPlannerDPRTrack("SR Pending","AT Accepted");
+//            DPRAutomate dpr= new DPRAutomate();
 ////            DPRAutomate.dprPlan("MW-N-AP-23012025-2",1);
 ////            dpr.dprStage("SR Pending","HOP Alignment Pending/Phy-AT Pending","ManualBoth");
 //
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

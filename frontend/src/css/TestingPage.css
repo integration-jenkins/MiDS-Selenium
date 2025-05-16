@@ -1,0 +1,251 @@
+/* TestingPage.css */
+.testing-container {
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .glass-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    margin-bottom: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .page-title {
+    font-size: 2.2rem;
+    letter-spacing: 1.5px;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  .history-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .history-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .history-icon {
+    font-size: 1.2rem;
+  }
+  
+  .testing-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .testing-card {
+    padding: 2rem;
+    transition: transform 0.3s ease;
+    min-height: 280px;
+  }
+  
+  .testing-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .card-icon {
+    font-size: 1.8rem;
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+  }
+  
+  .stat-value {
+    font-weight: 600;
+  }
+  
+  .success { color: #10b981; }
+  .warning { color: #f59e0b; }
+  
+  .action-button {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: linear-gradient(45deg, #6366f1, #a855f7);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .action-button:hover {
+    transform: scale(1.02);
+  }
+  .test-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .test-dialog-content {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    width: 500px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+  .dialog-options {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .dialog-options {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  
+  .dialog-option {
+    position: relative;
+    padding: 1.5rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .dialog-option:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+  }
+  
+  .selection-indicator {
+    position: absolute;
+    right: 1rem;
+    width: 10px;
+    height: 10px;
+    background: #6366f1;
+    border-radius: 50%;
+  }
+  .path-input {
+    margin: 1.5rem 0;
+  }
+  
+  .path-input input {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .dialog-actions button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .dialog-actions button:first-child {
+    background: rgba(255,255,255,0.1);
+  }
+  
+  .dialog-actions button:last-child {
+    background: #6366f1;
+    color: white;
+  }
+  
+  .dialog-error {
+    color: #ef4444;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+
+
+
+  @keyframes chroma-aberration {
+    0% { text-shadow: 0 0 10px rgba(99,102,241,0.5); }
+    25% { text-shadow: 2px -2px 15px #ec4899, -2px 2px 15px #8b5cf6; }
+    50% { text-shadow: -3px 3px 20px #f59e0b, 3px -3px 20px #6366f1; }
+    75% { text-shadow: 4px -4px 25px #10b981, -4px 4px 25px #3b82f6; }
+    100% { text-shadow: 0 0 10px rgba(99,102,241,0.5); }
+  }
+  
+  @keyframes quantum-fluctuation {
+    0% { transform: translate(0,0); }
+    20% { transform: translate(-2px,2px); }
+    40% { transform: translate(3px,-1px); }
+    60% { transform: translate(-3px,-2px); }
+    80% { transform: translate(1px,3px); }
+    100% { transform: translate(0,0); }
+  }
+  
+  .loading-text {
+    animation: chroma-aberration 2s infinite, quantum-fluctuation 3s infinite;
+  }
+  
+  .quantum-dots {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+  
+  .quantum-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    animation: quantum-fluctuation 2s infinite;
+    background: linear-gradient(45deg, #ec4899, #8b5cf6);
+  }

@@ -12,7 +12,6 @@ const SignUp = () => {
     username: '',
     firstName: '',
     lastName: '',
-    role: 'user'
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -144,7 +143,7 @@ const SignUp = () => {
             </button>
           </div>
 
-          <div className="input-group">
+          {/* <div className="input-group">
             <select
               className="role-select"
               value={formData.role}
@@ -155,7 +154,7 @@ const SignUp = () => {
               <option value="admin">Admin</option>
             </select>
             <label className="floating-label">Role</label>
-          </div>
+          </div> */}
 
           <button
             type="submit"
