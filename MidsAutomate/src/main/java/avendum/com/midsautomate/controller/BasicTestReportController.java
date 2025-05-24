@@ -159,9 +159,9 @@ public class BasicTestReportController {
         String mwPlannerUserName = mwPlanner != null ? mwPlanner.getUserName() : null;
         String mwPlannerPassword = mwPlanner != null ? mwPlanner.getPassword() : null;
         assert mwPlannerUserName != null;
-        return new HashMap<>(Map.of(
-                mwPlannerUserName, mwPlannerPassword
-        ));
+      Map<String, String> map = new HashMap<>();
+        map.put(mwPlannerUserName, mwPlannerPassword);
+        return map;
     }
 
     @PostMapping("/report-download")

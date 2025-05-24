@@ -4,14 +4,24 @@ import { FaGoogle, FaGithub, FaLock, FaUser, FaEye, FaEyeSlash } from 'react-ico
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../css/Login.css';
-// import instance from '../api/axios.js';
-
+import RoleCredentialsDialog from '../components/RoleCredentialsDialog';
+import api from '../api/axiosConfig';
+import { useEffect } from 'react';
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [formData, setFormData] = useState({ username: '', password: '' });const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  // const [showCredDialog, setShowCredDialog] = useState(false);
+  // const [missingRoles, setMissingRoles] = useState([]);
   const { login } = useAuth();
+  // const roles = [
+  //     'MS Partner',
+  //     'MW Planner',
+  //     'Operation Team',
+  //     'Deployment Team',
+  //     'I&C Partner'
+  //   ];
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,8 +29,9 @@ const Login = () => {
     setError('');
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:6083/auth/login', {
-        method: 'POST',
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:6083';
+    const response = await fetch(`${apiUrl}/auth/login`, {
+      method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,8 +48,10 @@ const Login = () => {
       }
 
       const data = await response.json();
+      localStorage.setItem('checkingCredentials', 'true');
       login(data.jwt); // Use the token and role from the response
-      // navigate('/dashboard'); // Redirect to the dashboard
+      navigate('/dashboard'); // Redirect to the dashboard
+      // await checkMissingCredentials();
     } catch (err) {
       setError(err.message || 'Failed to authenticate. Please try again.');
     } finally {
@@ -47,8 +60,40 @@ const Login = () => {
 
 
   };
+  // const checkMissingCredentials = async () => {
+  //   try {
+  //     const allExistingRoles = new Set();
+  //     let credentialCount = 0;
+  //     // Check credentials for each role
+  //     for (const role of roles) {
+  //       const response = await api.post('/api/sampleUserCredentials/getUserCredentials', { doneBy: role });
+  //       console.log('Response for role:', role, response.data);
+  //       if (response.data.length > 0) {
+  //         allExistingRoles.add(role);
+  //         credentialCount++;
+  //       }
+  //     }
+  //     console.log('All existing roles:', allExistingRoles);
+  //      // Determine missing roles
+  //      const missing = roles.filter(role => !allExistingRoles.has(role));
+  //      setMissingRoles(missing);
+ 
+  //      // Show dialog if missing roles exist
+  //      if (missing.length > 0) {
+  //        setShowCredDialog(true);
+  //        console.log('Missing roles:', missing);
+  //      } else {
+  //       //  navigate('/dashboard');
+  //      }
+
+  //   } catch (error) {
+  //     console.error('Failed to check credentials:', error);
+  //   }
+  // };
 
   return (
+   
+
       <div className={`login-container ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="background-blobs">
           <div className="blob blob-1"></div>
@@ -134,7 +179,10 @@ const Login = () => {
             <a href="/forgot-password">Forgot password?</a>
           </div>
         </div>
+        
       </div>
+
+      
   );
 };
 

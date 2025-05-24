@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Component
@@ -26,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-//    @Autowired
+    //    @Autowired
 //    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
 //        this.jwtUtil = jwtUtil;
 //
@@ -36,6 +37,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
+    private final List<String> shouldNotFilter = List.of(
+            "/auth/",
+            "/login",
+            "/static/",
+            "/index.html",
+            "/favicon.ico"
+    );
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return shouldNotFilter.stream()
+                .anyMatch(path -> request.getServletPath().startsWith(path));
+    }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

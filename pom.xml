@@ -17,9 +17,9 @@
 
     <properties>
         <!-- Yeh Mere Spring Project Ki Version-->
-        <spring-boot.version>3.4.4</spring-boot.version>
+        <spring-boot.version>3.4.5</spring-boot.version>
         <spring-cloud.version>2024.0.1</spring-cloud.version>
-
+        <servlet-api.version>6.0.0</servlet-api.version> <!-- Jakarta EE 10 -->
         <java.version>17</java.version>
         <jjwt.version>0.12.6</jjwt.version>
         <lombok.version>1.18.32</lombok.version>

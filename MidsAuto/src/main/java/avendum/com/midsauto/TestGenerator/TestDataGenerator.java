@@ -1,4 +1,4 @@
-package avendum.com.midsauto;
+package avendum.com.midsauto.TestGenerator;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;

@@ -4,15 +4,69 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContai
 import '../css/Dashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
+import { useEffect } from 'react';
+import RoleCredentialsDialog from '../components/RoleCredentialsDialog';
+import api from '../api/axiosConfig';
 const Dashboard = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showCredDialog, setShowCredDialog] = useState(false);
+  const [missingRoles, setMissingRoles] = useState([]);
+  
   const navigate = useNavigate();
    const { logout } = useAuth();
   const handleTestCardClick=()=>{
     navigate('/testing'); 
   }
+  const roles = [
+    'MS Partner',
+    'MW Planner',
+    'Operation Team',
+    'Deployment Team',
+    'I&C Partner'
+  ];
+  // useEffect(() => {
+  //   const checkCredentials = async () => {
+  //     await checkMissingCredentials();
+  //   };
+  //   checkCredentials();
+  // }, [showCredDialog, missingRoles, navigate]);
+  useEffect(() => {
+    // Check credentials when component mounts
+    checkMissingCredentials();
+  }, []); // Don't include showCredDialog or missingRoles to prevent infinite loops
+  
+
+  const checkMissingCredentials = async () => {
+    try {
+      const allExistingRoles = new Set();
+      let credentialCount = 0;
+      // Check credentials for each role
+      for (const role of roles) {
+        const response = await api.post('/api/sampleUserCredentials/getUserCredentials', { doneBy: role });
+        console.log('Response for role:', role, response.data);
+        if (response.data.length > 0) {
+          allExistingRoles.add(role);
+          credentialCount++;
+        }
+      }
+      console.log('All existing roles:', allExistingRoles);
+       // Determine missing roles
+       const missing = roles.filter(role => !allExistingRoles.has(role));
+       setMissingRoles(missing);
+ 
+       // Show dialog if missing roles exist
+       if (missing.length > 0) {
+         setShowCredDialog(true);
+         console.log('Missing roles:', missing);
+       } else {
+        //  navigate('/dashboard');
+       }
+
+    } catch (error) {
+      console.error('Failed to check credentials:', error);
+    }
+  };
 
   const chartData = [
     { name: 'Jan', efficiency: 65, engagement: 75 },
@@ -255,7 +309,17 @@ const Dashboard = () => {
           </div>
         </div>
       </main>
+      <RoleCredentialsDialog
+  open={showCredDialog}
+  missingRoles={missingRoles}  
+  onClose={(success) => {
+    setShowCredDialog(false);
+    localStorage.removeItem('checkingCredentials');
+    // Only now navigate to the dashboard
+  }}
+/>
     </div>
+    
   );
 };
 
