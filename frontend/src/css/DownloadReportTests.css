@@ -1,0 +1,458 @@
+/* src/css/DownloadReportTests.css */
+:root {
+  --downloadreport-primary: #2563eb;
+  --downloadreport-secondary: #10b981;
+  --downloadreport-dark: #1e293b;
+  --downloadreport-light: #f8fafc;
+  --downloadreport-gray: #64748b;
+  --downloadreport-light-gray: #e2e8f0;
+  --downloadreport-dark-gray: #475569;
+  --downloadreport-transition: all 0.3s ease;
+}
+
+.downloadreport-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.downloadreport-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.downloadreport-header p {
+  color: var(--downloadreport-gray);
+  font-size: 1.1rem;
+}
+
+.layout-dark .downloadreport-header p {
+  color: #94a3b8;
+}
+
+.downloadreport-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.downloadreport-stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--downloadreport-transition);
+}
+
+.layout-light .downloadreport-stat-card {
+  background: white;
+  border: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.downloadreport-stat-card h3 {
+  font-size: 1rem;
+  color: var(--downloadreport-gray);
+  margin-bottom: 0.5rem;
+}
+
+.layout-dark .downloadreport-stat-card h3 {
+  color: #94a3b8;
+}
+
+.downloadreport-stat-card p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--downloadreport-primary), var(--downloadreport-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.downloadreport-no-reports {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: var(--downloadreport-gray);
+}
+
+.layout-dark .downloadreport-no-reports {
+  color: #94a3b8;
+}
+
+.downloadreport-table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+}
+
+.layout-light .downloadreport-table-container {
+  background: white;
+  border: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.downloadreport-table th {
+  position: relative;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+  color: var(--downloadreport-gray);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .downloadreport-table th {
+  color: #334155;
+  border-bottom: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #334155;
+}
+
+.layout-dark .downloadreport-table td {
+  color: #e2e8f0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.downloadreport-table-row {
+  cursor: pointer;
+  transition: var(--downloadreport-transition);
+}
+
+.downloadreport-table-row:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .downloadreport-table-row:hover {
+  background: var(--downloadreport-light-gray);
+}
+
+.downloadreport-table-row:focus {
+  outline: 2px solid var(--downloadreport-primary);
+  outline-offset: -2px;
+}
+
+.downloadreport-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: transparent;
+  cursor: col-resize;
+  transition: var(--downloadreport-transition);
+}
+
+.downloadreport-resize-handle:hover {
+  background: var(--downloadreport-primary);
+}
+
+.downloadreport-name-cell {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.downloadreport-expanded {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.downloadreport-status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.downloadreport-status-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--downloadreport-secondary);
+}
+
+.downloadreport-status-failure {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.downloadreport-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.downloadreport-dialog-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .downloadreport-dialog-box {
+  background: white;
+  border: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-slide-in {
+  animation: downloadreport-slideIn 0.3s ease;
+}
+
+@keyframes downloadreport-slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.downloadreport-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .downloadreport-dialog-header {
+  border-bottom: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-dialog-header h2 {
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, var(--downloadreport-primary), var(--downloadreport-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.downloadreport-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--downloadreport-gray);
+  transition: var(--downloadreport-transition);
+}
+
+.layout-dark .downloadreport-close-btn {
+  color: #94a3b8;
+}
+
+.downloadreport-close-btn:hover {
+  color: var(--downloadreport-primary);
+}
+
+.downloadreport-dialog-content {
+  padding: 2rem;
+}
+
+.downloadreport-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .downloadreport-detail-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.downloadreport-detail-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: var(--downloadreport-transition);
+}
+
+.layout-light .downloadreport-detail-card {
+  background: var(--downloadreport-light);
+  border: 1px solid var(--downloadreport-light-gray);
+}
+
+.downloadreport-detail-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.downloadreport-detail-card label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--downloadreport-gray);
+  margin-bottom: 0.5rem;
+}
+
+.layout-dark .downloadreport-detail-card label {
+  color: #94a3b8;
+}
+
+.downloadreport-metric-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.downloadreport-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.downloadreport-metric-label {
+  color: var(--downloadreport-gray);
+}
+
+.layout-dark .downloadreport-metric-label {
+  color: #94a3b8;
+}
+
+.downloadreport-metric-value {
+  font-weight: 500;
+  color: #334155;
+}
+
+.layout-dark .downloadreport-metric-value {
+  color: #e2e8f0;
+}
+
+.downloadreport-status-card {
+  text-align: center;
+}
+
+.downloadreport-status-indicator {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.downloadreport-status-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--downloadreport-secondary);
+}
+
+.downloadreport-status-failure {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.downloadreport-detail-text {
+  color: #334155;
+  margin: 0.5rem 0;
+}
+
+.layout-dark .downloadreport-detail-text {
+  color: #e2e8f0;
+}
+
+.downloadreport-progress-bar {
+  position: relative;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.layout-light .downloadreport-progress-bar {
+  background: var(--downloadreport-light-gray);
+}
+
+.downloadreport-progress-fill {
+  height: 100%;
+  background: linear-gradient(45deg, var(--downloadreport-primary), var(--downloadreport-secondary));
+  transition: width 0.5s ease;
+}
+
+.downloadreport-progress-bar span {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--downloadreport-gray);
+}
+
+.layout-dark .downloadreport-progress-bar span {
+  color: #94a3b8;
+}
+
+.downloadreport-path-section {
+  margin-top: 2rem;
+}
+
+.downloadreport-path-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--downloadreport-primary), var(--downloadreport-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.downloadreport-path-text {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #334155;
+  word-break: break-all;
+}
+
+.layout-dark .downloadreport-path-text {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.downloadreport-comments-section {
+  margin-top: 2rem;
+}
+
+.downloadreport-comments-section h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, var(--downloadreport-primary), var(--downloadreport-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.downloadreport-comment-text {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #334155;
+}
+
+.layout-dark .downloadreport-comment-text {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.1);
+}

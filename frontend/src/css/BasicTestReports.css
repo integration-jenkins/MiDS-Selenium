@@ -1,0 +1,476 @@
+/* src/css/BasicTestReports.css */
+:root {
+  --basictestreports-primary: #2563eb;
+  --basictestreports-secondary: #10b981;
+  --basictestreports-dark: #1e293b;
+  --basictestreports-light: #f8fafc;
+  --basictestreports-gray: #64748b;
+  --basictestreports-light-gray: #e2e8f0;
+  --basictestreports-dark-gray: #475569;
+  --basictestreports-transition: all 0.3s ease;
+}
+
+.basictestreports-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-blobs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.1), transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.1), transparent 50%);
+}
+
+.basictestreports-header {
+  margin-bottom: 2rem;
+}
+
+.basictestreports-header p {
+  font-size: 1.2rem;
+  color: #334155;
+}
+
+.layout-dark .basictestreports-header p {
+  color: #e2e8f0;
+}
+
+.basictestreports-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.basictestreports-stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.layout-light .basictestreports-stat-card {
+  background: white;
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-stat-card h3 {
+  font-size: 1.1rem;
+  color: var(--basictestreports-gray);
+  margin-bottom: 0.5rem;
+}
+
+.layout-dark .basictestreports-stat-card h3 {
+  color: #94a3b8;
+}
+
+.basictestreports-stat-card p {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.layout-dark .basictestreports-stat-card p {
+  color: #e2e8f0;
+}
+
+.basictestreports-no-reports {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: var(--basictestreports-gray);
+}
+
+.layout-dark .basictestreports-no-reports {
+  color: #94a3b8;
+}
+
+.basictestreports-table-container {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-table-container {
+  background: white;
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.basictestreports-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+  color: var(--basictestreports-gray);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.layout-light .basictestreports-table th {
+  color: #334155;
+  border-bottom: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: transparent;
+  cursor: col-resize;
+}
+
+.basictestreports-resize-handle:hover {
+  background: var(--basictestreports-primary);
+}
+
+.basictestreports-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #334155;
+}
+
+.layout-dark .basictestreports-table td {
+  color: #e2e8f0;
+}
+
+.basictestreports-table-row {
+  cursor: pointer;
+  transition: var(--basictestreports-transition);
+}
+
+.basictestreports-table-row:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-table-row:hover {
+  background: var(--basictestreports-light-gray);
+}
+
+.basictestreports-table-row:focus {
+  outline: 2px solid var(--basictestreports-primary);
+  outline-offset: -2px;
+}
+
+.basictestreports-status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.basictestreports-status-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--basictestreports-secondary);
+}
+
+.basictestreports-status-failed {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.basictestreports-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.basictestreports-dialog-box {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-dialog-box {
+  background: white;
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-slide-in {
+  animation: basictestreports-slideIn 0.3s ease;
+}
+
+@keyframes basictestreports-slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.basictestreports-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-dialog-header {
+  border-bottom: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-dialog-header h2 {
+  font-size: 1.5rem;
+  background: linear-gradient(45deg, var(--basictestreports-primary), var(--basictestreports-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.basictestreports-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--basictestreports-gray);
+  transition: var(--basictestreports-transition);
+}
+
+.layout-dark .basictestreports-close-btn {
+  color: #94a3b8;
+}
+
+.basictestreports-close-btn:hover {
+  color: var(--basictestreports-primary);
+}
+
+.basictestreports-dialog-content {
+  padding: 2rem;
+}
+
+.basictestreports-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.basictestreports-detail-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-detail-card {
+  background: var(--basictestreports-light);
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-detail-card label {
+  font-size: 0.9rem;
+  color: var(--basictestreports-gray);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.layout-dark .basictestreports-detail-card label {
+  color: #94a3b8;
+}
+
+.basictestreports-metric-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.basictestreports-metric {
+  display: flex;
+  justify-content: space-between;
+}
+
+.basictestreports-metric-label {
+  color: #334155;
+}
+
+.layout-dark .basictestreports-metric-label {
+  color: #e2e8f0;
+}
+
+.basictestreports-metric-value {
+  font-weight: 500;
+  color: var(--basictestreports-secondary);
+}
+
+.basictestreports-status-indicator {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.basictestreports-status-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--basictestreports-secondary);
+}
+
+.basictestreports-status-failed {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.basictestreports-detail-text {
+  color: #334155;
+  margin: 0.5rem 0;
+}
+
+.layout-dark .basictestreports-detail-text {
+  color: #e2e8f0;
+}
+
+.basictestreports-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.basictestreports-progress-bar span {
+  color: #334155;
+}
+
+.layout-dark .basictestreports-progress-bar span {
+  color: #e2e8f0;
+}
+
+.basictestreports-progress-fill {
+  height: 8px;
+  background: linear-gradient(45deg, var(--basictestreports-primary), var(--basictestreports-secondary));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.basictestreports-image-section {
+  margin-bottom: 2rem;
+}
+
+.basictestreports-image-section h4 {
+  font-size: 1.2rem;
+  color: #334155;
+  margin-bottom: 1rem;
+}
+
+.layout-dark .basictestreports-image-section h4 {
+  color: #e2e8f0;
+}
+
+.basictestreports-screenshot {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--basictestreports-transition);
+  display: block;
+  margin: 0 auto;
+  animation: basictestreports-fadeIn 0.5s ease;
+}
+
+@keyframes basictestreports-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.basictestreports-screenshot:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.basictestreports-image-loading,
+.basictestreports-image-error {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #334155;
+}
+
+.layout-dark .basictestreports-image-loading,
+.layout-dark .basictestreports-image-error {
+  color: #e2e8f0;
+}
+
+.layout-light .basictestreports-image-loading,
+.layout-light .basictestreports-image-error {
+  background: var(--basictestreports-light);
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-spinner {
+  font-size: 2rem;
+  color: var(--basictestreports-primary);
+  animation: basictestreports-spin 1s linear infinite;
+}
+
+@keyframes basictestreports-spin {
+  to { transform: rotate(360deg); }
+}
+
+.basictestreports-image-error svg {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.layout-dark .basictestreports-image-error svg {
+  color: #f87171;
+}
+
+.basictestreports-comments-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.layout-light .basictestreports-comments-section {
+  background: var(--basictestreports-light);
+  border: 1px solid var(--basictestreports-light-gray);
+}
+
+.basictestreports-comments-section h4 {
+  font-size: 1.2rem;
+  color: #334155;
+  margin-bottom: 1rem;
+}
+
+.layout-dark .basictestreports-comments-section h4 {
+  color: #e2e8f0;
+}
+
+.basictestreports-comment-text {
+  color: #334155;
+}
+
+.layout-dark .basictestreports-comment-text {
+  color: #e2e8f0;
+}
