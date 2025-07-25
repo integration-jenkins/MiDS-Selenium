@@ -193,13 +193,13 @@ const Layout = ({ children, title }) => {
             </Link>
           </div>
           
-          <div className="layout-sidebar-footer">
+          {/* <div className="layout-sidebar-footer">
             <div className="layout-version">v0.0.1</div>
             <div className="layout-status-indicator">
               <div className="layout-status-dot"></div>
               <span>Operational</span>
             </div>
-          </div>
+          </div> */}
           
           <div
             className="layout-resize-handle"

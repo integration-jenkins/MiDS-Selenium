@@ -17,4 +17,8 @@ public interface BasicTestRepository extends JpaRepository<BasicTestReport, Long
 
         @Query("SELECT b.noOfTest FROM BasicTestReport b WHERE b.pageName = :page")
         Integer findNoOfTest(@Param("page") String page);
+
+        @Query("SELECT COALESCE(b.noOfSuccessTestCount, 0) FROM BasicTestReport b WHERE b.pageName = :page")
+        Integer findNoOfSuccessTestCount(@Param("page") String page);
+
 }

@@ -14,29 +14,34 @@
   --advanceDashboard-transition: all 0.3s ease;
 }
 
-.advanceDashboard-dashboard {
+.layout-dashboard {
   min-height: 100vh;
   display: flex;
-  background-color: #f5f7fb;
+  background-color: var(--advanceDashboard-light);
   color: #334155;
   overflow-x: hidden;
 }
 
-.advanceDashboard-dashboard.advanceDashboard-dark {
+.layout-dark .layout-dashboard {
   background-color: #0f172a;
   color: #e2e8f0;
 }
 
-.advanceDashboard-dashboard-layout {
+.layout-light .layout-dashboard {
+  background-color: var(--advanceDashboard-light);
+  color: #334155;
+}
+
+.layout-dashboard-layout {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-.advanceDashboard-sidebar {
+.layout-sidebar {
   width: var(--advanceDashboard-sidebar-width);
   background: var(--advanceDashboard-dark);
-  color: white;
+  color: #e2e8f0;
   height: 100vh;
   position: fixed;
   top: 0;
@@ -46,18 +51,43 @@
   z-index: 100;
 }
 
-.advanceDashboard-sidebar-header {
+.layout-sidebar-collapsed {
+  width: 0;
+}
+
+.layout-sidebar-collapsed .layout-logo h2,
+.layout-sidebar-collapsed .layout-menu-group h3,
+.layout-sidebar-collapsed .layout-menu-item span,
+.layout-sidebar-collapsed .layout-sidebar-footer,
+.layout-sidebar-collapsed .advanceDashboard-menu-group h3,
+.layout-sidebar-collapsed .advanceDashboard-menu-item span,
+.layout-sidebar-collapsed .treeview-menu {
+  display: none;
+}
+
+.layout-sidebar-collapsed .layout-menu-item,
+.layout-sidebar-collapsed .advanceDashboard-menu-item {
+  justify-content: center;
+  padding: 12px;
+}
+
+.layout-sidebar-collapsed .layout-icon,
+.layout-sidebar-collapsed .advanceDashboard-icon {
+  margin-right: 0;
+}
+
+.layout-sidebar-header {
   padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.advanceDashboard-logo {
+.layout-logo {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.advanceDashboard-logo-icon {
+.layout-logo-icon {
   width: 36px;
   height: 36px;
   background: var(--advanceDashboard-primary);
@@ -69,20 +99,23 @@
   font-size: 18px;
 }
 
-.advanceDashboard-logo h2 {
+.layout-logo h2 {
   font-size: 18px;
   font-weight: 700;
+  color: #e2e8f0;
 }
 
-.advanceDashboard-logo span {
+.layout-logo span {
   color: var(--advanceDashboard-secondary);
 }
 
+.layout-menu-group,
 .advanceDashboard-menu-group {
   padding: 20px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.layout-menu-group h3,
 .advanceDashboard-menu-group h3 {
   padding: 0 20px 15px;
   font-size: 12px;
@@ -91,6 +124,7 @@
   letter-spacing: 1px;
 }
 
+.layout-menu-item,
 .advanceDashboard-menu-item {
   display: flex;
   align-items: center;
@@ -102,21 +136,25 @@
   font-weight: 500;
 }
 
-.advanceDashboard-menu-item:hover, .advanceDashboard-menu-item.active {
+.layout-menu-item:hover,
+.layout-menu-item.active,
+.advanceDashboard-menu-item:hover,
+.advanceDashboard-menu-item.active {
   background: rgba(255, 255, 255, 0.1);
-  color: white;
+  color: #fff;
 }
 
+.layout-menu-item .layout-icon,
 .advanceDashboard-menu-item .advanceDashboard-icon {
   margin-right: 12px;
   font-size: 18px;
 }
 
-.advanceDashboard-menu-item.logout {
+.layout-menu-item.logout {
   color: #f87171;
 }
 
-.advanceDashboard-sidebar-footer {
+.layout-sidebar-footer {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -127,14 +165,17 @@
   align-items: center;
   font-size: 13px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
 }
 
+.layout-status-indicator,
 .advanceDashboard-status-indicator {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
+.layout-status-dot,
 .advanceDashboard-status-dot {
   width: 8px;
   height: 8px;
@@ -142,16 +183,34 @@
   background: var(--advanceDashboard-secondary);
 }
 
-.advanceDashboard-main-content {
+.layout-resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  cursor: col-resize;
+}
+
+.layout-main-content {
   flex: 1;
   margin-left: var(--advanceDashboard-sidebar-width);
   padding-top: var(--advanceDashboard-header-height);
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-header {
+.layout-sidebar-collapsed ~ .layout-main-content {
+  margin-left: 0;
+}
+
+.layout-sidebar-collapsed ~ .layout-main-content .layout-header {
+  left: 0;
+}
+
+.layout-header {
   height: var(--advanceDashboard-header-height);
-  background: white;
+  background: #fff;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   position: fixed;
   top: 0;
@@ -164,20 +223,34 @@
   padding: 0 25px;
 }
 
-.advanceDashboard-dark .advanceDashboard-header {
+.layout-dark .layout-header {
   background: #1e293b;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  color: #e2e8f0;
 }
 
-.advanceDashboard-search-bar {
+.layout-light .layout-header {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  color: #334155;
+}
+
+.layout-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.layout-search-bar {
   flex: 1;
   max-width: 500px;
 }
 
-.advanceDashboard-search-container {
+.layout-search-container {
   position: relative;
 }
 
-.advanceDashboard-search-container .advanceDashboard-icon {
+.layout-search-container .layout-icon {
   position: absolute;
   left: 15px;
   top: 50%;
@@ -185,29 +258,44 @@
   color: var(--advanceDashboard-gray);
 }
 
-.advanceDashboard-search-container input {
+.layout-dark .layout-search-container .layout-icon {
+  color: #94a3b8;
+}
+
+.layout-light .layout-search-container .layout-icon {
+  color: var(--advanceDashboard-gray);
+}
+
+.layout-search-container input {
   width: 100%;
   padding: 12px 20px 12px 45px;
   border-radius: 8px;
   border: 1px solid var(--advanceDashboard-light-gray);
   background: var(--advanceDashboard-light);
   font-size: 14px;
+  color: #334155;
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-dark .advanceDashboard-search-container input {
-  background: #1e293b;
+.layout-dark .layout-search-container input {
+  background: #2d3748;
   border-color: #334155;
-  color: white;
+  color: #e2e8f0;
 }
 
-.advanceDashboard-header-controls {
+.layout-light .layout-search-container input {
+  background: var(--advanceDashboard-light);
+  border-color: var(--advanceDashboard-light-gray);
+  color: #334155;
+}
+
+.layout-header-controls {
   display: flex;
   align-items: center;
   gap: 20px;
 }
 
-.advanceDashboard-theme-toggle {
+.layout-theme-toggle {
   background: none;
   border: none;
   font-size: 18px;
@@ -216,7 +304,15 @@
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-theme-toggle:hover {
+.layout-dark .layout-theme-toggle {
+  color: #94a3b8;
+}
+
+.layout-light .layout-theme-toggle {
+  color: var(--advanceDashboard-gray);
+}
+
+.layout-theme-toggle:hover {
   color: var(--advanceDashboard-primary);
 }
 
@@ -227,14 +323,23 @@
   font-size: 18px;
   color: var(--advanceDashboard-gray);
   cursor: pointer;
+  transition: var(--advanceDashboard-transition);
+}
+
+.layout-dark .advanceDashboard-notification-btn {
+  color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-notification-btn {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-notification-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: var(--advanceDashboard-primary);
-  color: white;
+  background: #ef4444;
+  color: #fff;
   font-size: 10px;
   width: 18px;
   height: 18px;
@@ -245,7 +350,7 @@
   font-weight: bold;
 }
 
-.advanceDashboard-profile-btn {
+.layout-profile-btn {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -257,8 +362,12 @@
   font-weight: 500;
 }
 
-.advanceDashboard-dark .advanceDashboard-profile-btn {
-  color: #cbd5e1;
+.layout-dark .layout-profile-btn {
+  color: #e2e8f0;
+}
+
+.layout-light .layout-profile-btn {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-avatar {
@@ -272,15 +381,63 @@
   font-size: 18px;
 }
 
-.advanceDashboard-dark .advanceDashboard-avatar {
+.layout-dark .advanceDashboard-avatar {
   background: #334155;
 }
 
-.advanceDashboard-content {
+.layout-light .advanceDashboard-avatar {
+  background: var(--advanceDashboard-light-gray);
+}
+
+.layout-sidebar-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--advanceDashboard-gray);
+  cursor: pointer;
+  transition: var(--advanceDashboard-transition);
+}
+
+.layout-dark .layout-sidebar-toggle {
+  color: #e2e8f0;
+}
+
+.layout-light .layout-sidebar-toggle {
+  color: var(--advanceDashboard-gray);
+}
+
+.layout-sidebar-toggle:hover {
+  color: var(--advanceDashboard-primary);
+}
+
+.layout-content {
   padding: 25px;
   display: flex;
   flex-direction: column;
   gap: 25px;
+  background: var(--advanceDashboard-light);
+}
+
+.layout-dark .layout-content {
+  background: #0f172a;
+}
+
+.layout-light .layout-content {
+  background: var(--advanceDashboard-light);
+}
+
+.layout-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.layout-dark .layout-title {
+  color: #e2e8f0;
+}
+
+.layout-light .layout-title {
+  color: #334155;
 }
 
 .advanceDashboard-metrics-grid {
@@ -297,12 +454,18 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: white;
+  background: #fff;
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-dark .advanceDashboard-metric-card {
+.layout-dark .advanceDashboard-metric-card {
   background: #1e293b;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.layout-light .advanceDashboard-metric-card {
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .advanceDashboard-metric-card:hover {
@@ -388,6 +551,15 @@
   font-size: 28px;
   font-weight: 700;
   margin-bottom: 5px;
+  color: #334155;
+}
+
+.layout-dark .advanceDashboard-metric-card h3 {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-metric-card h3 {
+  color: #334155;
 }
 
 .advanceDashboard-metric-card p {
@@ -396,8 +568,12 @@
   margin-bottom: 15px;
 }
 
-.advanceDashboard-dark .advanceDashboard-metric-card p {
+.layout-dark .advanceDashboard-metric-card p {
   color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-metric-card p {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-metric-change {
@@ -458,15 +634,20 @@
 }
 
 .advanceDashboard-section {
-  background: white;
+  background: #fff;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.advanceDashboard-dark .advanceDashboard-section {
+.layout-dark .advanceDashboard-section {
   background: #1e293b;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.layout-light .advanceDashboard-section {
+  background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .advanceDashboard-section-header {
@@ -479,6 +660,15 @@
 .advanceDashboard-section-header h3 {
   font-size: 18px;
   font-weight: 600;
+  color: #334155;
+}
+
+.layout-dark .advanceDashboard-section-header h3 {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-section-header h3 {
+  color: #334155;
 }
 
 .advanceDashboard-section-header a {
@@ -490,6 +680,34 @@
 
 .advanceDashboard-chart-container {
   height: 300px;
+}
+
+.layout-dark .advanceDashboard-chart-container .recharts-cartesian-grid {
+  stroke: #444;
+}
+
+.layout-light .advanceDashboard-chart-container .recharts-cartesian-grid {
+  stroke: #eee;
+}
+
+.layout-dark .advanceDashboard-chart-container .recharts-text {
+  fill: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-chart-container .recharts-text {
+  fill: #666;
+}
+
+.layout-dark .advanceDashboard-chart-container .recharts-tooltip {
+  background-color: #2d3748;
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-chart-container .recharts-tooltip {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  color: #334155;
 }
 
 .advanceDashboard-tabs {
@@ -504,18 +722,24 @@
   background: var(--advanceDashboard-light-gray);
   border: none;
   font-size: 14px;
+  color: #334155;
   cursor: pointer;
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-dark .advanceDashboard-tab {
+.layout-dark .advanceDashboard-tab {
   background: #334155;
   color: #e2e8f0;
 }
 
+.layout-light .advanceDashboard-tab {
+  background: var(--advanceDashboard-light-gray);
+  color: #334155;
+}
+
 .advanceDashboard-tab.advanceDashboard-active {
   background: var(--advanceDashboard-primary);
-  color: white;
+  color: #fff;
 }
 
 .advanceDashboard-table-container {
@@ -536,18 +760,30 @@
   border-bottom: 1px solid var(--advanceDashboard-light-gray);
 }
 
-.advanceDashboard-dark .advanceDashboard-table th {
+.layout-dark .advanceDashboard-table th {
   color: #94a3b8;
   border-color: #334155;
+}
+
+.layout-light .advanceDashboard-table th {
+  color: var(--advanceDashboard-gray);
+  border-color: var(--advanceDashboard-light-gray);
 }
 
 .advanceDashboard-table td {
   padding: 12px 15px;
   border-bottom: 1px solid var(--advanceDashboard-light-gray);
+  color: #334155;
 }
 
-.advanceDashboard-dark .advanceDashboard-table td {
+.layout-dark .advanceDashboard-table td {
   border-color: #334155;
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-table td {
+  border-color: var(--advanceDashboard-light-gray);
+  color: #334155;
 }
 
 .advanceDashboard-status-badge {
@@ -574,14 +810,19 @@
 
 .advanceDashboard-footer {
   padding: 20px;
-  background: white;
+  background: #fff;
   border-top: 1px solid var(--advanceDashboard-light-gray);
   margin-top: auto;
 }
 
-.advanceDashboard-dark .advanceDashboard-footer {
+.layout-dark .advanceDashboard-footer {
   background: #1e293b;
   border-top: 1px solid #334155;
+}
+
+.layout-light .advanceDashboard-footer {
+  background: #fff;
+  border-top: 1px solid var(--advanceDashboard-light-gray);
 }
 
 .advanceDashboard-footer-content {
@@ -593,6 +834,15 @@
 .advanceDashboard-footer h4 {
   font-size: 16px;
   margin-bottom: 10px;
+  color: #334155;
+}
+
+.layout-dark .advanceDashboard-footer h4 {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-footer h4 {
+  color: #334155;
 }
 
 .advanceDashboard-footer p {
@@ -601,8 +851,12 @@
   margin-bottom: 15px;
 }
 
-.advanceDashboard-dark .advanceDashboard-footer p {
+.layout-dark .advanceDashboard-footer p {
   color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-footer p {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-footer-links {
@@ -616,8 +870,12 @@
   font-size: 14px;
 }
 
-.advanceDashboard-dark .advanceDashboard-footer-links a {
+.layout-dark .advanceDashboard-footer-links a {
   color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-footer-links a {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-footer-bottom {
@@ -629,9 +887,14 @@
   color: var(--advanceDashboard-gray);
 }
 
-.advanceDashboard-dark .advanceDashboard-footer-bottom {
+.layout-dark .advanceDashboard-footer-bottom {
   border-color: #334155;
   color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-footer-bottom {
+  border-color: var(--advanceDashboard-light-gray);
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-social-links {
@@ -643,6 +906,14 @@
   color: var(--advanceDashboard-gray);
   font-size: 18px;
   transition: var(--advanceDashboard-transition);
+}
+
+.layout-dark .advanceDashboard-social-links a {
+  color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-social-links a {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-social-links a:hover {
@@ -672,6 +943,7 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 .advanceDashboard-dropdown {
   position: relative;
   display: inline-block;
@@ -683,13 +955,21 @@
   gap: 0.5rem;
   padding: 0.5rem;
   text-decoration: none;
-  color: var(--text-primary);
+  color: var(--advanceDashboard-gray);
   border-radius: 0.5rem;
   transition: background-color 0.2s ease;
 }
 
+.layout-dark .advanceDashboard-dropdown-toggle {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-dropdown-toggle {
+  color: var(--advanceDashboard-gray);
+}
+
 .advanceDashboard-dropdown-toggle:hover {
-  background-color: var(--bg-hover);
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
 .advanceDashboard-dropdown-menu {
@@ -699,8 +979,8 @@
   min-width: 200px;
   margin-top: 0.5rem;
   padding: 0.5rem 0;
-  background-color:rgb(255, 250, 250);
-  border: 1px solid var(--border-color);
+  background-color: #fff;
+  border: 1px solid var(--advanceDashboard-light-gray);
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 1000;
@@ -708,6 +988,18 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.2s ease;
+}
+
+.layout-dark .advanceDashboard-dropdown-menu {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-dropdown-menu {
+  background-color: #fff;
+  border-color: var(--advanceDashboard-light-gray);
+  color: #334155;
 }
 
 .advanceDashboard-dropdown:hover .advanceDashboard-dropdown-menu {
@@ -721,32 +1013,36 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  color: var(--text-primary);
+  color: var(--advanceDashboard-gray);
   text-decoration: none;
   transition: background-color 0.2s ease;
 }
 
+.layout-dark .advanceDashboard-dropdown-item {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-dropdown-item {
+  color: var(--advanceDashboard-gray);
+}
+
 .advanceDashboard-dropdown-item:hover {
-  background-color: var(--bg-hover);
+  background-color: rgba(59, 130, 246, 0.1);
 }
 
 .advanceDashboard-dropdown-item .advanceDashboard-icon {
   font-size: 1.25rem;
-  color: var(--text-secondary);
+  color: var(--advanceDashboard-gray);
 }
 
-/* Dark mode support */
-.advanceDashboard-dark .advanceDashboard-dropdown-menu {
-  background-color: var(--feedback-dark);
-  border-color: var(--dark-border-color);
+.layout-dark .advanceDashboard-dropdown-item .advanceDashboard-icon {
+  color: #94a3b8;
 }
 
-.advanceDashboard-dark .advanceDashboard-dropdown-item:hover {
-  background-color: var(--dark-bg-hover);
+.layout-light .advanceDashboard-dropdown-item .advanceDashboard-icon {
+  color: var(--advanceDashboard-gray);
 }
 
-
-/* Notification Dropdown Styles */
 .advanceDashboard-notification-btn {
   position: relative;
   padding: 8px;
@@ -757,33 +1053,56 @@
   transition: var(--advanceDashboard-transition);
 }
 
-.advanceDashboard-notification-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #ef4444;
-  color: white;
-  font-size: 10px;
-  padding: 2px 4px;
-  border-radius: 10px;
-  min-width: 15px;
-  text-align: center;
+.layout-dark .advanceDashboard-notification-btn {
+  color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-notification-btn {
+  color: var(--advanceDashboard-gray);
 }
 
 .advanceDashboard-notification-content {
   padding: 12px;
   border-bottom: 1px solid var(--advanceDashboard-light-gray);
+  background: #fff;
+}
+
+.layout-dark .advanceDashboard-notification-content {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.layout-light .advanceDashboard-notification-content {
+  background: #fff;
+  border-color: var(--advanceDashboard-light-gray);
 }
 
 .advanceDashboard-notification-content h5 {
   font-size: 14px;
   margin: 0 0 5px 0;
   font-weight: 600;
+  color: #334155;
+}
+
+.layout-dark .advanceDashboard-notification-content h5 {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-notification-content h5 {
+  color: #334155;
 }
 
 .advanceDashboard-notification-content p {
   font-size: 13px;
   margin: 0;
+  color: var(--advanceDashboard-gray);
+}
+
+.layout-dark .advanceDashboard-notification-content p {
+  color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-notification-content p {
   color: var(--advanceDashboard-gray);
 }
 
@@ -797,13 +1116,24 @@
   padding: 10px;
   text-align: center;
   border-top: 1px solid var(--advanceDashboard-light-gray);
+  background: #fff;
+}
+
+.layout-dark .advanceDashboard-dropdown-footer {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.layout-light .advanceDashboard-dropdown-footer {
+  background: #fff;
+  border-color: var(--advanceDashboard-light-gray);
 }
 
 .advanceDashboard-view-all {
   display: block;
   padding: 8px;
   background: var(--advanceDashboard-primary);
-  color: white;
+  color: #fff;
   text-decoration: none;
   border-radius: 4px;
   font-size: 14px;
@@ -814,16 +1144,6 @@
   background: var(--advanceDashboard-primary-dark);
 }
 
-/* Dark mode support */
-.advanceDashboard-dark .advanceDashboard-notification-content {
-  border-color: #334155;
-}
-
-.advanceDashboard-dark .advanceDashboard-dropdown-footer {
-  border-color: #334155;
-}
-
-
 .treeview {
   position: relative;
 }
@@ -833,6 +1153,7 @@
   align-items: center;
   padding: 12px 15px;
   text-decoration: none;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .treeview > a:hover {
@@ -843,13 +1164,16 @@
   display: none;
   list-style: none;
   padding: 0;
-  
   margin: 0;
   background: rgba(0, 0, 0, 0.05);
 }
 
-.advanceDashboard-dark .treeview-menu {
+.layout-dark .treeview-menu {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.layout-light .treeview-menu {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .treeview.active > .treeview-menu {
@@ -860,10 +1184,18 @@
   display: flex;
   align-items: center;
   padding: 10px 15px 10px 45px;
-  color:  rgb(181, 181, 181);
+  color: #e2e8f0;
   text-decoration: none;
   transition: var(--advanceDashboard-transition);
   font-size: 0.9em;
+}
+
+.layout-dark .treeview-menu li a {
+  color: #e2e8f0;
+}
+
+.layout-light .treeview-menu li a {
+  color: #64748b;
 }
 
 .treeview-menu li a:hover {
@@ -873,4 +1205,76 @@
 .treeview-menu .advanceDashboard-icon {
   margin-right: 10px;
   font-size: 1em;
+  color: #e2e8f0;
+}
+
+.layout-dark .treeview-menu .advanceDashboard-icon {
+  color: #e2e8f0;
+}
+
+.layout-light .treeview-menu .advanceDashboard-icon {
+  color: #64748b;
+}
+
+.advanceDashboard-anomaly-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--advanceDashboard-light-gray);
+}
+
+.layout-dark .advanceDashboard-anomaly-item {
+  border-bottom: 1px solid #334155;
+}
+
+.layout-light .advanceDashboard-anomaly-item {
+  border-bottom: 1px solid var(--advanceDashboard-light-gray);
+}
+
+.advanceDashboard-anomaly-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.advanceDashboard-anomaly-details {
+  flex: 1;
+}
+
+.advanceDashboard-anomaly-details div:first-child {
+  font-weight: 500;
+  color: #334155;
+}
+
+.layout-dark .advanceDashboard-anomaly-details div:first-child {
+  color: #e2e8f0;
+}
+
+.layout-light .advanceDashboard-anomaly-details div:first-child {
+  color: #334155;
+}
+
+.advanceDashboard-anomaly-details div:last-child {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--advanceDashboard-gray);
+}
+
+.layout-dark .advanceDashboard-anomaly-details div:last-child {
+  color: #94a3b8;
+}
+
+.layout-light .advanceDashboard-anomaly-details div:last-child {
+  color: var(--advanceDashboard-gray);
+}
+
+.advanceDashboard-anomaly-status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
 }

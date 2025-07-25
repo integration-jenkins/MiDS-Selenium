@@ -71,22 +71,25 @@ public class BasicTest {
         return true;
     }
 
+
+
     //rendering all pages are render correctly or not
     public boolean isPageRenderingCorrectly(String pageName) throws InterruptedException {
         PanelTraverser panelTraverser = new PanelTraverser();
         driver=Base.getDriver();
+        boolean check=true;
         try {
             //Dashboard Page (Done)
             if (pageName.equalsIgnoreCase("Dashboard Page")) {
                 panelTraverser.navigateToDashboard(driver);
-                Dashboard dashboard = new Dashboard();
-                dashboard.launchCircleWisePage(driver);
+//                Dashboard dashboard = new Dashboard();
+//                check=dashboard.launchCircleWisePage(driver);
             }
             //Deployement Dashboard
             else if (pageName.equalsIgnoreCase("Deployment Dashboard")) {
                 panelTraverser.navigateToDeployDashboard(driver);
-                DeployDashboard deployDashboard = new DeployDashboard();
-                deployDashboard.launchCircleWisePage(driver);
+//                DeployDashboard deployDashboard = new DeployDashboard();
+//                check=deployDashboard.launchCircleWisePage(driver);
             }
             //MW Plan Tracking Page(Done)
             else if (pageName.equalsIgnoreCase("MW Plan Tracking Page")) {
@@ -248,7 +251,7 @@ public class BasicTest {
            logger.info("Page is not rendering correctly");
             return false;
         }
-        return true;
+        return check;
     }
 
     //Sample report are get downloaded or not

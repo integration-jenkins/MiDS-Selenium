@@ -1,4 +1,5 @@
 package com.avendum.midsautomate.selenium.utils;
+import com.avendum.midsautomate.selenium.seleniumconfig.Base;
 import com.avendum.midsautomate.selenium.seleniumpages.DPRAutomate;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,6 +10,21 @@ import java.util.logging.Logger;
 
 public class PanelTraverser {
     private static final Logger logger = Logger.getLogger(PanelTraverser.class.getName());
+
+    //Exception on page might occur if it does then we have to move to back
+    public void exceptionThere(WebDriver driver){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(
+                    By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[1]/div[1]/div/img")));
+        } catch (Exception e) {
+            logger.info("Could not detect the MIDS Logo on the page. Navigating back...");
+            driver.navigate().back();
+        }
+    }
+
+
+
     //Dashboard
     public void navigateToDashboard(WebDriver driver){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(360));
@@ -21,6 +37,7 @@ public class PanelTraverser {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(360));
         WebElement deployDashboard = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[2]/a/span[1]")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deployDashboard);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/div/vaadin-board/vaadin-board-row[1]/vaadin-board-row/vaadin-horizontal-layout[1]/label[1]")));
     }
 
     //RAN Mw planning
@@ -30,9 +47,12 @@ public class PanelTraverser {
         WebElement mediaPlanningIcon = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[3]/iron-collapse-layout/div/a/span")));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", mediaPlanningIcon);
         WebElement ranmwPlanTracking = driver.findElement(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[3]/iron-collapse-layout/vaadin-vertical-layout/a[1]/span[1]"));
+        Thread.sleep(500);
         ranmwPlanTracking.click();
+        Thread.sleep(500);
         mediaPlanningIcon.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(4) > app-layout-left-hybrid:nth-child(1) > div:nth-child(3) > vaadin-vertical-layout:nth-child(1) > vaadin-horizontal-layout:nth-child(3) > vaadin-button:nth-child(2)")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-horizontal-layout[1]/vaadin-button[3]")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(4) > app-layout-left-hybrid:nth-child(1) > div:nth-child(3) > vaadin-vertical-layout:nth-child(1) > vaadin-horizontal-layout:nth-child(3) > vaadin-button:nth-child(2)")));
         }catch (Exception e){
             logger.info("Ran mw PlanTracking icon not iterable");
         }
@@ -171,7 +191,7 @@ public class PanelTraverser {
         WebElement subDb= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[6]/iron-collapse-layout/vaadin-vertical-layout/a[5]/span[1]")));
         subDb.click();
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deployReport);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[2]/vaadin-grid/vaadin-grid-cell-content[176]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[1]/vaadin-horizontal-layout/h3")));
     }
     //Assignment Report (Take lots of time in loading)
     public void navigateToAssignmentReport(WebDriver driver){

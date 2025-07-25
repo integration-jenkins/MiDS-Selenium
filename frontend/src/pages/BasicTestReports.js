@@ -10,6 +10,7 @@ const BasicTestReports = () => {
   const [selectedReport, setSelectedReport] = useState(null);
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState(null);
+  const [imageBlobUrl, setImageBlobUrl] = useState(null); // New state for Blob URL
   const tableRef = useRef(null);
   const [columnWidths, setColumnWidths] = useState({});
   const isDragging = useRef(null);
@@ -50,6 +51,7 @@ const BasicTestReports = () => {
     setSelectedReport(null);
     setImageLoading(false);
     setImageError(null);
+    setImageBlobUrl(null); // Clear Blob URL
   };
 
   const headers = [
@@ -61,6 +63,7 @@ const BasicTestReports = () => {
     { key: 'lastExecutionDate', label: 'Last Execution Date', minWidth: 150 },
     { key: 'lastExecutionStatus', label: 'Last Execution Status', minWidth: 100 },
     { key: 'lastExecutionBy', label: 'Last Execution By', minWidth: 100 },
+    { key: 'noOfSuccessTestCount', label: 'No. Of Success Test Count', minWidth: 150 },
     { key: 'noOfTest', label: 'No. of Tests', minWidth: 80 },
   ];
 
@@ -105,18 +108,29 @@ const BasicTestReports = () => {
     }
   }, [reports]);
 
+  // const getImageUrl = (imgPath) => {
+  //   if (!imgPath) {
+  //     console.warn("imgPath is null or undefined");
+  //     return null;
+  //   }
+  //   const filename = imgPath.split(/[\\/]/).pop();
+  //   const url = `/api/images/${encodeURIComponent(filename)}`;
+  //   console.log("Constructed image URL:", url);
+  //   return url;
+  // };
   const getImageUrl = (imgPath) => {
-    if (!imgPath) {
-      console.warn("imgPath is null or undefined");
-      return null;
-    }
-    const filename = imgPath.split(/[\\/]/).pop();
-    const url = `/api/images/${encodeURIComponent(filename)}`;
-    console.log("Constructed image URL:", url);
-    return url;
-  };
+  if (!imgPath) {
+    console.warn("imgPath is null or undefined");
+    return null;
+  }
+  const filename = imgPath.split(/[\\/]/).pop();
+  const timestamp = Date.now(); // This will change on every fetch
+  const url = `/api/images/${encodeURIComponent(filename)}?t=${timestamp}`;
+  console.log("Constructed image URL with cache-busting:", url);
+  return url;
+};
 
-  // Test API call when report is selected
+  // Fetch image and create Blob URL
   useEffect(() => {
     if (selectedReport && selectedReport.imgPath) {
       const url = getImageUrl(selectedReport.imgPath);
@@ -125,6 +139,8 @@ const BasicTestReports = () => {
         api.get(url, { responseType: 'blob' })
           .then(response => {
             console.log("Image fetch successful:", response);
+            const blobUrl = URL.createObjectURL(response.data);
+            setImageBlobUrl(blobUrl);
             setImageLoading(false);
           })
           .catch(error => {
@@ -133,6 +149,13 @@ const BasicTestReports = () => {
             setImageError("Failed to load screenshot.");
           });
       }
+      // Cleanup Blob URL
+      return () => {
+        if (imageBlobUrl) {
+          URL.revokeObjectURL(imageBlobUrl);
+          setImageBlobUrl(null);
+        }
+      };
     }
   }, [selectedReport]);
 
@@ -204,6 +227,8 @@ const BasicTestReports = () => {
                       </span>
                     </td>
                     <td data-column="lastExecutionBy">{report.lastExecutionBy}</td>
+                    <td data-column="noOfSuccessTestCount">{report.noOfSuccessTestCount}</td>
+                    
                     <td data-column="noOfTest">{report.noOfTest}</td>
                   </tr>
                 ))}
@@ -238,13 +263,13 @@ const BasicTestReports = () => {
                       <div className="basictestreports-metric">
                         <span className="basictestreports-metric-label">Last Execution</span>
                         <span className="basictestreports-metric-value">
-                          {selectedReport.lastTimeTakenMS}ms
+                          {(selectedReport.lastTimeTakenMS / 1000).toFixed(2)} sec
                         </span>
                       </div>
                       <div className="basictestreports-metric">
                         <span className="basictestreports-metric-label">Average</span>
                         <span className="basictestreports-metric-value">
-                          {selectedReport.averageTimeTakenMS}ms
+                          {(selectedReport.averageTimeTakenMS / 1000).toFixed(2)} sec
                         </span>
                       </div>
                     </div>
@@ -295,9 +320,9 @@ const BasicTestReports = () => {
                       <p>{imageError}</p>
                     </div>
                   )}
-                  {!imageLoading && !imageError && selectedReport.imgPath && (
+                  {!imageLoading && !imageError && imageBlobUrl && (
                     <img
-                      src={getImageUrl(selectedReport.imgPath)}
+                      src={imageBlobUrl}
                       alt={`Screenshot for ${selectedReport.pageName}`}
                       className="basictestreports-screenshot"
                       onLoad={() => {
@@ -311,7 +336,7 @@ const BasicTestReports = () => {
                       }}
                     />
                   )}
-                  {!imageLoading && !imageError && !selectedReport.imgPath && (
+                  {!imageLoading && !imageError && !imageBlobUrl && !selectedReport.imgPath && (
                     <div className="basictestreports-image-error">
                       <FiAlertCircle size={40} />
                       <p>No screenshot available.</p>

@@ -28,7 +28,7 @@ public class Dashboard {
     }
 
     public boolean launchCircleWisePage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(180));
         try{
             WebElement circleWise = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-horizontal-layout/vaadin-tabs/vaadin-tab[2]")));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", circleWise);

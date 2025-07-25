@@ -17,36 +17,31 @@ public class Login extends Base {
        logger.info("Initializing WebDriver...");
        setup();
        WebDriver driver = getDriver();
+       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
        logger.info("WebDriver initialized successfully.");
-
        // Enter credentials
        logger.info("Entering credentials: Username is " + username + ", Password is " + password);
        try {
-           logger.info("------------------------------------------------------------------------------------------------------------------------------------------------------");
-           WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-           WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
-           usernameField.sendKeys(username);
-           logger.info("Username entered.");
-           WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
-           passwordField.sendKeys(password);
-           logger.info("Password entered.");
-       } catch (Exception e) {
-           logger.info("Enable to send username or password."+e);
-
-
-
-
-           //Method 2
-           try{
+           //Method 1
            JavascriptExecutor js = (JavascriptExecutor) driver;
-           WebElement usernameField = driver.findElement(By.name("username"));
-           WebElement passwordField = driver.findElement(By.name("password"));
+           WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("username")));
+           WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
            js.executeScript("arguments[0].value = '" + username + "';", usernameField);
            js.executeScript("arguments[0].value = '" + password + "';", passwordField);
            logger.info("Username and Password entered.");
+           logger.info("------------------------------------------------------------------------------------------------------------------------------------------------------");
+       } catch (Exception e) {
+           logger.info("Enable to send username or password using JavaScript Executor."+e);
+           //Method 2
+           try{
+               WebElement usernameField = wait.until(ExpectedConditions.elementToBeClickable(By.name("username")));
+               usernameField.sendKeys(username);
+               logger.info("Username entered.");
+               WebElement passwordField = wait.until(ExpectedConditions.elementToBeClickable(By.name("password")));
+               passwordField.sendKeys(password);
+               logger.info("Password entered.");
            }catch (Exception ee){
-               logger.info("Enable to send username or password using JavaScript Executor."+ee);
-                       WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+               logger.info("Enable to send username or password."+ee);
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/vaadin-login-overlay-wrapper/vaadin-login-form/vaadin-login-form-wrapper/form/vaadin-text-field/input")));
         element.sendKeys(username);
                WebElement element2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/vaadin-login-overlay-wrapper/vaadin-login-form/vaadin-login-form-wrapper/form/vaadin-password-field/input")));
@@ -54,20 +49,20 @@ public class Login extends Base {
            }
        }
        try {
-           logger.info("Waiting for login button to be clickable...");
-           WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
-           WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("vaadin-button[part='vaadin-login-submit']")));
-           loginButton.click();
-           logger.info("Login button clicked successfully.");
+           JavascriptExecutor js = (JavascriptExecutor) driver;
+           WebElement loginButton = driver.findElement(By.cssSelector("vaadin-button[part='vaadin-login-submit']"));
+           js.executeScript("arguments[0].click();", loginButton);
+           logger.info("Login button clicked successfully using JavaScript Executor.");
+
        } catch (Exception e) {
-           logger.info("Failed to click login button using standard Selenium. Trying JavaScript Executor..."+ e);
+           logger.info("Failed to click login button even with JavaScript Executor. "+ e);
            try {
-               JavascriptExecutor js = (JavascriptExecutor) driver;
-               WebElement loginButton = driver.findElement(By.cssSelector("vaadin-button[part='vaadin-login-submit']"));
-               js.executeScript("arguments[0].click();", loginButton);
-               logger.info("Login button clicked successfully using JavaScript Executor.");
+               logger.info("Waiting for login button to be clickable...");
+               WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("vaadin-button[part='vaadin-login-submit']")));
+               loginButton.click();
+               logger.info("Login button clicked successfully.");
            } catch (Exception ee) {
-               logger.info("Failed to click login button even with JavaScript Executor. "+ ee);
+               logger.info("Failed to click login button using standard Selenium. Trying JavaScript Executor..."+ ee);
            }
        }
    }
@@ -96,16 +91,12 @@ public class Login extends Base {
                 logger.info("OTP Button not found.");
                 logger.info(e1.getMessage());
             }
-
        }
-
        }catch (RuntimeException e) {
            logger.info("OTP Field not found.");
            logger.info(e.getMessage());
        }
-
    }
-
     //separate login Page for other user accordingly
    public void Login(WebDriver driver, String username, String password) throws InterruptedException {
        logger.info("Starting login process...");

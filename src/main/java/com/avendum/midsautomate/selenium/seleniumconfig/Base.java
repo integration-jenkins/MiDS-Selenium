@@ -54,7 +54,7 @@ public class Base {
         try {
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(browserBinary);
-            options.addArguments("--headless");
+//            options.addArguments("--headless");
 //            options.addArguments("--window-size=1920,1080");
 //            options.addArguments("--no-sandbox");
 //            options.addArguments("--disable-dev-shm-usage");
@@ -118,7 +118,7 @@ public class Base {
         try {
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(browserBinary);
-            options.addArguments("--headless");
+//            options.addArguments("--headless");
 
             logger.info("Initializing FirefoxDriver with headless mode...");
             WebDriver driver = new FirefoxDriver(options);

@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import MidsTest from './pages/MidsTest';
+import { TaskProvider } from './context/TaskContext';
 import MWDPRPage from './pages/MWDPRPage';
 import TestingPage from './pages/TestingPage';
 import TestReports from './pages/TestReports';
@@ -54,11 +55,13 @@ const AppRoutes = () => {
 
 const App = () => {
     return (
+        <TaskProvider>
         <Router>
             <AuthProvider>
                 <AppRoutes />
             </AuthProvider>
         </Router>
+        </TaskProvider>
     );
 };
 
