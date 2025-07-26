@@ -54,7 +54,7 @@ public class Base {
         try {
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(browserBinary);
-//            options.addArguments("--headless");
+            options.addArguments("--headless");
 //            options.addArguments("--window-size=1920,1080");
 //            options.addArguments("--no-sandbox");
 //            options.addArguments("--disable-dev-shm-usage");
@@ -83,6 +83,15 @@ public class Base {
         }
     }
 
+    public void tearDown(WebDriver driver){
+       if(driver!=null){
+           driver.quit();
+       }else{
+           logger.info("Driver is null");
+       }
+    }
+
+
     public  static WebDriver getDriver() {
         return Base.driver;
     }
@@ -102,10 +111,15 @@ public class Base {
             browserBinary = seleniumConfig.getLiniuxBinaryPath();
             logger.info("Detected Linux environment. Driver path: " + driverName + ", Browser binary: " + browserBinary);
         }
+        File driverFile = new File(driverName);
+        if (!driverFile.exists()) {
+            logger.info("GeckoDriver not found at: " + driverName);
+            return null;
+        }
 
         try {
-            System.setProperty("webdriver.chrome.driver", driverName);
-            logger.info("ChromeDriver property set successfully.");
+            System.setProperty("webdriver.gecko.driver", driverName);
+            logger.info("GeckoDriver property set successfully.");
         } catch (Exception e) {
             logger.info("Not able to detect the ChromeDriver: " + e.getMessage());
             return null;
@@ -118,7 +132,7 @@ public class Base {
         try {
             FirefoxOptions options = new FirefoxOptions();
             options.setBinary(browserBinary);
-//            options.addArguments("--headless");
+            options.addArguments("--headless");
 
             logger.info("Initializing FirefoxDriver with headless mode...");
             WebDriver driver = new FirefoxDriver(options);
@@ -128,6 +142,7 @@ public class Base {
             String url = seleniumConfig.getAppUrl();
             logger.info("Navigating to App URL: " + url);
             driver.get(url);
+            logger.info("WebDriver setup completed successfully.");
             return driver;
         } catch (Exception e) {
             logger.info("Mistake in driver configuration with driver: " + e.getMessage());

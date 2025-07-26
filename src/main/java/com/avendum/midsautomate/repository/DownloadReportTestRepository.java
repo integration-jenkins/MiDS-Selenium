@@ -16,4 +16,7 @@ public interface DownloadReportTestRepository extends JpaRepository<DownloadRepo
 
     @Query("SELECT d.noOfTest FROM DownloadReportTest d WHERE d.reportName = :sampleReport")
     Integer findNoOfTest(@Param("sampleReport") String sampleReport);
+
+    @Query("SELECT COALESCE(b.noOfSuccessTestCount, 0) FROM DownloadReportTest b WHERE b.reportName  = :sampleReport")
+    Integer findNoOfSuccessTestCount(@Param("sampleReport") String sampleReport);
 }

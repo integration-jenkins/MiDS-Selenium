@@ -62,7 +62,7 @@ public class BasicTest {
         try {
             Login login = new Login();
             login.Login(username, password); // Attempt login
-            driver = Base.getDriver();
+//            driver = Base.getDriver();
             logger.info("Login successful for user: " + username);
         } catch (Exception e) {
             logger.severe("Login failed for user: " + username + ". Error: " + e.getMessage());
@@ -74,9 +74,9 @@ public class BasicTest {
 
 
     //rendering all pages are render correctly or not
-    public boolean isPageRenderingCorrectly(String pageName) throws InterruptedException {
+    public boolean isPageRenderingCorrectly(String pageName,WebDriver driver) throws InterruptedException {
         PanelTraverser panelTraverser = new PanelTraverser();
-        driver=Base.getDriver();
+//        driver=Base.getDriver();
         boolean check=true;
         try {
             //Dashboard Page (Done)
@@ -273,15 +273,16 @@ public class BasicTest {
 //    @Getter
 //    private Map<String, String[]> sampleData ;
 
-    public  String[] isSampleReportDownloaded(String reportName,String downloadDir) {
+    public  String[] isSampleReportDownloaded(String reportName,String downloadDir,WebDriver driver) {
         PanelTraverser panelTraverser = new PanelTraverser();
         String[] sampleData=new String[3];
         long timeout = 360000; // 30 seconds
         long tookTime=0;
-        driver=Base.getDriver();
+//        driver=Base.getDriver();
         try {
             long startTime = 0;
             File downloadedFile=null;
+            panelTraverser.exceptionThere(driver);
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(360));
             if (reportName.equalsIgnoreCase("MW LB Report")) {
                 panelTraverser.navigateToLBreport(driver);
@@ -291,7 +292,8 @@ public class BasicTest {
                 startTime = System.currentTimeMillis();
                 shadow.findElement(By.cssSelector("#button")).click();
                 downloadedFile = findDownloadedFile(downloadDir, startTime, ".xlsx", timeout);
-            } else if (reportName.equalsIgnoreCase("UBR Report")) {
+            }
+            else if (reportName.equalsIgnoreCase("UBR Report")) {
                 panelTraverser.navigateToUBRLBReport(driver);
                 WebElement ubrReport = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-horizontal-layout[2]/a/iron-icon")));
                 startTime = System.currentTimeMillis();

@@ -6,7 +6,6 @@ import com.avendum.midsautomate.model.SampleUserCredentials;
 import com.avendum.midsautomate.repository.AllMidsTestRepository;
 import com.avendum.midsautomate.repository.MidsTestRepository;
 import com.avendum.midsautomate.repository.SampleUserCredentialsRepository;
-import com.avendum.midsautomate.selenium.Start;
 import com.avendum.midsautomate.selenium.seleniumconfig.Base;
 import com.avendum.midsautomate.selenium.seleniumconfig.SampleUsersCredentials;
 import com.avendum.midsautomate.selenium.seleniumcontroller.MWPlanner;

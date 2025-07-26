@@ -7,10 +7,13 @@ import com.avendum.midsautomate.repository.BasicTestRepository;
 import com.avendum.midsautomate.repository.DownloadReportTestRepository;
 import com.avendum.midsautomate.repository.SampleUserCredentialsRepository;
 import com.avendum.midsautomate.selenium.seleniumconfig.Base;
+import com.avendum.midsautomate.selenium.seleniumconfig.DriverSetup;
 import com.avendum.midsautomate.selenium.seleniumconfig.SeleniumConfig;
 import com.avendum.midsautomate.selenium.seleniumpages.Login;
+import com.avendum.midsautomate.selenium.seleniumpages.LoginPage;
 import com.avendum.midsautomate.selenium.utils.BasicTest;
 import com.avendum.midsautomate.selenium.utils.PanelTraverser;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -18,6 +21,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,6 +46,7 @@ import java.util.logging.Logger;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/basic-report")
 @Service
+@Slf4j
 public class BasicTestReportController {
     @Autowired
     private BasicTestRepository basicTestRepository;
@@ -55,6 +60,8 @@ public class BasicTestReportController {
     @Value("${opt.required}")
     private String otpCheck;
 
+    private WebDriver myDriver;
+
     private static final Logger logger = Logger.getLogger(BasicTestReportController.class.getName());
 
     @Autowired
@@ -62,6 +69,11 @@ public class BasicTestReportController {
 
     @Autowired
     private DownloadReportTestRepository downloadReportTestRepository;
+
+    @Lazy
+    @Autowired
+    private LoginPage loginPage;
+
 
     @GetMapping("/all")
     public ResponseEntity<List<BasicTestReport>> getAllBasicTestReports() {
@@ -106,7 +118,7 @@ public class BasicTestReportController {
            SampleUserCredentials mwPlanner = credentials.get(0);
            String mwPlannerUserName = mwPlanner.getUserName();
            String mwPlannerPassword = mwPlanner.getPassword();
-           BasicTest basicTest = new BasicTest();
+//           BasicTest basicTest = new BasicTest();
 
            //-------------------Special for taking screenshots----------------
            String savePath = imgPath;
@@ -141,14 +153,18 @@ public class BasicTestReportController {
                    Files.delete(destFile.toPath());
                }
                // Wait for page stability
+//               loginPage=new LoginPage();
                loginStartTime = System.currentTimeMillis();
-               loginPageWork = basicTest.isLoginPageWorking(mwPlannerUserName, mwPlannerPassword);
+//               loginPageWork = basicTest.isLoginPageWorking(mwPlannerUserName, mwPlannerPassword);
+               myDriver=loginPage.login(mwPlannerUserName,mwPlannerPassword);
                loginTimeTook = System.currentTimeMillis() - loginStartTime;
-               WebDriver driver = Base.getDriver();
-               new WebDriverWait(driver, Duration.ofSeconds(10))
+               if(myDriver!=null){
+                   loginPageWork=true;
+               }
+//               myDriver = loginPage.getLoginDriver();
+               new WebDriverWait(myDriver, Duration.ofSeconds(10))
                        .until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
-               File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
+               File screenshot = ((TakesScreenshot) myDriver).getScreenshotAs(OutputType.FILE);
                Files.copy(screenshot.toPath(), destFile.toPath());
            } catch (Exception e) {
                String errorMsg = "Screenshot failed for [" + page + "]: " + e.getMessage();
@@ -181,7 +197,7 @@ public class BasicTestReportController {
                    }
                    Integer successCount = basicTestRepository.findNoOfSuccessTestCount("Login Page");
                    int count = (successCount != null) ? successCount : 0;
-                   long newLoginAverageTime = (avgLoginTime * count + loginTimeTook) / (count + 1);
+                   long newLoginAverageTime = (avgLoginTime + loginTimeTook) / (count + 1);
                    basicTestReport.setAverageTimeTakenMS(String.valueOf(newLoginAverageTime));
                    basicTestReport.setNoOfTest((int)(countt + 1));
                    basicTestReport.setNoOfSuccessTestCount((int)(count+1));
@@ -206,6 +222,7 @@ public class BasicTestReportController {
            }
        }catch(Exception e){
            Base.tearDown();
+           loginPage.cleanup();
            logger.info("Error occur during login page Execution"+e);
            return ResponseEntity.badRequest().body("Failed");
        }
@@ -237,7 +254,9 @@ public class BasicTestReportController {
                 }
                 otp=payload.get("otp");
                 logger.info("OTP Login Work");
-                pageCheck=basicTest.isOtpLoginWork(otp);
+//                LoginPage loginPage=new LoginPage();
+//                pageCheck=basicTest.isOtpLoginWork(otp);
+                pageCheck=loginPage.otpLoginPage(otp,myDriver);
 
             }else{
                 if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()) {
@@ -260,9 +279,11 @@ public class BasicTestReportController {
                             basicTestReport = new BasicTestReport();
                             basicTestReport.setPageName(page);
                         }
-                        panelTraverser.exceptionThere(Base.getDriver());
+//                        panelTraverser.exceptionThere(Base.getDriver());
+
+                        panelTraverser.exceptionThere(myDriver);
                         long startTime = System.currentTimeMillis();
-                        boolean check = basicTest.isPageRenderingCorrectly(page);
+                        boolean check = basicTest.isPageRenderingCorrectly(page,myDriver);
                         long timeTook = System.currentTimeMillis() - startTime;
 
 
@@ -293,10 +314,10 @@ public class BasicTestReportController {
                                 Files.delete(destFile.toPath());
                             }
                             // Wait for page stability
-                            WebDriver driver = Base.getDriver();
-                            new WebDriverWait(driver, Duration.ofSeconds(10))
+//                            WebDriver driver = Base.getDriver();
+                            new WebDriverWait(myDriver, Duration.ofSeconds(10))
                                     .until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
-                            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+                            File screenshot = ((TakesScreenshot) myDriver).getScreenshotAs(OutputType.FILE);
 
                             Files.copy(screenshot.toPath(), destFile.toPath());
                             basicTestReport.setImgPath(fullScreenshotPath);
@@ -326,7 +347,7 @@ public class BasicTestReportController {
                         }
                         Integer successCount = basicTestRepository.findNoOfSuccessTestCount("Login Page");
                         int cnt = (successCount != null) ? successCount : 0;
-                        long newAverageTime = (averageTime * cnt + timeTook) / (cnt + 1);
+                        long newAverageTime = (averageTime  + timeTook) / (cnt + 1);
                         if(check){
                             basicTestReport.setAverageTimeTakenMS(String.valueOf(newAverageTime));
                         }
@@ -346,6 +367,7 @@ public class BasicTestReportController {
             logger.info("Error occur at this OTP Test "+e);
             return ResponseEntity.internalServerError().body("Failed " );
         }finally{
+            loginPage.cleanup();
             Base.tearDown();
         }
     }
@@ -542,7 +564,8 @@ public class BasicTestReportController {
                 }
                 otp=payload.get("otp");
                 logger.info("OTP Login Work");
-                pageCheck=basicTest.isOtpLoginWork(otp);
+//                pageCheck=basicTest.isOtpLoginWork(otp);
+                pageCheck=loginPage.otpLoginPage(otp,myDriver);
 
             }else{
                 if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()) {
@@ -583,7 +606,7 @@ public class BasicTestReportController {
                             downloadReportTest = new DownloadReportTest();
                             downloadReportTest.setReportName(sampleReport);
                         }
-                        String[] check= basicTest.isSampleReportDownloaded(sampleReport, directory);
+                        String[] check= basicTest.isSampleReportDownloaded(sampleReport, directory,myDriver);
                         Long averageTime = downloadReportTestRepository.findAverageTimeTakenMS(sampleReport);
                         if (averageTime == null) {
                             averageTime = 0L;
@@ -592,14 +615,17 @@ public class BasicTestReportController {
                         if (count == null) {
                             count = 0;
                         }
+                        Integer successCount=downloadReportTestRepository.findNoOfSuccessTestCount(sampleReport);
+                        int cnt = (successCount != null) ? successCount : 0;
 
                         if(check[0].equals("Success")) {
                             downloadReportTest.setDownloadedReportPath(check[2]);
                             downloadReportTest.setDownloadReportTestStatus("Success");
                             downloadReportTest.setComments("File downloaded successfully");
+                            downloadReportTest.setNoOfSuccessTestCount((int)(cnt+1));
                             long tookTime = Long.parseLong(check[1]);
                             downloadReportTest.setLastTimeTakenMS(String.valueOf(tookTime));
-                            long newAverageTime = (averageTime * count + tookTime) / (count + 1);
+                            long newAverageTime = (averageTime + tookTime) / (cnt + 1);
                             downloadReportTest.setAverageTimeTakenMS(String.valueOf(newAverageTime));
                         }else{
                             downloadReportTest.setDownloadedReportPath(check[2]);
