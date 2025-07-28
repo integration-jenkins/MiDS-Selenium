@@ -119,7 +119,7 @@ public class PanelTraverser {
         WebElement subLb=wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[5]/iron-collapse-layout/vaadin-vertical-layout/a[2]/span[1]")));
         subLb.click();
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", pop);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-grid/vaadin-grid-cell-content[350]/vaadin-grid-sorter")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/span")));
 
     }
 
@@ -178,7 +178,7 @@ public class PanelTraverser {
         WebElement subDb= driver.findElement(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[6]/iron-collapse-layout/vaadin-vertical-layout/a[4]/span[1]"));
         subDb.click();
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deployReport);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[2]/vaadin-grid/vaadin-grid-cell-content[401]/vaadin-grid-sorter")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[2]/span")));
 
 
     }
@@ -201,7 +201,7 @@ public class PanelTraverser {
         WebElement subDb= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[6]/iron-collapse-layout/vaadin-vertical-layout/a[6]/span[1]")));
         subDb.click();
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deployReport);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[2]/vaadin-grid/vaadin-grid-cell-content[177]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout[3]/vaadin-horizontal-layout")));
 
     }
 
@@ -276,7 +276,7 @@ public class PanelTraverser {
         WebElement subDb= wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[2]/div/vaadin-vertical-layout/div/vaadin-vertical-layout/div[10]/iron-collapse-layout/vaadin-vertical-layout/a[2]/span[1]")));
         subDb.click();
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deployReport);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout/vaadin-grid/vaadin-grid-cell-content[26]/vaadin-grid-sorter")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-vertical-layout/vaadin-grid/vaadin-grid-cell-content[25]/vaadin-grid-sorter")));
 
     }
     //Mids Nep Dismantle-(Same Stucture as above one)

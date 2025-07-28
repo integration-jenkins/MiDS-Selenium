@@ -252,7 +252,7 @@
 
 .layout-search-container .layout-icon {
   position: absolute;
-  left: 15px;
+  left: 30px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--advanceDashboard-gray);
@@ -410,13 +410,6 @@
   color: var(--advanceDashboard-primary);
 }
 
-.layout-content {
-  padding: 25px;
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  background: var(--advanceDashboard-light);
-}
 
 .layout-dark .layout-content {
   background: #0f172a;
@@ -427,8 +420,6 @@
 }
 
 .layout-title {
-  font-size: 24px;
-  font-weight: 600;
   color: #334155;
 }
 

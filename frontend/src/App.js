@@ -20,6 +20,8 @@ import PagePerformanceDashboard from './pages/PagePerformanceDashboard';
 import AdvancedDashboard from './pages/AdvancedDashboard';
 import PageReportVisualization from './pages/PageReportVisualization';
 import BasicTestPage from './pages/BasicTest';
+import SampleCredentialManagement from './pages/SampleCredentialManagement';
+import { ThemeProvider } from './context/ThemeContext';
 const AppRoutes = () => {
     const { isAuthenticated, loading } = useAuth();
     
@@ -43,8 +45,10 @@ const AppRoutes = () => {
             <Route path="/reports/page-render-report" element={isAuthenticated ? <BasicTestReports /> : <Navigate to="/login" />} />
 //          <Route path="/hypnotic-loader" element={isAuthenticated ? <AdvanceLoader /> : <Navigate to="/login" />} />
             <Route path="/automation-testing/page-performance-dashboard" element={isAuthenticated ? <PagePerformanceDashboard /> : <Navigate to="/login" />} />
+            <Route path="/profile-management/credentials" element={isAuthenticated ? <SampleCredentialManagement /> : <Navigate to="/login" />} />
             
-            <Route path="/profile-management/profile-modify" element={isAuthenticated ? <ProfileManagement /> : <Navigate to="/login" />} />
+            
+            <Route path="/profile-management/profile" element={isAuthenticated ? <ProfileManagement /> : <Navigate to="/login" />} />
             <Route path="/setting/feedback" element={isAuthenticated ? <FeedbackPage /> : <Navigate to="/login" />} />
             <Route path="/dashboard" element={isAuthenticated ?<AdvancedDashboard /> : <Navigate to="/login" />} />
             <Route path="/page-report-visualization" element={isAuthenticated?<PageReportVisualization />: <Navigate to="/login" />} />
@@ -56,11 +60,13 @@ const AppRoutes = () => {
 const App = () => {
     return (
         <TaskProvider>
+             <ThemeProvider>
         <Router>
             <AuthProvider>
                 <AppRoutes />
             </AuthProvider>
         </Router>
+        </ThemeProvider>
         </TaskProvider>
     );
 };

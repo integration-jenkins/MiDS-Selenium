@@ -1,5 +1,7 @@
 package com.avendum.midsautomate.selenium.seleniumpages;
 
+import com.avendum.midsautomate.controller.BasicTestReportController;
+import com.avendum.midsautomate.model.BasicTestReport;
 import com.avendum.midsautomate.selenium.seleniumconfig.DriverSetup;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Lazy
 @Slf4j
@@ -21,15 +24,13 @@ public class LoginPage {
     @Autowired
     @Lazy
     private DriverSetup driverSetup;
+    private static final Logger logger = Logger.getLogger(LoginPage.class.getName());
 
     private  WebDriver driver;
     private final String instanceId = UUID.randomUUID().toString();
-    public LoginPage() {
-        log.debug("LoginPage bean created, instanceId: {}, no WebDriver initialization triggered.", instanceId);
-    }
 
     public WebDriver login(String username, String password) {
-        log.info("Starting login process for username: {}, instanceId: {}", username, instanceId);
+        logger.info("Starting login process for username");
         WebDriver driver = getWebDriver();// Triggers DriverSetup initialization
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
         try {
@@ -38,13 +39,13 @@ public class LoginPage {
             WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name("password")));
             js.executeScript("arguments[0].value = '" + username + "';", usernameField);
             js.executeScript("arguments[0].value = '" + password + "';", passwordField);
-            log.info("Username, password entered, and login button clicked successfully for instanceId: {}.", instanceId);
+            logger.info("Username, password entered, and login button clicked successfully");
             WebElement loginButton = driver.findElement(By.cssSelector("vaadin-button[part='vaadin-login-submit']"));
             js.executeScript("arguments[0].click();", loginButton);
-            log.info("Login button clicked successfully using JavaScript Executor.");
+            logger.info("Login button clicked successfully using JavaScript Executor.");
             return driver;
         } catch (Exception e) {
-            log.error("Failed to login for instanceId: {}: {}", instanceId, e.getMessage(), e);
+            logger.info("Failed to login "+e);
             return null;
         }
     }
@@ -69,21 +70,22 @@ public class LoginPage {
 //    }
 
     public boolean otpLoginPage(String otp,WebDriver driver) {
-        log.info("Starting OTP login process with OTP: {}", otp);// Triggers DriverSetup initialization
+
+        logger.info("Starting OTP login process with OTP");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
         try {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             SearchContext shadowRoot = (SearchContext) js.executeScript("return arguments[0].shadowRoot;",
-                    driver.findElement(By.cssSelector("vaadin-text-field[colspan='2']")));
+                    wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("vaadin-text-field[colspan='2']"))));
             WebElement inputField = shadowRoot.findElement(By.cssSelector("input[part='value']"));
             inputField.sendKeys(otp);
-            log.info("OTP entered successfully.");
+            logger.info("OTP entered successfully.");
             js.executeScript("arguments[0].click();",
                     driver.findElement(By.cssSelector("vaadin-button[role='button'][colspan='2']")));
-            log.info("OTP submit button clicked successfully.");
+            logger.info("OTP submit button clicked successfully.");
             return true;
         } catch (Exception e) {
-            log.error("Failed to enter OTP or click submit button: {}", e.getMessage(), e);
+            logger.info("Failed to enter OTP or click submit button: "+ e.getMessage()+" "+e);
             return false;
         }
     }
@@ -94,17 +96,17 @@ public class LoginPage {
 
     private WebDriver getWebDriver() {
         if (driver == null) {
-            log.info("Retrieving WebDriver from DriverSetup for instanceId: {}.", instanceId);
+            logger.info("Retrieving WebDriver from DriverSetup");
             driver = driverSetup.getDriver();
         } else {
-            log.debug("Using cached WebDriver for instanceId: {}.", instanceId);
+            logger.info("Using cached WebDriver");
         }
         return driver;
     }
     public void cleanup() {
         if (driver != null) {
             driver.quit();
-            log.info("WebDriver closed in LoginPage for instanceId: {}.", instanceId);
+            logger.info("WebDriver closed in LoginPage");
             driver = null;
         }
     }

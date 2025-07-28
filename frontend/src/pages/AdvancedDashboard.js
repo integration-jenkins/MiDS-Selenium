@@ -67,7 +67,7 @@ const Layout = ({ children, title, isSidebarCollapsed, toggleSidebar }) => {
     <TaskProvider>
     <div className={`layout-dashboard ${darkMode ? 'layout-dark' : 'layout-light'}`}>
       <TaskProgressIndicator />
-      <div className="layout-dashboard-layout">
+      <div className={`layout-dashboard-layout ${darkMode ? 'layout-dark' : 'layout-light'}`}>
         {/* Sidebar */}
         <div
           className={`layout-sidebar ${isSidebarCollapsed ? 'layout-sidebar-collapsed' : ''}`}
@@ -150,7 +150,8 @@ const Layout = ({ children, title, isSidebarCollapsed, toggleSidebar }) => {
                 <span>Profile Management</span>
               </a>
               <ul className="treeview-menu" style={{ display: 'none' }}>
-                <li><a href="/profile-management/profile-modify"><span>Profile Modify</span></a></li>
+                <li><a href="/profile-management/profile"><span>Profile Modify</span></a></li>
+                <li><a href="/profile-management/credentials"><span>Credentials</span></a></li>
                 <li><a href="#"><span>User Report</span></a></li>
                 <li><a href="#"><span>Notifications</span></a></li>
                 <li><a href="#"><span>Delete Account</span></a></li>

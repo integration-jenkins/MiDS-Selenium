@@ -1,231 +1,473 @@
-.glass-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
-    margin: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .gradient-text {
-    background: linear-gradient(45deg, #6366f1, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .scenario-grid {
-    display: grid;
+/* src/css/MWDpr.css */
+:root {
+  --telecom-primary: #2563eb;
+  --telecom-secondary: #0ea5e9;
+  --telecom-accent: #8b5cf6;
+  --telecom-dark: #0f172a;
+  --telecom-light: #f1f5f9;
+  --telecom-success: #10b981;
+  --telecom-error: #ef4444;
+  --telecom-warning: #f59e0b;
+  --telecom-card-bg: rgba(255, 255, 255, 0.1);
+  --telecom-card-border: rgba(255, 255, 255, 0.2);
+  --telecom-text: #e2e8f0;
+  --telecom-text-secondary: #94a3b8;
+  --telecom-gradient: linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%);
+}
+
+.mwdpr-page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: var(--telecom-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+.background-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.telecom-blob-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #2563eb, transparent);
+  top: -200px;
+  left: -200px;
+}
+
+.telecom-blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #0ea5e9, transparent);
+  bottom: -150px;
+  right: -100px;
+}
+
+.telecom-blob-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #8b5cf6, transparent);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mwdpr-main-content {
+  position: relative;
+  z-index: 10;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.mwdpr-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 1rem;
+}
+
+.mwdpr-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #0ea5e9, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mwdpr-header p {
+  font-size: 1.1rem;
+  color: var(--telecom-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: var(--telecom-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid var(--telecom-card-border);
+  min-width: 200px;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  font-size: 1.8rem;
+  color: var(--telecom-secondary);
+}
+
+.stat-card h3 {
+  font-size: 1rem;
+  color: var(--telecom-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.stat-card p {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--telecom-text);
+}
+
+.mwdpr-glass-card {
+  background: var(--telecom-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--telecom-card-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  margin-bottom: 1.5rem;
+}
+
+.card-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--telecom-text);
+}
+
+.card-header p {
+  color: var(--telecom-text-secondary);
+  font-size: 1rem;
+}
+
+.mwdpr-scenario-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .mwdpr-scenario-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin: 2rem 0;
   }
-  
-  .glass-cardd {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
-    padding: 2.5rem;
-    width: 100%;
-    z-index: 1;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
+}
 
-  .glass-select {
-    width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: inherit;
-    appearance: none;
-  }
-  
-  .select-wrapper {
-    position: relative;
-  }
-  
-  .select-arrow {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 6px solid transparent;
-    border-top-color: currentColor;
-    pointer-events: none;
-  }
-  
-  .gradient-button {
-    width: 100%;
-    padding: 1.2rem;
-    border: none;
-    border-radius: 8px;
-    background: linear-gradient(45deg, #6366f1, #a855f7);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease;
-  }
-  
-  .button-hover-effect {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.2);
-    width: 50px;
-    height: 100%;
-    left: -60%;
-    top: 0;
-    transform: skewX(-15deg);
-    transition: left 0.3s ease;
-  }
-  
-  .gradient-button:hover .button-hover-effect {
-    left: 150%;
-  }
-  
-  .results-table {
-    margin-top: 2rem;
-    padding: 1.5rem;
-  }
-  
-  .table-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .status-chip {
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-  
-  .status-chip.success {
-    background: rgba(16, 185, 129, 0.2);
-    color: #10b981;
-  }
-  
-  .status-chip.failed {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-  }
-  
-  .table-container {
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th {
-    padding: 1rem;
-    text-align: left;
-    background: rgba(255, 255, 255, 0.05);
-    font-weight: 600;
-  }
-  
-  td {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
+.mwdpr-form-group {
+  margin-bottom: 1rem;
+}
 
+.mwdpr-input-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
 
+.mwdpr-input-label {
+  font-size: 1rem;
+  color: var(--telecom-text);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
 
+.mwdpr-select-wrapper {
+  position: relative;
+}
 
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .loading-content {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-    max-width: 400px;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .loading-spinner {
-    animation: spin 1s linear infinite;
-    font-size: 3rem;
-    color: #6366f1;
-    margin-bottom: 1rem;
-  }
-  
-  @keyframes spin {
-    100% { transform: rotate(360deg); }
-  }
-  
-  .loading-text {
-    font-size: 1.2rem;
-    color: white;
-    margin-top: 1rem;
-  }
+.mwdpr-glass-select {
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--telecom-card-border);
+  color: var(--telecom-text);
+  font-size: 1rem;
+  appearance: none;
+  transition: all 0.3s ease;
+}
 
-  .result-overlay {
-    /* Same as loading-overlay */
-  }
-  
-  .result-content {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: center;
-    max-width: 500px;
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .result-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .success-icon {
-    color: #10b981;
-  }
-  
-  .error-icon {
-    color: #ef4444;
-  }
-  
-  .result-message {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin: 1rem 0;
-    color: white;
-  }
-  
-  .retry-button {
-    background: linear-gradient(45deg, #6366f1, #a855f7);
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  
-  .retry-button:hover {
-    transform: scale(1.05);
-  }
+.mwdpr-glass-select:focus {
+  outline: none;
+  border-color: var(--telecom-secondary);
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+}
+
+.mwdpr-select-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--telecom-text);
+  pointer-events: none;
+}
+
+.mwdpr-gradient-button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--telecom-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mwdpr-gradient-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+}
+
+.mwdpr-button-hover-effect {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+  transform: translate(0, -100%) rotate(0deg);
+  transition: transform 0.6s ease;
+}
+
+.mwdpr-gradient-button:hover .mwdpr-button-hover-effect {
+  transform: translate(0, 0) rotate(20deg);
+}
+
+.sequence-info {
+  background: var(--telecom-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid var(--telecom-card-border);
+}
+
+.sequence-header {
+  margin-bottom: 1.5rem;
+}
+
+.sequence-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--telecom-text);
+}
+
+.sequence-header p {
+  color: var(--telecom-text-secondary);
+  font-size: 1rem;
+}
+
+.sequence-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sequence-category {
+  border-left: 2px solid var(--telecom-secondary);
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.category-header {
+  position: absolute;
+  top: -0.75rem;
+  left: -1px;
+  background: var(--telecom-dark);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--telecom-secondary);
+  border: 1px solid var(--telecom-secondary);
+  border-left: none;
+}
+
+.status-sequence {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 0 1rem;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.status-item:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.status-bullet {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--telecom-secondary);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.status-item:not(:last-child) .status-bullet::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: calc(100% + 1.5rem);
+  background: var(--telecom-secondary);
+  opacity: 0.3;
+}
+
+.status-name {
+  font-size: 0.95rem;
+  color: var(--telecom-text);
+}
+
+.selected-start .status-name {
+  color: var(--telecom-success);
+  font-weight: 600;
+}
+
+.selected-start .status-bullet {
+  background: var(--telecom-success);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+
+.selected-end .status-name {
+  color: var(--telecom-accent);
+  font-weight: 600;
+}
+
+.selected-end .status-bullet {
+  background: var(--telecom-accent);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3);
+}
+
+/* Loading overlay styles */
+.mwdpr-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.mwdpr-loading-content {
+  text-align: center;
+  color: white;
+}
+
+.mwdpr-loading-spinner {
+  font-size: 3rem;
+  animation: spin 1s linear infinite;
+  color: var(--telecom-secondary);
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.mwdpr-loading-text {
+  font-size: 1.2rem;
+  color: var(--telecom-text);
+}
+
+/* Result dialog styles */
+.mwdpr-result-content {
+  background: var(--telecom-card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid var(--telecom-card-border);
+  max-width: 400px;
+  width: 90%;
+}
+
+.mwdpr-result-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.mwdpr-success-icon {
+  color: var(--telecom-success);
+}
+
+.mwdpr-error-icon {
+  color: var(--telecom-error);
+}
+
+.mwdpr-result-message {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: var(--telecom-text);
+}
+
+.mwdpr-retry-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  background: var(--telecom-gradient);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mwdpr-retry-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}

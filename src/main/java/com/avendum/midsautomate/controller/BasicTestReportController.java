@@ -70,7 +70,7 @@ public class BasicTestReportController {
     @Autowired
     private DownloadReportTestRepository downloadReportTestRepository;
 
-    @Lazy
+
     @Autowired
     private LoginPage loginPage;
 
@@ -189,7 +189,7 @@ public class BasicTestReportController {
                    basicTestReport.setImgPath(fullScreenshotPath);
                    Long avgLoginTime= basicTestRepository.findAverageTimeTakenMS("Login Page");
                    if (avgLoginTime == null) {
-                       avgLoginTime = 0L;
+                       avgLoginTime = loginTimeTook;
                    }
                    Integer countt = basicTestRepository.findNoOfTest("Login Page");
                    if (countt == null) {
@@ -197,7 +197,7 @@ public class BasicTestReportController {
                    }
                    Integer successCount = basicTestRepository.findNoOfSuccessTestCount("Login Page");
                    int count = (successCount != null) ? successCount : 0;
-                   long newLoginAverageTime = (avgLoginTime + loginTimeTook) / (count + 1);
+                   long newLoginAverageTime = (avgLoginTime + loginTimeTook) / (2);
                    basicTestReport.setAverageTimeTakenMS(String.valueOf(newLoginAverageTime));
                    basicTestReport.setNoOfTest((int)(countt + 1));
                    basicTestReport.setNoOfSuccessTestCount((int)(count+1));
@@ -221,7 +221,7 @@ public class BasicTestReportController {
                return ResponseEntity.badRequest().body("Failed");
            }
        }catch(Exception e){
-           Base.tearDown();
+//           Base.tearDown();
            loginPage.cleanup();
            logger.info("Error occur during login page Execution"+e);
            return ResponseEntity.badRequest().body("Failed");
@@ -247,31 +247,103 @@ public class BasicTestReportController {
         try {
             String otp;
             boolean pageCheck=false;
+            if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()) {
+                return ResponseEntity.badRequest().body("Invalid payload: 'user' is required.");
+            }
+
+            String username= payload.get("user");
             BasicTest basicTest = new BasicTest();
+            BasicTestReport basicTestReport;
             if(otpCheck.equals("true")){
-                if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()|| !payload.containsKey("otp")|| payload.get("otp").isEmpty()) {
+                if ( !payload.containsKey("otp")|| payload.get("otp").isEmpty()) {
                     return ResponseEntity.badRequest().body("Invalid payload: 'user' or 'otp' is required.");
                 }
                 otp=payload.get("otp");
                 logger.info("OTP Login Work");
 //                LoginPage loginPage=new LoginPage();
 //                pageCheck=basicTest.isOtpLoginWork(otp);
+                basicTestReport = basicTestRepository.findByPageName("OTP Page");
+                if (basicTestReport == null) {
+                    basicTestReport = new BasicTestReport();
+                    basicTestReport.setPageName("OTP Page");
+                }
+                long startOtp=0;
+                long entOtp=0;
+                String sanitizedNaam = ("OTP Page").replaceAll("[^a-zA-Z0-9.-]", "_");
+                if (sanitizedNaam.isEmpty()) {
+                    sanitizedNaam = "invalid_page_" + System.currentTimeMillis();
+                }
+                String screenshotFileNaam = sanitizedNaam + ".png";
+                if (imgPath == null || imgPath.trim().isEmpty()) {
+                    throw new IllegalStateException("Image save path is null or empty");
+                }
+                Path saveDirPath = Paths.get(imgPath);
+                if (!Files.exists(saveDirPath)) {
+                    Files.createDirectories(saveDirPath);
+                }
+                if (!Files.isWritable(saveDirPath)) {
+                    throw new IOException("No write permissions for: " + imgPath);
+                }
+                String fullScreenshotPath = Paths.get(imgPath, screenshotFileNaam).toString();
+                File destFile = new File(fullScreenshotPath);
+                if (destFile.exists()) {
+                    Files.delete(destFile.toPath());
+                }
+
+                startOtp=System.currentTimeMillis();
                 pageCheck=loginPage.otpLoginPage(otp,myDriver);
+                entOtp=System.currentTimeMillis() - startOtp;
+                new WebDriverWait(myDriver, Duration.ofSeconds(10))
+                        .until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
+                File screenshot = ((TakesScreenshot) myDriver).getScreenshotAs(OutputType.FILE);
+                Files.copy(screenshot.toPath(), destFile.toPath());
+                if(pageCheck){
+                    basicTestReport.setLastExecutionStatus("Success");
+                    basicTestReport.setLastTimeTakenMS(String.valueOf(entOtp));
+                    basicTestReport.setComments("Otp page is rendering correctly");
+                    basicTestReport.setImgPath(fullScreenshotPath);
+                    Long avgLoginTime= basicTestRepository.findAverageTimeTakenMS("Login Page");
+                    if (avgLoginTime == null) {
+                        avgLoginTime = entOtp;
+                    }
+                    Integer countt = basicTestRepository.findNoOfTest("Login Page");
+                    if (countt == null) {
+                        countt = 0;
+                    }
+                    Integer successCount = basicTestRepository.findNoOfSuccessTestCount("Login Page");
+                    int count = (successCount != null) ? successCount : 0;
+                    long newLoginAverageTime = (avgLoginTime + entOtp) / (2);
+                    basicTestReport.setAverageTimeTakenMS(String.valueOf(newLoginAverageTime));
+                    basicTestReport.setNoOfTest((int)(countt + 1));
+                    basicTestReport.setNoOfSuccessTestCount((int)(count+1));
+                    basicTestReport.setLastExecutionBy(username);
+                    Date mydate = new Date();
+                    basicTestReport.setLastExecutionDate(mydate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+                    basicTestRepository.save(basicTestReport);
+
+                }else{
+                    basicTestReport.setLastExecutionStatus("Failed");
+                    basicTestReport.setLastTimeTakenMS(String.valueOf(entOtp));
+                    basicTestReport.setComments("Otp page is not rendering correctly");
+                    basicTestReport.setLastExecutionBy(username);
+                    Date mydate = new Date();
+                    basicTestReport.setLastExecutionDate(mydate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+                    basicTestRepository.save(basicTestReport);
+                    return ResponseEntity.badRequest().body("Failed");
+                }
 
             }else{
-                if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()) {
-                    return ResponseEntity.badRequest().body("Invalid payload: 'user' is required.");
-                }
+
                 pageCheck=true;
             }
-            String username= payload.get("user");
             logger.info("Test Started for user: " + username);
-            String pages[]={"Dashboard Page","Deployment Dashboard","RAN MW Page","LB Report Page","UBR LB Report Page","POP Info Page","Atom Summary Page","WAN IP Page","DPR Report Page","SOFT AT Page","Deploy Assignment Page","PRI Issue","PRI Reporting","LB Recon","LB Parameter","HOP Frequency Report","RFC Report","Plan Upload","NEP Dismantle","Dismantle Material","Soft AT Upload","Mids DPR Upload","Frequency Detail report","Frequency Detail upload","Dismantel Track","Dismantle Report","Dismantle Upload","Change Assign User","Create OEM Vendor","Stock Dashboard","Order Summary report","Stock report","Item Code mapping","MW Plan Delete","Traffic Upload","Traffic Report","Traffic Track","Central Remark upload"};
+            //
+            String pages[]={"Dashboard Page","PRI Issue","Atom Summary Page","WAN IP Page","Deployment Dashboard","PRI Reporting","LB Recon","Dismantle Material","LB Parameter","RAN MW Page","HOP Frequency Report","Plan Upload","NEP Dismantle","LB Report Page","SOFT AT Page","Change Assign User","Create OEM Vendor","Stock Dashboard","Stock report","Item Code mapping","MW Plan Delete","Deploy Assignment Page","Dismantle Upload","Traffic Report","UBR LB Report Page","Traffic Track","Traffic Upload","Order Summary report","POP Info Page","Mids DPR Upload","Frequency Detail report","Frequency Detail upload","Assignment Report","DPR Report Page","Soft AT Upload","Dismantel Track","Dismantle Report","Central Remark upload","RFC Report"};
             logger.info("Test Started");
             try{
 
                 PanelTraverser panelTraverser=new PanelTraverser();
-                BasicTestReport basicTestReport;
+
                 if(pageCheck){
                     for (String page : pages) {
                         basicTestReport = basicTestRepository.findByPageName(page);
@@ -325,45 +397,43 @@ public class BasicTestReportController {
                             String errorMsg = "Screenshot failed for [" + page + "]: " + e.getMessage();
                             logger.info(errorMsg+" "+ e);
                         }
-
-
-                        basicTestReport.setLastExecutionStatus(check ? "Success" : "Failed");
-                        basicTestReport.setLastTimeTakenMS(String.valueOf(timeTook));
-                        if (!check) {
-                            basicTestReport.setComments("Page is not rendering correctly");
-                        } else {
-                            basicTestReport.setComments("Page is rendering correctly");
-                        }
                         Date date = new Date();
                         basicTestReport.setLastExecutionDate(date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
                         Long averageTime = basicTestRepository.findAverageTimeTakenMS(page);
-                        if (averageTime == null) {
-                            averageTime = 0L;
+                        if (averageTime == null || averageTime==0) {
+                            averageTime = timeTook;
                         }
-
                         Integer count = basicTestRepository.findNoOfTest(page);
                         if (count == null) {
                             count = 0;
                         }
                         Integer successCount = basicTestRepository.findNoOfSuccessTestCount("Login Page");
                         int cnt = (successCount != null) ? successCount : 0;
-                        long newAverageTime = (averageTime  + timeTook) / (cnt + 1);
-                        if(check){
+
+                        basicTestReport.setLastExecutionStatus(check ? "Success" : "Failed");
+                        basicTestReport.setLastTimeTakenMS(String.valueOf(timeTook));
+                        if (!check) {
+                            basicTestReport.setComments("Page is not rendering correctly");
+                        } else {
+                            long newAverageTime = (averageTime  + timeTook) / (2);
                             basicTestReport.setAverageTimeTakenMS(String.valueOf(newAverageTime));
+                            basicTestReport.setComments("Page is rendering correctly");
+                            basicTestReport.setNoOfSuccessTestCount((int)(cnt+1));
                         }
                         basicTestReport.setNoOfTest((int)(count + 1));
-                        basicTestReport.setNoOfSuccessTestCount((int)(cnt+1));
                         basicTestReport.setLastExecutionBy(username);
                         basicTestRepository.save(basicTestReport);
 
                     }
                 }
             }catch (Exception e){
+                loginPage.cleanup();
                 logger.info("Error occur at otp page"+e);
                 return ResponseEntity.badRequest().body("Failed");
             }
             return ResponseEntity.ok("Success");
         } catch (Exception e) {
+            loginPage.cleanup();
             logger.info("Error occur at this OTP Test "+e);
             return ResponseEntity.internalServerError().body("Failed " );
         }finally{
@@ -371,173 +441,6 @@ public class BasicTestReportController {
             Base.tearDown();
         }
     }
-
-    //Remove after finally code finished
-//    @PostMapping("/page-test")
-//    public ResponseEntity<String> startBasicTest(@RequestBody Map<String, String> payload){
-//        try{
-//            // Validate payload
-//            if (payload == null || !payload.containsKey("user") || payload.get("user").isEmpty()) {
-//                return ResponseEntity.badRequest().body("Invalid payload: 'user' is required.");
-//            }
-//            String username= payload.get("user");
-//
-//            // Log the start of the test
-//            logger.info("Test Started for user: " + username);
-//            //Assignment Report  , "Mids Nep Dismantle",
-//            String pages[]={"Dashboard Page","Deployment Dashboard","RAN MW Page","LB Report Page","UBR LB Report Page","POP Info Page","Atom Summary Page","WAN IP Page","DPR Report Page","SOFT AT Page","Deploy Assignment Page","PRI Issue","PRI Reporting","LB Recon","LB Parameter","HOP Frequency Report","RFC Report","Plan Upload","NEP Dismantle","Dismantle Material","Soft AT Upload","Mids DPR Upload","Frequency Detail report","Frequency Detail upload","Dismantel Track","Dismantle Report","Dismantle Upload","Change Assign User","Create OEM Vendor","Stock Dashboard","Order Summary report","Stock report","Item Code mapping","MW Plan Delete","Traffic Upload","Traffic Report","Traffic Track","Central Remark upload"};
-////        List<SampleUserCredentials> credentials = sampleUserCredentialsRepository.findAll();
-////        SampleUserCredentials mwPlanner = credentials.stream()
-////                .filter(cred -> "MW Planner".equals(cred.getDoneBy()))
-////                .findFirst()
-////                .orElse(null);
-////        String mwPlannerUserName = mwPlanner != null ? mwPlanner.getUserName() : null;
-////        String mwPlannerPassword = mwPlanner != null ? mwPlanner.getPassword() : null;
-//            logger.info("Test Started");
-//            List<SampleUserCredentials> credentials;
-//            try {
-//                credentials = sampleUserCredentialsRepository.findByDoneByAndRole(username, "MW Planner");
-//            }catch (Exception e){
-//                logger.info("Error in the credentials"+e);
-//                return ResponseEntity.badRequest().body("No Data Found of MW Planner user "+username);
-//            }
-//            if (credentials == null || credentials.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                        .body("No credentials found for role: MW Planner and username: " + username);
-//            }
-//            logger.info("Credentials found for user: " +credentials.get(0));
-//            SampleUserCredentials mwPlanner = credentials.get(0);
-//            String mwPlannerUserName = mwPlanner.getUserName();
-//            String mwPlannerPassword = mwPlanner.getPassword();
-////        Map<String,String> map=mapUserDetails(sampleUserCredentialsRepository);
-////        String mwPlannerUserName = map.keySet().stream().findFirst().orElse(null);
-////        String mwPlannerPassword = map.get(mwPlannerUserName);
-//            logger.info("MW Planner UserName: " + mwPlannerUserName);
-//            BasicTest basicTest = new BasicTest();
-//            try {
-//                long loginStartTime = System.currentTimeMillis();
-//                //Here Issue no otp check is there required
-//                boolean loginPageWork = basicTest.isLoginPageWorking(mwPlannerUserName, mwPlannerPassword);
-//
-//                long loginTimeTook = System.currentTimeMillis() - loginStartTime;
-//                BasicTestReport basicTestReport;
-//                basicTestReport = basicTestRepository.findByPageName("Login Page");
-//                if (basicTestReport == null) {
-//                    basicTestReport = new BasicTestReport();
-//                    basicTestReport.setPageName("Login Page");
-//                }
-//                if(loginPageWork){
-//                    basicTestReport.setLastExecutionStatus("Success");
-//                    basicTestReport.setLastTimeTakenMS(String.valueOf(loginTimeTook));
-//                    basicTestReport.setComments("Login page is rendering correctly");
-//                    Long avgLoginTime= basicTestRepository.findAverageTimeTakenMS("Login Page");
-//                    if (avgLoginTime == null) {
-//                        avgLoginTime = 0L;
-//                    }
-//                    Integer countt = basicTestRepository.findNoOfTest("Login Page");
-//                    if (countt == null) {
-//                        countt = 0;
-//                    }
-//                    long newLoginAverageTime = (avgLoginTime * countt + loginTimeTook) / (countt + 1);
-//                    basicTestReport.setAverageTimeTakenMS(String.valueOf(newLoginAverageTime));
-//                    basicTestReport.setNoOfTest((int)(countt + 1));
-//                    basicTestReport.setLastExecutionBy(username);
-//                    Date mydate = new Date();
-//                    basicTestReport.setLastExecutionDate(mydate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
-//                    basicTestRepository.save(basicTestReport);
-//                    for (String page : pages) {
-//                        basicTestReport = basicTestRepository.findByPageName(page);
-//                        if (basicTestReport == null) {
-//                            basicTestReport = new BasicTestReport();
-//                            basicTestReport.setPageName(page);
-//                        }
-//                        long startTime = System.currentTimeMillis();
-//                        boolean check = basicTest.isPageRenderingCorrectly(page);
-//                        long timeTook = System.currentTimeMillis() - startTime;
-//                        String savePath = imgPath;
-//                        logger.info("Image save path: " + savePath);
-//                        String sanitizedPageName = page.replaceAll("[^a-zA-Z0-9.-]", "_");
-//                        if (sanitizedPageName.isEmpty()) {
-//                            sanitizedPageName = "invalid_page_" + System.currentTimeMillis();
-//                        }
-//                        String screenshotFileName = sanitizedPageName + ".png";
-//                        try {
-//                            if (savePath == null || savePath.trim().isEmpty()) {
-//                                throw new IllegalStateException("Image save path is null or empty");
-//                            }
-//                            Path saveDirPath = Paths.get(savePath);
-//                            if (!Files.exists(saveDirPath)) {
-//                                Files.createDirectories(saveDirPath);
-//                            }
-//                            if (!Files.isWritable(saveDirPath)) {
-//                                throw new IOException("No write permissions for: " + savePath);
-//                            }
-//
-//                            String fullScreenshotPath = Paths.get(savePath, screenshotFileName).toString();
-//                            File destFile = new File(fullScreenshotPath);
-//
-//                            // Wait for page stability
-//                            WebDriver driver = Base.getDriver();
-//                            new WebDriverWait(driver, Duration.ofSeconds(10))
-//                                    .until(d -> ((JavascriptExecutor) d).executeScript("return document.readyState").equals("complete"));
-//                            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-//                            if (destFile.exists()) {
-//                                Files.delete(destFile.toPath());
-//                            }
-//                            Files.copy(screenshot.toPath(), destFile.toPath());
-//                            basicTestReport.setImgPath(fullScreenshotPath);
-//                        } catch (Exception e) {
-//                            String errorMsg = "Screenshot failed for [" + page + "]: " + e.getMessage();
-//                            logger.info(errorMsg+" "+ e);
-//                        }
-//
-//                        basicTestReport.setLastExecutionStatus(check ? "Success" : "Failed");
-//                        basicTestReport.setLastTimeTakenMS(String.valueOf(timeTook));
-//                        if (!check) {
-//                            basicTestReport.setComments("Page is not rendering correctly");
-//                        } else {
-//                            basicTestReport.setComments("Page is rendering correctly");
-//                        }
-//                        Date date = new Date();
-//                        basicTestReport.setLastExecutionDate(date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
-//                        Long averageTime = basicTestRepository.findAverageTimeTakenMS(page);
-//                        if (averageTime == null) {
-//                            averageTime = 0L;
-//                        }
-//
-//                        Integer count = basicTestRepository.findNoOfTest(page);
-//                        if (count == null) {
-//                            count = 0;
-//                        }
-//                        long newAverageTime = (averageTime * count + timeTook) / (count + 1);
-//                        basicTestReport.setAverageTimeTakenMS(String.valueOf(newAverageTime));
-//                        basicTestReport.setNoOfTest((int)(count + 1));
-//                        basicTestReport.setLastExecutionBy(username);
-//                        basicTestRepository.save(basicTestReport);
-//                    }
-//                }else{  basicTestReport.setLastExecutionStatus("Failed");
-//                    basicTestReport.setComments("Login page is not rendering correctly");
-//                    Integer countt = basicTestRepository.findNoOfTest("Login Page");
-//                    if (countt == null) {
-//                        countt = 0;
-//                    }
-//                    basicTestReport.setNoOfTest((int)(countt + 1));
-//                    basicTestReport.setLastExecutionBy(username);
-//                    Date mydate = new Date();
-//                    basicTestReport.setLastExecutionDate(mydate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
-//                    basicTestRepository.save(basicTestReport);
-//                    return ResponseEntity.badRequest().body("Login failed for user: " + mwPlannerUserName);
-//                }
-//            }catch (Exception e){
-//                return ResponseEntity.internalServerError().body("Error starting Basic Test: " + e.getMessage());
-//            }
-//            return ResponseEntity.ok("Basic Test started for user: " + username);
-//        } catch (Exception e) {
-//            return ResponseEntity.internalServerError().body("Error starting Basic Test: " + e.getMessage());
-//        }finally{
-//            Base.tearDown();
-//        }
-//    }
     private Map<String,String> mapUserDetails(SampleUserCredentialsRepository sampleUserCredentialsRepository) {
         List<SampleUserCredentials> credentials = sampleUserCredentialsRepository.findAll();
         SampleUserCredentials mwPlanner = credentials.stream()
@@ -578,7 +481,8 @@ public class BasicTestReportController {
             String directory=downloadPath;
             String user= payload.get("user");
             logger.info("Test Started for user: " + user);
-            String sampleReports[]={"MW LB Report","UBR Report","Pop Report","Atom RA Report","WAN IP Report","DPR Report","CERAGON SOFT AT Report","ERICSSON SOFT AT Report","HUAWEI AT SOFT AT Report","AVIAT SOFT AT Report","Deployment Assignment Report","PRI Issue Data Report","PRI Email Report","MW LB Recon Report","LB Parameter Report","HOP Frequency Report","RFC Report","NEP Dismantle Link","Dismantle Material","Frequency Detail Report","Dismantle Track Report","Dismantle Report","Stock Dashboard Report","Order Summary Report","Stock Report","Item Code mapping Report","Traffic Report","Traffic Track Report"};
+            //
+            String sampleReports[]={"Pop Report","UBR Report","Atom RA Report","WAN IP Report","PRI Issue Data Report","PRI Email Report","CERAGON SOFT AT Report","ERICSSON SOFT AT Report","HUAWEI AT SOFT AT Report","AVIAT SOFT AT Report","MW LB Recon Report","LB Parameter Report","HOP Frequency Report","MW LB Report","Frequency Detail Report","Dismantle Report","Stock Dashboard Report","Order Summary Report","Stock Report","Item Code mapping Report","Traffic Report","Traffic Track Report","NEP Dismantle Link","Dismantle Material","DPR Report","RFC Report","Dismantle Track Report","Deployment Assignment Report"};
 //        Map<String,String> map=mapUserDetails(sampleUserCredentialsRepository);
 //        String mwPlannerUserName = map.keySet().stream().findFirst().orElse(null);
 //        String mwPlannerPassword = map.get(mwPlannerUserName);
@@ -601,6 +505,7 @@ public class BasicTestReportController {
                 if(pageCheck){
                     DownloadReportTest downloadReportTest;
                     for(String sampleReport:sampleReports){
+
                         downloadReportTest = downloadReportTestRepository.findByReportName(sampleReport);
                         if (downloadReportTest == null) {
                             downloadReportTest = new DownloadReportTest();
@@ -624,8 +529,11 @@ public class BasicTestReportController {
                             downloadReportTest.setComments("File downloaded successfully");
                             downloadReportTest.setNoOfSuccessTestCount((int)(cnt+1));
                             long tookTime = Long.parseLong(check[1]);
+                            if(averageTime==0){
+                                averageTime=tookTime;
+                            }
                             downloadReportTest.setLastTimeTakenMS(String.valueOf(tookTime));
-                            long newAverageTime = (averageTime + tookTime) / (cnt + 1);
+                            long newAverageTime = (averageTime + tookTime) / (2);
                             downloadReportTest.setAverageTimeTakenMS(String.valueOf(newAverageTime));
                         }else{
                             downloadReportTest.setDownloadedReportPath(check[2]);

@@ -298,6 +298,7 @@ public class BasicTest {
                 WebElement ubrReport = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-horizontal-layout[2]/a/iron-icon")));
                 startTime = System.currentTimeMillis();
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", ubrReport);
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", ubrReport);
                 downloadedFile = findDownloadedFile(downloadDir, startTime, ".xlsx", timeout);
             }else if (reportName.equalsIgnoreCase("Pop Report")) {
                 panelTraverser.navigateToPOPInfo(driver);
