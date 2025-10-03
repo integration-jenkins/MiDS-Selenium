@@ -41,6 +41,7 @@ const Login = () => {
           password: formData.password,
         }),
       });
+      console.log(response);
       //Store the username and password in local storage
       localStorage.setItem('username', formData.username);
       if (!response.ok) {

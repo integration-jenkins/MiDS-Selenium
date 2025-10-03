@@ -106,7 +106,7 @@ public class Launch  {
 ////            MSPartner("JK_MS_PT_1", "adm@123");
 //            MWPlanner("Z_Bhanu", "adm@123");
             MWPlanner mw=new MWPlanner();
-            mw.MWPlannerLogin("Z_Bhanu", "adm@123");
+            mw.MWPlannerLogin("jk_plan", "test@1234");
             mw.MWPlannerDPRTrack("SR Pending","RFAI PENDING");
 //            DPRAutomate dpr= new DPRAutomate();
 ////            DPRAutomate.dprPlan("MW-N-AP-23012025-2",1);

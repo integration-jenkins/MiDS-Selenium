@@ -1,80 +1,29 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axiosConfig";
 import Layout from "../components/Layout";
-import { FiX, FiDownload, FiClock, FiBarChart2, FiUser, FiChevronDown, FiChevronUp, FiSearch, FiFilter } from "react-icons/fi";
-import '../css/DownloadReportTests.css';
+import "../css/DownloadReportTests.css";
+import { FiX } from "react-icons/fi";
+
 const DownloadReportTests = () => {
   const [reports, setReports] = useState([]);
-  const [filteredReports, setFilteredReports] = useState([]);
-  const [selectedReport, setSelectedReport] = useState(null);
   const [expandedNames, setExpandedNames] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
+  const [selectedReport, setSelectedReport] = useState(null);
+  const tableRef = useRef(null);
+  const [columnWidths, setColumnWidths] = useState({});
+  const isDragging = useRef(null);
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
         const response = await api.get("/api/basic-report/all-download-reports");
+        console.log("Fetched download report tests:", response.data);
         setReports(response.data);
-        setFilteredReports(response.data);
       } catch (error) {
         console.error("Error fetching download report tests:", error);
       }
     };
     fetchReports();
   }, []);
-
-  useEffect(() => {
-    // Filter and sort reports
-    let result = [...reports];
-    
-    // Apply status filter
-    if (statusFilter !== 'all') {
-      result = result.filter(report => 
-        report.downloadReportTestStatus.toLowerCase() === statusFilter.toLowerCase()
-      );
-    }
-    
-    // Apply search filter
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      result = result.filter(report => 
-        report.reportName.toLowerCase().includes(term) ||
-        (report.comments && report.comments.toLowerCase().includes(term)) ||
-        report.lastExecutionBy.toLowerCase().includes(term)
-      );
-    }
-    
-    // Apply sorting
-    if (sortConfig.key) {
-      result.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    
-    setFilteredReports(result);
-  }, [reports, statusFilter, searchTerm, sortConfig]);
-
-  const requestSort = (key) => {
-    let direction = 'ascending';
-    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  const getSortIcon = (key) => {
-    if (sortConfig.key !== key) return null;
-    return sortConfig.direction === 'ascending' ? <FiChevronUp /> : <FiChevronDown />;
-  };
 
   const toggleNameExpansion = (id) => {
     setExpandedNames((prev) =>
@@ -91,196 +40,161 @@ const DownloadReportTests = () => {
   };
 
   const totalTests = reports.length;
-  const successCount = reports.filter(report => report.downloadReportTestStatus === "Success").length;
-  const failureCount = reports.filter(report => report.downloadReportTestStatus === "Failed").length;
-  const successRate = totalTests > 0 ? ((successCount / totalTests) * 100).toFixed(1) : 0;
-  
+  let count = 1;
+  const successRate = (
+    (reports.filter((report) => report.downloadReportTestStatus === "Success").length /
+      totalTests) *
+      100 || 0
+  ).toFixed(1);
+
   const headers = [
-    { key: 'sno', label: 'ID', minWidth: 50, sortable: false },
-    { key: 'reportName', label: 'Report Name', minWidth: 150, sortable: true },
-    { key: 'lastTimeTakenMS', label: 'Time Taken (sec)', minWidth: 100, sortable: true },
-    { key: 'averageTimeTakenMS', label: 'Avg Time (sec)', minWidth: 100, sortable: true },
-    { key: 'downloadReportTestStatus', label: 'Status', minWidth: 100, sortable: true },
-    { key: 'noOfSuccessTestCount', label: 'Success Count', minWidth: 100, sortable: true },
-    { key: 'noOfTest', label: 'Total Tests', minWidth: 100, sortable: true },
+    { key: 'sno', label: 'SNo.', minWidth: 50 },
+    { key: 'reportName', label: 'Report Name', minWidth: 150 },
+    { key: 'lastTimeTaken', label: 'Last Time Taken (sec)', minWidth: 100 },
+    { key: 'averageTimeTaken', label: 'Average Time Taken (sec)', minWidth: 100 },
+    { key: 'downloadReportTestStatus', label: 'Download Report Test Status', minWidth: 100 },
+    { key: 'downloadedReportPath', label: 'Downloaded Report Path', minWidth: 200 },
+    { key: 'comments', label: 'Comments', minWidth: 200 },
+    { key: 'lastExecutionDate', label: 'Last Execution Date', minWidth: 150 },
+    { key: 'lastExecutionBy', label: 'Last Execution By', minWidth: 100 },
+    { key: 'noOfTest', label: 'No. of Tests', minWidth: 80 },
   ];
 
+  const startResizing = (e, columnKey) => {
+    e.preventDefault();
+    isDragging.current = { columnKey, startX: e.clientX, startWidth: columnWidths[columnKey] || headers.find(h => h.key === columnKey).minWidth };
+  };
+
+  const resizeColumn = (e) => {
+    if (!isDragging.current) return;
+    const { columnKey, startX, startWidth } = isDragging.current;
+    const newWidth = Math.max(startWidth + (e.clientX - startX), headers.find(h => h.key === columnKey).minWidth);
+    setColumnWidths(prev => ({ ...prev, [columnKey]: Math.min(newWidth, 400) }));
+  };
+
+  const stopResizing = () => {
+    isDragging.current = null;
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousemove', resizeColumn);
+    document.addEventListener('mouseup', stopResizing);
+    return () => {
+      document.removeEventListener('mousemove', resizeColumn);
+      document.removeEventListener('mouseup', stopResizing);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Auto-resize columns based on content
+    if (tableRef.current && reports.length > 0) {
+      const newWidths = {};
+      headers.forEach(({ key, minWidth }) => {
+        const cells = tableRef.current.querySelectorAll(`td[data-column="${key}"], th[data-column="${key}"]`);
+        let maxWidth = minWidth;
+        cells.forEach(cell => {
+          const width = cell.getBoundingClientRect().width;
+          maxWidth = Math.max(maxWidth, width);
+        });
+        newWidths[key] = Math.min(maxWidth + 20, 400); // Add padding, cap at 400px
+      });
+      setColumnWidths(newWidths);
+    }
+  }, [reports]);
+
   return (
-    <Layout >
-      <div className="download-report">
-        <div className="background-blobs">
-          <div className="blob blob-1"></div>
-          <div className="blob blob-2"></div>
-          <div className="blob blob-3"></div>
-        </div>
-        
-        <div className="header">
-          <div className="header-icon">
-            <FiDownload />
-          </div>
-          <h1>Report Download Dashboard</h1>
-          <p>Comprehensive overview of all report download test executions</p>
-        </div>
-        
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon total">
-              <FiBarChart2 />
-            </div>
-            <div className="stat-content">
-              <h3>Total Tests</h3>
-              <p>{totalTests}</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon success">
-              <FiClock />
-            </div>
-            <div className="stat-content">
-              <h3>Success Rate</h3>
-              <p>{successRate}%</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon success-count">
-              <FiUser />
-            </div>
-            <div className="stat-content">
-              <h3>Successful</h3>
-              <p>{successCount}</p>
-            </div>
-          </div>
-          
-          <div className="stat-card">
-            <div className="stat-icon failure">
-              <FiUser />
-            </div>
-            <div className="stat-content">
-              <h3>Failed</h3>
-              <p>{failureCount}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="controls">
-          <div className="search">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search reports..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          
-          <div className="filters">
-            <div className="filter-group">
-              <label><FiFilter /> Status:</label>
-              <select 
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All Statuses</option>
-                <option value="Success">Success</option>
-                <option value="Failed">Failed</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        
-        <div className="tabs">
-          <button 
-            className={`tab ${activeTab === 'all' ? 'active' : ''}`}
-            onClick={() => setActiveTab('all')}
-          >
-            All Reports
-          </button>
-          <button 
-            className={`tab ${activeTab === 'recent' ? 'active' : ''}`}
-            onClick={() => setActiveTab('recent')}
-          >
-            Recent Tests
-          </button>
-          <button 
-            className={`tab ${activeTab === 'fastest' ? 'active' : ''}`}
-            onClick={() => setActiveTab('fastest')}
-          >
-            Fastest Downloads
-          </button>
+    <Layout title="Download Report Tests">
+      <div className="downloadreport-container">
+        <div className="downloadreport-header">
+          <p>Overview of all download report test executions</p>
         </div>
 
-        {filteredReports.length === 0 ? (
-          <div className="no-reports">
-            <div className="no-reports-icon">📊</div>
-            <h3>No Reports Found</h3>
-            <p>Try adjusting your filters or run new tests</p>
+        <div className="downloadreport-stats-grid">
+          <div className="downloadreport-stat-card">
+            <h3>Total Tests</h3>
+            <p>{totalTests}</p>
           </div>
+          <div className="downloadreport-stat-card">
+            <h3>Success Rate</h3>
+            <p>{successRate}%</p>
+          </div>
+        </div>
+
+        {reports.length === 0 ? (
+          <div className="downloadreport-no-reports">No reports found.</div>
         ) : (
-          <div className="table-container">
-            <table className="table">
+          <div className="downloadreport-table-container">
+            <table className="downloadreport-table" ref={tableRef}>
               <thead>
                 <tr>
-                  {headers.map(({ key, label, sortable }) => (
+                  {headers.map(({ key, label }) => (
                     <th
                       key={key}
-                      onClick={sortable ? () => requestSort(key) : undefined}
-                      className={sortable ? 'sortable' : ''}
+                      data-column={key}
+                      style={{ width: columnWidths[key] || 'auto' }}
+                      aria-label={label}
                     >
-                      <div className="header-content">
-                        {label}
-                        {sortable && <div className="sort-icon">{getSortIcon(key)}</div>}
-                      </div>
+                      {label}
+                      <div
+                        className="downloadreport-resize-handle"
+                        onMouseDown={(e) => startResizing(e, key)}
+                        aria-hidden="true"
+                      ></div>
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filteredReports.map((report, index) => (
+                {reports.map((report) => (
                   <tr
                     key={report.downloadReportTestID}
                     onClick={() => handleRowClick(report)}
-                    className="table-row"
+                    className="downloadreport-table-row"
+                    tabIndex={0}
+                    onKeyPress={(e) => e.key === 'Enter' && handleRowClick(report)}
+                    role="button"
+                    aria-label={`View details for ${report.reportName}`}
                   >
-                    <td>{index + 1}</td>
+                    <td data-column="sno" title={report.downloadReportTestID}>{count++}</td>
                     <td
-                      className="name-cell"
+                      data-column="reportName"
+                      className={`downloadreport-name-cell ${expandedNames.includes(report.downloadReportTestID) ? 'downloadreport-expanded' : ''}`}
                       onClick={(e) => {
-                        e.stopPropagation();
+                        e.stopPropagation(); // Prevent row click when toggling name
                         toggleNameExpansion(report.downloadReportTestID);
                       }}
                     >
-                      <div className="report-name">
-                        {report.reportName}
-                        <button className="expand-btn">
-                          {expandedNames.includes(report.downloadReportTestID) ? 
-                            <FiChevronUp /> : <FiChevronDown />}
-                        </button>
-                      </div>
-                      
-                      {expandedNames.includes(report.downloadReportTestID) && (
-                        <div className="expanded-details">
-                          <div>
-                            <strong>Path:</strong> 
-                            <span>{report.downloadedReportPath || 'Not available'}</span>
-                          </div>
-                          <div>
-                            <strong>Comments:</strong> 
-                            <span>{report.comments || 'No comments'}</span>
-                          </div>
-                        </div>
-                      )}
+                      {report.reportName}
                     </td>
-                    <td>{(report.lastTimeTakenMS / 1000).toFixed(2)}</td>
-                    <td>{(report.averageTimeTakenMS / 1000).toFixed(2)}</td>
-                    <td>
-                      <span className={`status-badge status-${report.downloadReportTestStatus.toLowerCase()}`}>
+                    <td data-column="lastTimeTaken" title={report.lastTimeTakenMS}>
+                      {(report.lastTimeTakenMS / 1000).toFixed(2)}
+                    </td>
+                    <td data-column="averageTimeTaken" title={report.averageTimeTakenMS}>
+                      {(report.averageTimeTakenMS / 1000).toFixed(2)}
+                    </td>
+                    <td data-column="downloadReportTestStatus">
+                      <span
+                        className={`downloadreport-status-badge downloadreport-status-${report.downloadReportTestStatus.toLowerCase()}`}
+                        title={report.downloadReportTestStatus}
+                      >
                         {report.downloadReportTestStatus}
                       </span>
                     </td>
-                    <td>{report.noOfSuccessTestCount}</td>
-                    <td>{report.noOfTest}</td>
+                    <td data-column="downloadedReportPath" title={report.downloadedReportPath}>
+                      {report.downloadedReportPath}
+                    </td>
+                    <td data-column="comments" title={report.comments}>
+                      {report.comments}
+                    </td>
+                    <td data-column="lastExecutionDate" title={new Date(report.lastExecutionDate).toLocaleString()}>
+                      {new Date(report.lastExecutionDate).toLocaleString()}
+                    </td>
+                    <td data-column="lastExecutionBy" title={report.lastExecutionBy}>
+                      {report.lastExecutionBy}
+                    </td>
+                    <td data-column="noOfTest" title={report.noOfTest}>
+                      {report.noOfTest}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -289,93 +203,84 @@ const DownloadReportTests = () => {
         )}
 
         {selectedReport && (
-          <div className="dialog-overlay" onClick={closeDialog}>
+          <div className="downloadreport-dialog-overlay" onClick={closeDialog}>
             <div
-              className="dialog-box"
-              onClick={(e) => e.stopPropagation()}
+              className="downloadreport-dialog-box downloadreport-slide-in"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside dialog
             >
-              <div className="dialog-header">
+              <div className="downloadreport-dialog-header">
                 <h2>{selectedReport.reportName} Details</h2>
                 <button
                   onClick={closeDialog}
-                  className="close-btn"
+                  className="downloadreport-close-btn"
                   aria-label="Close dialog"
                 >
                   <FiX size={24} />
                 </button>
               </div>
-              <div className="dialog-content">
-                <div className="detail-grid">
-                  <div className="detail-card">
-                    <label>Performance Metrics</label>
-                    <div className="metric-group">
-                      <div className="metric">
-                        <span>Last Execution:</span>
-                        <span className="value">{(selectedReport.lastTimeTakenMS / 1000).toFixed(2)} sec</span>
+              <div className="downloadreport-dialog-content">
+                <div className="downloadreport-detail-grid">
+                  <div className="downloadreport-detail-card">
+                    <label>Performance</label>
+                    <div className="downloadreport-metric-group">
+                      <div className="downloadreport-metric">
+                        <span className="downloadreport-metric-label">Last Execution</span>
+                        <span className="downloadreport-metric-value">
+                          {selectedReport.lastTimeTakenMS}ms
+                        </span>
                       </div>
-                      <div className="metric">
-                        <span>Average Time:</span>
-                        <span className="value">{(selectedReport.averageTimeTakenMS / 1000).toFixed(2)} sec</span>
+                      <div className="downloadreport-metric">
+                        <span className="downloadreport-metric-label">Average</span>
+                        <span className="downloadreport-metric-value">
+                          {selectedReport.averageTimeTakenMS}ms
+                        </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="detail-card status-card">
+                  <div className="downloadreport-detail-card downloadreport-status-card">
                     <label>Current Status</label>
-                    <div className={`status-indicator status-${selectedReport.downloadReportTestStatus.toLowerCase()}`}>
+                    <div
+                      className={`downloadreport-status-indicator downloadreport-status-${selectedReport.downloadReportTestStatus.toLowerCase()}`}
+                    >
                       {selectedReport.downloadReportTestStatus}
                     </div>
                   </div>
 
-                  <div className="detail-card">
-                    <label>Execution Details</label>
-                    <div className="detail-item">
-                      <span>By:</span>
-                      <span>{selectedReport.lastExecutionBy}</span>
-                    </div>
-                    <div className="detail-item">
-                      <span>Date:</span>
-                      <span>{new Date(selectedReport.lastExecutionDate).toLocaleString()}</span>
-                    </div>
+                  <div className="downloadreport-detail-card">
+                    <label>Last Executed</label>
+                    <p className="downloadreport-detail-text">
+                      {new Date(selectedReport.lastExecutionDate).toLocaleString()}
+                    </p>
+                    <p className="downloadreport-detail-text">
+                      By {selectedReport.lastExecutionBy}
+                    </p>
                   </div>
 
-                  <div className="detail-card">
+                  <div className="downloadreport-detail-card">
                     <label>Test Statistics</label>
-                    <div className="progress-container">
-                      <div className="progress-labels">
-                        <span>Success Rate:</span>
-                        <span className="success-rate">
-                          {selectedReport.noOfTest > 0 ? 
-                            ((selectedReport.noOfSuccessTestCount / selectedReport.noOfTest) * 100).toFixed(1) + '%' : 
-                            'N/A'}
-                        </span>
-                      </div>
-                      <div className="progress-bar">
-                        <div 
-                          className="progress-fill"
-                          style={{ 
-                            width: selectedReport.noOfTest > 0 ? 
-                              `${(selectedReport.noOfSuccessTestCount / selectedReport.noOfTest) * 100}%` : 
-                              '0%' 
-                          }}
-                        ></div>
-                      </div>
+                    <div className="downloadreport-progress-bar">
+                      <div
+                        className="downloadreport-progress-fill"
+                        style={{ width: `${Math.min((selectedReport.noOfTest / 10) * 100, 100)}%` }}
+                      ></div>
+                      <span>{selectedReport.noOfTest} tests performed</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="path-section">
-                  <label>Downloaded Report Path</label>
-                  <div className="path-value">
-                    {selectedReport.downloadedReportPath || 'No path provided'}
-                  </div>
+                <div className="downloadreport-path-section">
+                  <h4>Downloaded Report Path</h4>
+                  <p className="downloadreport-path-text">
+                    {selectedReport.downloadedReportPath || 'No path provided.'}
+                  </p>
                 </div>
 
-                <div className="comments-section">
-                  <label>Comments</label>
-                  <div className="comments-value">
-                    {selectedReport.comments || 'No comments provided'}
-                  </div>
+                <div className="downloadreport-comments-section">
+                  <h4>Comments</h4>
+                  <p className="downloadreport-comment-text">
+                    {selectedReport.comments || 'No comments provided.'}
+                  </p>
                 </div>
               </div>
             </div>

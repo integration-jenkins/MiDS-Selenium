@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import '../css/MWDpr.css';
-import { FaTable, FaToggleOn, FaCheckCircle, FaTimesCircle, FaSpinner } from 'react-icons/fa';
-import { FiX, FiCheck, FiAlertCircle, FiClock, FiBarChart, FiTrendingUp } from 'react-icons/fi';
+import { FaTable, FaToggleOn } from 'react-icons/fa';
 import api from '../api/axiosConfig';
 import { useNavigate } from 'react-router-dom';
+import { FaCheckCircle, FaTimesCircle, FaSpinner } from 'react-icons/fa';
 import Layout from "../components/Layout";
+import { FiX, FiCheck, FiAlertCircle } from 'react-icons/fi';
 
 const statusOptions = {
   SR_RFAI: ["SR Pending", "SP Pending", "SO Pending", "RFAI Pending"],
@@ -15,11 +16,6 @@ const statusOptions = {
   Cancel: ["Canceled", "Request for Cancellation", "Material Returned"],
   softUpgrade: ["Upgrade Pending", "Upgrade Completed"]
 };
-const statusSequence = Object.values(statusOptions).flat();
-const statusIndexMap = {};
-statusSequence.forEach((status, index) => {
-  statusIndexMap[status] = index;
-});
 
 const TestForm = () => {
   const [showTable, setShowTable] = useState(false);
@@ -32,36 +28,20 @@ const TestForm = () => {
     endPoint: ''
   });
   const [pendingPayload, setPendingPayload] = useState(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const handleShowHistory = () => {
+    navigate('/testreports');
+  };
   const [testResults, setTestResults] = useState([]);
   let userId = localStorage.getItem('username');
   const [status, setStatus] = useState('idle');
   const [result, setResult] = useState(null);
-  const [stats, setStats] = useState({
-    successRate: 92,
-    avgDuration: '45s',
-    totalRuns: 128
-  });
-  
   if (!userId) {
     userId = 'Guest';
   }
- const handleShowHistory = () => {
-    navigate('/testreports');
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.startPoint && formData.endPoint) {
-      const startIndex = statusIndexMap[formData.startPoint];
-      const endIndex = statusIndexMap[formData.endPoint];
-      
-      if (endIndex <= startIndex) {
-        setErrorMessage('End Point must be after Start Point in the sequence');
-        setShowErrorDialog(true);
-        return;
-      }
-    }
-
     setStatus('loading');
     const doneBy="MW Planner";
     const username = localStorage.getItem('username');
@@ -169,52 +149,11 @@ const TestForm = () => {
   );
 
   return (
-    <Layout>
+    <Layout title="DPR Track">
       <div className="mwdpr-container">
-        <div className="background-blobs">
-          <div className="blob telecom-blob-1"></div>
-          <div className="blob telecom-blob-2"></div>
-          <div className="blob telecom-blob-3"></div>
-        </div>
-        
+        <div className="background-blobs"></div>
         <div className="mwdpr-main-content">
-          <div className="mwdpr-header">
-            <h1>Telecom DPR Track</h1>
-            <p>Monitor and analyze deployment progress reports</p>
-            
-            <div className="stats-container">
-              <div className="stat-card">
-                <FiBarChart className="stat-icon" />
-                <div>
-                  <h3>Success Rate</h3>
-                  <p>{stats.successRate}%</p>
-                </div>
-              </div>
-              
-              <div className="stat-card">
-                <FiClock className="stat-icon" />
-                <div>
-                  <h3>Avg. Duration</h3>
-                  <p>{stats.avgDuration}</p>
-                </div>
-              </div>
-              
-              <div className="stat-card">
-                <FiTrendingUp className="stat-icon" />
-                <div>
-                  <h3>Total Runs</h3>
-                  <p>{stats.totalRuns}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           <div className="mwdpr-glass-card">
-            <div className="card-header">
-              <h2>DPR Sequence Validation</h2>
-              <p>Select start and end points to validate deployment sequence</p>
-            </div>
-            
             <form onSubmit={handleSubmit}>
               <div className="mwdpr-scenario-grid">
                 <div className="mwdpr-form-group">
@@ -267,42 +206,43 @@ const TestForm = () => {
               </div>
 
               <button type="submit" className="mwdpr-gradient-button" disabled={status === 'loading'}>
-                Validate DPR Sequence
+                Run Test Scenario
                 <div className="mwdpr-button-hover-effect"></div>
               </button>
             </form>
           </div>
 
-          <div className="sequence-info">
-            <div className="sequence-header">
-              <h3>Deployment Sequence Flow</h3>
-              <p>Status must progress from top to bottom</p>
-            </div>
-            
-            <div className="sequence-flow">
-              {Object.entries(statusOptions).map(([category, options]) => (
-                <div key={category} className="sequence-category">
-                  <div className="category-header">{category}</div>
-                  <div className="status-sequence">
-                    {options.map((status, idx) => (
-                      <div 
-                        key={status} 
-                        className={`status-item ${formData.startPoint === status ? 'selected-start' : ''} ${formData.endPoint === status ? 'selected-end' : ''}`}
-                      >
-                        <div className="status-bullet"></div>
-                        <div className="status-name">{status}</div>
-                      </div>
+          {/* {showTable && (
+            <div className="glass-card results-table">
+              <div className="table-header">
+                <h3>Test History</h3>
+                <span className="results-count">{testResults.length} results</span>
+              </div>
+              <div className="table-container">
+                <table>
+                  <tbody>
+                    {testResults.map((test) => (
+                      <tr key={test.id}>
+                        <td>{test.id}</td>
+                        <td>{test.startPoint}</td>
+                        <td>{test.endPoint}</td>
+                        <td>{test.executionTime}</td>
+                        <td>
+                          <span className={`status-chip ${test.status.toLowerCase()}`}>
+                            {test.status}
+                          </span>
+                        </td>
+                        <td>{test.date}</td>
+                      </tr>
                     ))}
-                  </div>
-                </div>
-              ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )} */}
         </div>
 
-        {/* Loading, OTP, and Error dialogs would go here */}
-        
- {status === 'loading' && <LoadingDialog />}
+        {status === 'loading' && <LoadingDialog />}
         {status === 'complete' && (
           <ResultDialog
             success={true}
@@ -407,7 +347,6 @@ const TestForm = () => {
             </div>
           </div>
         )}
-        
       </div>
     </Layout>
   );
@@ -422,4 +361,3 @@ const MWDPRPage = () => {
 };
 
 export default MWDPRPage;
-

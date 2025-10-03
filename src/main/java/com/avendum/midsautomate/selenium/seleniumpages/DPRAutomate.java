@@ -66,7 +66,7 @@ public class DPRAutomate {
                         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", stageM);
                     } catch (Exception e2) {
                         ((JavascriptExecutor) driver).executeScript(
-                                "arguments[0].dispatchEvent(new MouseEvent('click', " +
+                                "arguments[0].dispatchEvent(new MouseEvent('click', "+
                                         "{view: window, bubbles: true, cancelable: true}));", stageM);
                     }
                 }

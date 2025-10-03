@@ -6,6 +6,7 @@ import com.avendum.midsautomate.model.SampleUserCredentials;
 import com.avendum.midsautomate.repository.AllMidsTestRepository;
 import com.avendum.midsautomate.repository.MidsTestRepository;
 import com.avendum.midsautomate.repository.SampleUserCredentialsRepository;
+import com.avendum.midsautomate.selenium.Start;
 import com.avendum.midsautomate.selenium.seleniumconfig.Base;
 import com.avendum.midsautomate.selenium.seleniumconfig.SampleUsersCredentials;
 import com.avendum.midsautomate.selenium.seleniumcontroller.MWPlanner;
@@ -48,7 +49,6 @@ public class MidsTestController {
 
     @PostMapping("/add-mids-test")
     public ResponseEntity<MidsTestManagement> addTest(@RequestBody MidsTestManagement test) {
-        logger.info("Test Data "+test);
         MidsTestManagement savedTest = midstest.save(test);
         return ResponseEntity.ok(savedTest);
     }
@@ -65,11 +65,12 @@ public class MidsTestController {
             String loginUserPassword=payload.get("password");
             logger.info("Test Started for user: " + username);
             BasicTest basicTest = new BasicTest();
+            boolean loginPageWork;
             try{
-                basicTest.isLoginPageWorking(loginUser, loginUserPassword);
+                loginPageWork=basicTest.isLoginPageWorking(loginUser, loginUserPassword);
             }catch (Exception e){
                 Base.tearDown();
-                logger.info("Failed to Login "+e);
+                logger.info("Failed to Click Login Button"+e);
                 return ResponseEntity.badRequest().body("Failed");
             }
         }catch (Exception e){

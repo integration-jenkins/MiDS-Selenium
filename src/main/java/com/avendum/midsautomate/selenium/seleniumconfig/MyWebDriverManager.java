@@ -44,7 +44,7 @@ public class MyWebDriverManager {
 //        options.addArguments("--disable-web-security");
 //        options.addArguments("--allow-running-insecure-content");
 //        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
     }catch (Exception e){
@@ -95,7 +95,7 @@ public class MyWebDriverManager {
 //        options.addArguments("--disable-web-security");
 //        options.addArguments("--allow-running-insecure-content");
 //        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         WebDriver driver = new FirefoxDriver(options);
         driver.manage().window().maximize();
             return driver;

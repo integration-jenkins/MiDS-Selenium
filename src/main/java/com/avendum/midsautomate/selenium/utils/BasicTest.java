@@ -62,7 +62,7 @@ public class BasicTest {
         try {
             Login login = new Login();
             login.Login(username, password); // Attempt login
-//            driver = Base.getDriver();
+            driver = Base.getDriver();
             logger.info("Login successful for user: " + username);
         } catch (Exception e) {
             logger.severe("Login failed for user: " + username + ". Error: " + e.getMessage());
@@ -71,25 +71,22 @@ public class BasicTest {
         return true;
     }
 
-
-
     //rendering all pages are render correctly or not
-    public boolean isPageRenderingCorrectly(String pageName,WebDriver driver) throws InterruptedException {
+    public boolean isPageRenderingCorrectly(String pageName) throws InterruptedException {
         PanelTraverser panelTraverser = new PanelTraverser();
-//        driver=Base.getDriver();
-        boolean check=true;
+        driver=Base.getDriver();
         try {
             //Dashboard Page (Done)
             if (pageName.equalsIgnoreCase("Dashboard Page")) {
                 panelTraverser.navigateToDashboard(driver);
-//                Dashboard dashboard = new Dashboard();
-//                check=dashboard.launchCircleWisePage(driver);
+                Dashboard dashboard = new Dashboard();
+                dashboard.launchCircleWisePage(driver);
             }
             //Deployement Dashboard
             else if (pageName.equalsIgnoreCase("Deployment Dashboard")) {
                 panelTraverser.navigateToDeployDashboard(driver);
-//                DeployDashboard deployDashboard = new DeployDashboard();
-//                check=deployDashboard.launchCircleWisePage(driver);
+                DeployDashboard deployDashboard = new DeployDashboard();
+                deployDashboard.launchCircleWisePage(driver);
             }
             //MW Plan Tracking Page(Done)
             else if (pageName.equalsIgnoreCase("MW Plan Tracking Page")) {
@@ -251,7 +248,7 @@ public class BasicTest {
            logger.info("Page is not rendering correctly");
             return false;
         }
-        return check;
+        return true;
     }
 
     //Sample report are get downloaded or not
@@ -273,16 +270,15 @@ public class BasicTest {
 //    @Getter
 //    private Map<String, String[]> sampleData ;
 
-    public  String[] isSampleReportDownloaded(String reportName,String downloadDir,WebDriver driver) {
+    public  String[] isSampleReportDownloaded(String reportName,String downloadDir) {
         PanelTraverser panelTraverser = new PanelTraverser();
         String[] sampleData=new String[3];
         long timeout = 360000; // 30 seconds
         long tookTime=0;
-//        driver=Base.getDriver();
+        driver=Base.getDriver();
         try {
             long startTime = 0;
             File downloadedFile=null;
-            panelTraverser.exceptionThere(driver);
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(360));
             if (reportName.equalsIgnoreCase("MW LB Report")) {
                 panelTraverser.navigateToLBreport(driver);
@@ -292,12 +288,10 @@ public class BasicTest {
                 startTime = System.currentTimeMillis();
                 shadow.findElement(By.cssSelector("#button")).click();
                 downloadedFile = findDownloadedFile(downloadDir, startTime, ".xlsx", timeout);
-            }
-            else if (reportName.equalsIgnoreCase("UBR Report")) {
+            } else if (reportName.equalsIgnoreCase("UBR Report")) {
                 panelTraverser.navigateToUBRLBReport(driver);
                 WebElement ubrReport = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("html/body/div[3]/app-layout-left-hybrid/div[3]/vaadin-vertical-layout/vaadin-horizontal-layout[2]/a/iron-icon")));
                 startTime = System.currentTimeMillis();
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", ubrReport);
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", ubrReport);
                 downloadedFile = findDownloadedFile(downloadDir, startTime, ".xlsx", timeout);
             }else if (reportName.equalsIgnoreCase("Pop Report")) {

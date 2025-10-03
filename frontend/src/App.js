@@ -7,7 +7,6 @@ import Dashboard from './components/Dashboard';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import MidsTest from './pages/MidsTest';
-import { TaskProvider } from './context/TaskContext';
 import MWDPRPage from './pages/MWDPRPage';
 import TestingPage from './pages/TestingPage';
 import TestReports from './pages/TestReports';
@@ -20,8 +19,13 @@ import PagePerformanceDashboard from './pages/PagePerformanceDashboard';
 import AdvancedDashboard from './pages/AdvancedDashboard';
 import PageReportVisualization from './pages/PageReportVisualization';
 import BasicTestPage from './pages/BasicTest';
-import SampleCredentialManagement from './pages/SampleCredentialManagement';
-import { ThemeProvider } from './context/ThemeContext';
+import DismantleDashboard from './pages/DismantleDashboard'
+import TestConfigForm from './components/TestConfigForm'
+import DismantleTestReport from './pages/DismantleTestReport'
+import BulkTestConfigForm from './components/BulkTestConfigForm'
+import DismantleSheetValidation from './components/DismantleSheetValidation'
+import TsShiftingDashboard from './pages/TsShiftingDashboard'
+
 const AppRoutes = () => {
     const { isAuthenticated, loading } = useAuth();
     
@@ -35,7 +39,6 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />} />
-            {/* <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} /> */}
             <Route path="/signup" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Signup />} />
             <Route path="/automation-testing/mids-test" element={isAuthenticated ? <MidsTest /> : <Navigate to="/login" />} />
             <Route path="/automation-testing" element={isAuthenticated ? <TestingPage /> : <Navigate to="/login" />} />
@@ -43,31 +46,38 @@ const AppRoutes = () => {
             <Route path="/reports/mids-tests-report" element={isAuthenticated ? <TestReports /> : <Navigate to="/login" />} />
             <Route path="/reports/download-report" element={isAuthenticated ? <DownloadReportTests /> : <Navigate to="/login" />} />
             <Route path="/reports/page-render-report" element={isAuthenticated ? <BasicTestReports /> : <Navigate to="/login" />} />
-//          <Route path="/hypnotic-loader" element={isAuthenticated ? <AdvanceLoader /> : <Navigate to="/login" />} />
+           <Route path="/hypnotic-loader" element={isAuthenticated ? <AdvanceLoader /> : <Navigate to="/login" />} />
             <Route path="/automation-testing/page-performance-dashboard" element={isAuthenticated ? <PagePerformanceDashboard /> : <Navigate to="/login" />} />
-            <Route path="/profile-management/credentials" element={isAuthenticated ? <SampleCredentialManagement /> : <Navigate to="/login" />} />
             
-            
-            <Route path="/profile-management/profile" element={isAuthenticated ? <ProfileManagement /> : <Navigate to="/login" />} />
+            <Route path="/profile-management/profile-modify" element={isAuthenticated ? <ProfileManagement /> : <Navigate to="/login" />} />
             <Route path="/setting/feedback" element={isAuthenticated ? <FeedbackPage /> : <Navigate to="/login" />} />
             <Route path="/dashboard" element={isAuthenticated ?<AdvancedDashboard /> : <Navigate to="/login" />} />
             <Route path="/page-report-visualization" element={isAuthenticated?<PageReportVisualization />: <Navigate to="/login" />} />
             <Route path="/automation-testing/basic-test" element={true ?<BasicTestPage/>: <Navigate to="/login" />}/>
+            
+            <Route path="/dismantle/dashboard" element={isAuthenticated?<DismantleDashboard/>: <Navigate to="/login" />} />
+            <Route path="/dismantle/dashboard/form" element={<TestConfigForm/>} />
+            <Route path="/dismantle/dashboard/form/testReport" element={<DismantleTestReport/>} />
+            <Route path="/dismantle/dashboard/bulkTest" element={<BulkTestConfigForm/>} />
+            <Route path="/dismantle/dashboard/sheetValidation" element={<DismantleSheetValidation/>} />
+            <Route path="/trafficShifting/dashboard" element={<TsShiftingDashboard/>} />
+
+
+
+
+
+
         </Routes>
     );
 };
 
 const App = () => {
     return (
-        <TaskProvider>
-             <ThemeProvider>
         <Router>
             <AuthProvider>
                 <AppRoutes />
             </AuthProvider>
         </Router>
-        </ThemeProvider>
-        </TaskProvider>
     );
 };
 

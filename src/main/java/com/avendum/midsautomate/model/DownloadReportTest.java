@@ -38,7 +38,4 @@ import java.util.UUID;
 
         @Column(name = "no_of_test")
         private int noOfTest;
-
-        @Column(name = "no_of_success_test_count")
-        private Integer noOfSuccessTestCount;
     }

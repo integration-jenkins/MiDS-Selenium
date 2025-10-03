@@ -84,7 +84,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                         "/profile-management/profile-modify",
                         "/automation-testing/basic-test",
                         "/api/images/**",
-                        "/add-mids-test"
+                        "/add-mids-test",
+                        "/auth/login",
+                        "api/dismantleTest/workflow",
+                        "api/dismantleTest/bulkTest",
+                        "api/dismantleTest/testResult",
+                        "api/dismantleTest/viewReport",
+                        "api/trafficShifting/workflow",
+                        "api/trafficShifting/testResult",
+                        "api/trafficShifting/testCode",
+                        "api/trafficShifting/testBulkUploadSheet",
+                        "api/trafficShifting/bulkUploadTest",
+                        "api/trafficShifting/getUsers",
+                        "api/trafficShifting/setUser",
+                        "/dismantle/dashboard",
+                        "/dismantle/dashboard/form",
+                        "/dismantle/dashboard/form/testReport",
+                        "/dismantle/dashboard/sheetValidation",
+                        "/trafficShifting/dashboard"
                 ).permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated()

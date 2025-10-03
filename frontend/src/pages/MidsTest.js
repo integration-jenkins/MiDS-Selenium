@@ -29,8 +29,8 @@ const MidsTest = () => {
     showManualDialog: false,
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({
-  testName: "",
+    const [formData, setFormData] = useState({
+        testName: "",
   priority: "",
   pageName: "",
   successfulCount: 0,
@@ -39,8 +39,8 @@ const MidsTest = () => {
   lastExecutionDate: null,
   executionStatus: "",
   executionType: "",
-  doneBy: "",
- });
+  DoneBy: "",
+    });
 
   const [state, setState] = useState({
     selectedTests: new Set(),
@@ -340,37 +340,37 @@ const MidsTest = () => {
 
 
 const showDialog = () => {
-   setIsDialogOpen(true);
-};
+        setIsDialogOpen(true);
+    };
 
-const closeDialog = () => {
-setIsDialogOpen(false);
-};
+    const closeDialog = () => {
+        setIsDialogOpen(false);
+    };
 
 
 const handleSubmit = async (e) => {
-e.preventDefault();
-try {
-const response = await api.post('/api/midstests/add-mids-test',formData);
-if (response.ok) {
-const result = await response.json();
-console.log('Test added successfully:', result);
-closeDialog();
-} else {
-console.error('Failed to add test');
-}
-} catch (error) {
-console.error('Error:', error);
-}
-};
+        e.preventDefault();
+        try {
+            const response = await api.post('/api/midstests/add-mids-test',formData);
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Test added successfully:', result);
+                closeDialog();
+            } else {
+                console.error('Failed to add test');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
 const handleChange = (e) => {
-const { name, value } = e.target;
-setFormData({
-    ...formData,
-[name]: value
-});
- };
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
 
 
 
@@ -383,8 +383,8 @@ setFormData({
           <div className="midstest-actions">
             
 <button className="midstest-settings-btn" aria-label="Settings" onClick={showDialog}>
-<FiSettings />
-</button>
+                <FiSettings />
+            </button>
 
           </div>
         </div>
@@ -827,6 +827,7 @@ setFormData({
         )}
 
         
+            
 
 {isDialogOpen && (
   <div className="midstest-dialog-overlay" onClick={closeDialog}>
@@ -875,12 +876,12 @@ setFormData({
           onChange={handleChange}
           required
         />
-        <label htmlFor="doneBy">DoneBy:</label>
+        <label htmlFor="DoneBy">DoneBy:</label>
         <input
           type="text"
-          id="doneBy"
-          name="doneBy"
-          value={formData.doneBy}
+          id="DoneBy"
+          name="DoneBy"
+          value={formData.DoneBy}
           onChange={handleChange}
           required
         />
@@ -893,6 +894,9 @@ setFormData({
     </div>
   </div>
 )}
+
+        
+
 
       </div>
 
