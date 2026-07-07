@@ -1,6 +1,6 @@
 # 🚀 MiDS Automation Testing Framework
 
-> A scalable, modular, and enterprise-grade Selenium Automation Framework built using **Java 17**, **Spring Boot**, and **Selenium WebDriver** for automating the MiDS (Microwave Integrated Deployment System) web application.
+> A scalable, modular, and enterprise-grade Selenium Automation Framework built using **Java 17**, **Spring Boot**, and **Selenium WebDriver** for automating the MiDS web application.
 
 ![Java](https://img.shields.io/badge/Java-17-red)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-green)
