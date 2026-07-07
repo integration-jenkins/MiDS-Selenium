@@ -433,6 +433,7 @@ public class PlanUploadSheetGenerator {
 
         try (FileOutputStream fileOut = new FileOutputStream("excelDoc/PlanUploadSheetSampleData.xlsx")) { // ✅ Fixed extension
             workbook.write(fileOut);
+
             // Update the filename here too
             logger.info("Absolute path: " + new java.io.File("PlanUploadSheetSampleData.xlsx").getAbsolutePath());
             return "Sample data generated successfully in PlanUploadSheetSampleData.xlsx";
@@ -773,10 +774,10 @@ public class PlanUploadSheetGenerator {
 
     public static void main(String[] args) throws InterruptedException {
         PlanUploadSheetGenerator generator = new PlanUploadSheetGenerator();
-//        logger.info("Hello");
-//        logger.info("ok" + generator.generateSampleData());
-        logger.info("Wrong Data Generation");
-        generator.generateMWLinkDataTable("Z_Bhanu","adm@123");
+        logger.info("Hello");
+        logger.info("ok" + generator.generateSampleData());
+//        logger.info("Wrong Data Generation");
+//        generator.generateMWLinkDataTable("Z_Bhanu","adm@123");
 
     }
 }

@@ -97,6 +97,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                         "api/trafficShifting/bulkUploadTest",
                         "api/trafficShifting/getUsers",
                         "api/trafficShifting/setUser",
+                        "api/trafficShifting/deleteUser",
                         "/dismantle/dashboard",
                         "/dismantle/dashboard/form",
                         "/dismantle/dashboard/form/testReport",

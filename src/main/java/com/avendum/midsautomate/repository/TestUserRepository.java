@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestUserRepository extends JpaRepository<TestUser,Long> {
+    void deleteByNameAndDepartment(String name, String department);
 }

@@ -8,7 +8,9 @@ import com.avendum.midsautomate.repository.TrafficShiftingResultDataRepository;
 import com.avendum.midsautomate.repository.TrafficShiftingTestHistoryRepository;
 import com.avendum.midsautomate.selenium.dto.BulkRequestData;
 import com.avendum.midsautomate.selenium.dto.BulkUploadErrorReport;
+import com.avendum.midsautomate.selenium.dto.RemoveUsersDTO;
 import com.avendum.midsautomate.selenium.seleniumconfig.TrafficShiftingResourceCredentials;
+import com.avendum.midsautomate.service.CustomUserDetailsService;
 import com.avendum.midsautomate.util.TrafficShiftingUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,9 @@ public class TrafficShiftingController {
 
     @Autowired
     private TestUserRepository testUserRepository;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/workflow")
     public ResponseEntity<TrafficShiftingTestHistory> testDismantleFlow(@RequestBody TrafficShiftingResourceCredentials resource) {
@@ -123,7 +128,7 @@ public class TrafficShiftingController {
     @PostMapping("/bulkUploadTest")
     public ResponseEntity<TrafficShiftingTestHistory> getTrafficShiftingBulkUploadTestHistory(
             @RequestBody TrafficShiftingResourceCredentials resource
-    ){
+    ) {
         TrafficShiftingTestHistory history = new TrafficShiftingTestHistory();
         List<TrafficShiftingResultData> trafficShiftingResultData = new ArrayList<>();
 
@@ -137,7 +142,7 @@ public class TrafficShiftingController {
             history.setTestType("BULK_UPLOAD_TEST");
             history.setTestDate(LocalDate.now());
 
-            log.info("User Details = "+userDetails);
+            log.info("User Details = " + userDetails);
 
             for (int i = 0; i < userDetails.get("name").size(); i++) {
                 String dep = userDetails.get("department").get(i);
@@ -160,7 +165,7 @@ public class TrafficShiftingController {
             boolean test = false;
             try {
                 test = bulkUploadTest(
-                        trafficShiftingResultData, resource, driverPath, binaryPath, uniqueKey, projectUrl,department
+                        trafficShiftingResultData, resource, driverPath, binaryPath, uniqueKey, projectUrl, department
                 );
             } catch (Exception e) {
                 e.printStackTrace();
@@ -169,7 +174,7 @@ public class TrafficShiftingController {
                 entry.setUserName("Not Assigned");
                 entry.setUniquePlanId(uniqueKey);
                 entry.setTestStatus(TestStatus.FAILED.name());
-                entry.setPlanId(resource.getCircle()+uniqueKey);
+                entry.setPlanId(resource.getCircle() + uniqueKey);
                 entry.setPlanStatus(TestStatus.FAILED.name());
                 entry.setRemark("Issue in System");
                 trafficShiftingResultData.add(entry);
@@ -189,7 +194,7 @@ public class TrafficShiftingController {
             history.setTotalPassCase(
                     test ? trafficShiftingResultData.size() : trafficShiftingResultData.size() - 1
             );
-            history.setTestId(resource.getCircle()+uniqueKey);
+            history.setTestId(resource.getCircle() + uniqueKey);
 
             trafficShiftingTestHistoryRepository.save(history);
         } catch (Exception e) {
@@ -303,6 +308,23 @@ public class TrafficShiftingController {
         List<BulkUploadErrorReport> resp = new ArrayList<>();
         try {
             resp.addAll(TrafficShiftingUtility.validateBulkUploadSheet(data.getPath(), data.getCircle()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(resp, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteUser",
+            consumes = "application/json")
+    public ResponseEntity<String> deleteUser(
+            @RequestBody List<RemoveUsersDTO> userList
+    ) {
+        String resp = "User Not Remove";
+        try {
+            System.out.println("Removed List = " + userList);
+            customUserDetailsService.removeUsers(userList);
+            resp = "user removed";
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);

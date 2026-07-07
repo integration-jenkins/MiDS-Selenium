@@ -38,6 +38,7 @@ public class DismantleUtility {
 //        String driverPath = "D:\\seleniumTesting\\SeleniumDismantleTesting\\driver\\geckodriver.exe";
         //        String binaryPath = "C:\\Users\\Kartik Lohate\\AppData\\Local\\Mozilla Firefox\\firefox.exe";
 
+
         System.setProperty("webdriver.gecko.driver", driverPath); // set Browser driver
         FirefoxOptions firefoxOptions = new FirefoxOptions();
         firefoxOptions.setBinary(binaryPath); // set used browser

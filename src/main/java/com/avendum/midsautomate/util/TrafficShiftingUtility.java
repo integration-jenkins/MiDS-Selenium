@@ -212,6 +212,7 @@ public class TrafficShiftingUtility {
         HashMap<String, List<String>> dismantleUser = resource.getDismantleUser();
         List<String> operation = dismantleUser.get("Circle Operation Team");
         List<String> planner = dismantleUser.get("Circle MW Planner");
+        List<String> deploy = dismantleUser.get("Circle Deployment Team");
 
         // fetch all the required details during the testing
         String circle = resource.getCircle();
@@ -220,160 +221,170 @@ public class TrafficShiftingUtility {
         String fillData = resource.getCheckHold(); // Yes / Hold
         String category = getRandomCategory();
 
-        // planner login
-        boolean tested = userLogin(wait, planner.get(0), planner.get(1));
+        try {
+            // planner login
+            boolean tested = userLogin(wait, planner.get(0), planner.get(1));
 
-        if (tested) {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.getStatus()));
-        } else {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.getStatus()));
-            return false;
-        }
-
-        // upload the plan
-        tested = uploadTSPlan(wait, driver, circle, path);
-
-        if (tested) {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.getStatus()));
-        } else {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.getStatus()));
-            return false;
-        }
-
-        List<UploadTestContainer> bulkResult = TsTestBulk(wait, planner.get(0), Departments.Circle_MW_Planner.departmentName());
-
-        System.out.println("Bulk Result Data = " + bulkResult);
-
-        // if sheet is vaild and uploaded
-        if (bulkResult.size() == 1 && bulkResult.get(0).getPlanUploadStatus().equalsIgnoreCase("Pass")) {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.getStatus()));
-
-        } else if (!bulkResult.isEmpty()) { // if sheet holds invalid data fields
-            for (UploadTestContainer i : bulkResult) {
-                String remark = "At row no. " + i.getRowNumber() + " got this error " + i.getErrorMessage();
-                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.SHEET_INVALID.name(), remark));
-            }
-            return false;
-        } else { // sheet not process due to any kind of exceptions
-            String remark = "Issue in Bulk Upload, Sheet not process";
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.name(), remark));
-
-            return false;
-        }
-
-        // planner logout at "TS Pending
-        tested = logOut(driver);
-
-        if (tested) {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGOUT_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGOUT_SUCCESSFULLY.getStatus()));
-        } else {
-            trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGOUT_FAILED.name(), TrafficShiftingRemark.LOGOUT_FAILED.getStatus()));
-            return false;
-        }
-
-        // operation user login to complete the TS Pending
-        tested = userLogin(wait, operation.get(0), operation.get(1));
-
-        if (tested) {
-            trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.getStatus()));
-        } else {
-            trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.getStatus()));
-            return false;
-        }
-
-        // open traffic shifting tracking page
-        tested = openTSPage(wait, driver, planId);
-
-        if (tested) {
-            trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.PLAN_OPEN.name(), TrafficShiftingRemark.PLAN_OPEN.getStatus()));
-        } else {
-            trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.PLAN_NOT_OPEN.name(), TrafficShiftingRemark.PLAN_NOT_OPEN.getStatus()));
-            return false;
-        }
-
-        if ("Yes".equalsIgnoreCase(fillData)) {  // fill "Yes" to complete TS Pending
-            tested = fillTSYes(driver, "Yes");
-            saveBtn(driver, wait);
             if (tested) {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.getStatus()));
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.getStatus()));
             } else {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.getStatus()));
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.getStatus()));
                 return false;
             }
-            logOut(driver);
-        } else if ("Hold".equalsIgnoreCase(fillData)) {    // fill "Hold" to hold the plan
-            try {
-                tested = fillTSYes(driver, "hold");
-                if (!tested) {
+
+            // upload the plan
+            tested = uploadTSPlan(wait, driver, circle, path);
+
+            if (tested) {
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.getStatus()));
+            } else {
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.getStatus()));
+                return false;
+            }
+
+            List<UploadTestContainer> bulkResult = TsTestBulk(wait, planner.get(0), Departments.Circle_MW_Planner.departmentName());
+
+            System.out.println("Bulk Result Data = " + bulkResult);
+
+            // if sheet is vaild and uploaded
+            if (bulkResult.size() == 1 && bulkResult.get(0).getPlanUploadStatus().equalsIgnoreCase("Pass")) {
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.name(), TrafficShiftingRemark.BULK_UPLOAD_VALID.getStatus()));
+
+            } else if (!bulkResult.isEmpty()) { // if sheet holds invalid data fields
+                for (UploadTestContainer i : bulkResult) {
+                    String remark = "At row no. " + i.getRowNumber() + " got this error " + i.getErrorMessage();
+                    trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.SHEET_INVALID.name(), remark));
+                }
+                return false;
+            } else { // sheet not process due to any kind of exceptions
+                String remark = "Issue in Bulk Upload, Sheet not process";
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.BULK_UPLOAD_INVALID.name(), remark));
+
+                return false;
+            }
+
+            // planner logout at "TS Pending
+            tested = logOut(driver);
+
+            if (tested) {
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGOUT_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGOUT_SUCCESSFULLY.getStatus()));
+            } else {
+                trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGOUT_FAILED.name(), TrafficShiftingRemark.LOGOUT_FAILED.getStatus()));
+                return false;
+            }
+
+            // operation user login to complete the TS Pending
+            tested = userLogin(wait, operation.get(0), operation.get(1));
+
+            if (tested) {
+                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.name(), TrafficShiftingRemark.LOGIN_SUCCESSFULLY.getStatus()));
+            } else {
+                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.name(), TrafficShiftingRemark.LOGIN_FAILED.getStatus()));
+                return false;
+            }
+
+            // open traffic shifting tracking page
+            tested = openTSPage(wait, driver, planId);
+
+            if (tested) {
+                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.PLAN_OPEN.name(), TrafficShiftingRemark.PLAN_OPEN.getStatus()));
+            } else {
+                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.PLAN_NOT_OPEN.name(), TrafficShiftingRemark.PLAN_NOT_OPEN.getStatus()));
+                return false;
+            }
+
+            if ("Yes".equalsIgnoreCase(fillData)) {  // fill "Yes" to complete TS Pending
+                tested = fillTSYes(driver, "Yes");
+                saveBtn(driver, wait);
+                if (tested) {
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.getStatus()));
+                } else {
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.getStatus()));
+                    return false;
+                }
+                logOut(driver);
+            } else if ("Hold".equalsIgnoreCase(fillData)) {    // fill "Hold" to hold the plan
+                try {
+                    tested = fillTSYes(driver, "hold");
+                    if (!tested) {
+                        trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.getStatus()));
+                        return false;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.getStatus()));
                     return false;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.getStatus()));
-                return false;
-            }
-            tested = fillHoldTS(driver, planId, category, wait);
-            if (tested) {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_WORKING.name(), TrafficShiftingRemark.HOLD_WORKING.getStatus()));
-            } else {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.getStatus()));
-                return false;
-            }
-            logOut(driver);
-            if ("planner".equalsIgnoreCase(getDepartmentByHoldCategory(category))) { // according to hold category, respective user login to complete the process
-                boolean a = userLogin(wait, planner.get(0), planner.get(1));
-                boolean b = openTSPage(wait, driver, planId);
-                tested = resolveHold(driver, wait);
-                if (tested && a && b) {
-                    trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.getStatus()));
+                tested = fillHoldTS(driver, planId, category, wait);
+                if (tested) {
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_WORKING.name(), TrafficShiftingRemark.HOLD_WORKING.getStatus()));
                 } else {
-                    trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.getStatus()));
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_NOT_WORKING.getStatus()));
                     return false;
                 }
+                logOut(driver);
+                if ("planner".equalsIgnoreCase(getDepartmentByHoldCategory(category))) { // according to hold category, respective user login to complete the process
+                    boolean a = userLogin(wait, planner.get(0), planner.get(1));
+                    boolean b = openTSPage(wait, driver, planId);
+                    tested = resolveHold(driver, wait);
+                    if (tested && a && b) {
+                        trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.getStatus()));
+                    } else {
+                        trafficShiftingResultData.add(createTSEntry(planner.get(0), Departments.Circle_MW_Planner.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.getStatus()));
+                        return false;
+                    }
+                } else {
+                    boolean a = false;
+                    if ("DEPLOYMENT TEAM".equalsIgnoreCase(getDepartmentByHoldCategory(category))) {
+                        a = userLogin(wait, deploy.get(0), deploy.get(1));
+                    } else {
+                        a = userLogin(wait, operation.get(0), operation.get(1));
+                    }
+
+                    boolean b = openTSPage(wait, driver, planId);
+                    tested = resolveHold(driver, wait);
+                    if (tested && a && b) {
+                        trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.getStatus()));
+                    } else {
+                        trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.getStatus()));
+                        return false;
+                    }
+                }
+                logOut(driver);
             } else {
+                log.info("Invalid data filling during TS completion");
+            }
+
+            if ("Hold".equalsIgnoreCase(fillData)) {
+                // operation user login to complete the TS Pending
                 boolean a = userLogin(wait, operation.get(0), operation.get(1));
+
+                // open traffic shifting tracking page
                 boolean b = openTSPage(wait, driver, planId);
-                tested = resolveHold(driver, wait);
-                if (tested && a && b) {
-                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_WORKING.getStatus()));
+
+                boolean c = fillTSYes(driver, "Yes");
+
+                // click save btn to complete TS complete
+                boolean d = saveBtn(driver, wait);
+
+                tested = a && b && c && d;
+
+                if (tested) {
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.getStatus()));
                 } else {
-                    trafficShiftingResultData.add(createTSEntry(operation.get(0), Departments.Circle_Operation_Team.departmentName(), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.name(), TrafficShiftingRemark.HOLD_RESOLVE_NOT_WORKING.getStatus()));
+                    trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.getStatus()));
                     return false;
                 }
+                logOut(driver);
             }
-            logOut(driver);
-        } else {
-            log.info("Invalid data filling during TS completion");
+
+            // testing is complete of Traffic Shifting
+            trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.ALL_TEST_PASS.name(), TrafficShiftingRemark.ALL_TEST_PASS.getStatus()));
+            return tested;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if ("Hold".equalsIgnoreCase(fillData)) {
-            // operation user login to complete the TS Pending
-            boolean a = userLogin(wait, operation.get(0), operation.get(1));
-
-            // open traffic shifting tracking page
-            boolean b = openTSPage(wait, driver, planId);
-
-            boolean c = fillTSYes(driver, "Yes");
-
-            // click save btn to complete TS complete
-            boolean d = saveBtn(driver, wait);
-
-            tested = a && b && c && d;
-
-            if (tested) {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.name(), TrafficShiftingRemark.TS_STATUS_FILLED.getStatus()));
-            } else {
-                trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.FAILED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.name(), TrafficShiftingRemark.TS_STATUS_NOT_FILLED.getStatus()));
-                return false;
-            }
-            logOut(driver);
-        }
-
-        // testing is complete of Traffic Shifting
-        trafficShiftingResultData.add(createTSEntry(operation.get(0), operation.get(1), uniqueKey, planId, TestStatus.PASSED.name(), TrafficShiftingRemark.ALL_TEST_PASS.name(), TrafficShiftingRemark.ALL_TEST_PASS.getStatus()));
-
-        return tested;
+        return false;
     }
 
     private static TrafficShiftingResultData createTSEntry(String userName, String department, String uniqueKey, String planId, String testStatus, String planStatus, String remark) {
@@ -453,6 +464,10 @@ public class TrafficShiftingUtility {
             case "ACCESS ISSUE":
             case "POP NOT RFS":
                 return "OPERATION TEAM";
+
+            case "NEW ROLLOUT":
+            case "RELOCATION":
+                return "DEPLOYMENT TEAM";
 
             default:
                 return "UNKNOWN";
@@ -1412,6 +1427,4 @@ public class TrafficShiftingUtility {
             rowCount++;
         }
     }
-
-
 }

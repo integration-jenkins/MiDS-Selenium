@@ -472,7 +472,7 @@ public class DPRAutomate {
 //            }else if(atStatus.equals("BulkPhy")) {
 //                bulkAtRaise(driver, "Phy");
 //            }else if(atStatus.equals("BulkSoft")) {
-//                bulkAtRaise(driver, "Soft");
+                bulkAtRaise(driver, "Soft");
 //            }else{
 //                bulkAtRaise(driver, "Phy");
 //                bulkAtRaise(driver, "Soft");
