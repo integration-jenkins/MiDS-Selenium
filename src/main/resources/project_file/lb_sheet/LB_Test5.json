@@ -1,0 +1,20 @@
+{
+  "11": "Please Enter ACM Min QAM",
+  "12": "Please Enter ACM Max QAM",
+  "13": "Tx Radion must start with ERI_ or ML/ Please Enter Correct ACM Min QAM value as 4QAM",
+  "14": "Tx Radion must start with ERI_ or ML/ Please Enter Correct ATPC Status value as Disable/ Please Enter Correct ACM Min QAM value as 4QAM",
+  "15": "Please Enter Correct ATPC Status value as Disable",
+  "16": "Tx Radion must start with IP20 or IP50/ Please Enter Correct ATPC Status value as Disable",
+  "17": "Please Enter Correct ATPC Status value as Enable/ Tx Radion must start with W or WT",
+  "18": "Please Enter ATPC Status",
+  "19": "Please Enter Correct ATPC Status value as Disable",
+  "2": "Please Enter Correct BER10e6 Rain Interference value b/w 0-4, up to 1 decimal allowed",
+  "3": "Please Enter Correct BER10e6 Rain Interference value b/w 0-4, up to 1 decimal allowed",
+  "4": "Please Enter Correct Availability value should be greater than 99.90, up to 4 decimal places allowed.",
+  "5": "Availability value should be greater than 99.90",
+  "6": "Availability value should be greater than 99.90, up to 4 decimal places allowed.",
+  "7": "Please Enter Correct ACM Status value as Enable",
+  "8": "Please Enter Correct ACM Min QAM value as QPSK",
+  "9": "Please Enter Correct ACM Max QAM value from the following options :-[32QAM, 256QAM, 512QAM, 2048QAM, 4096QAM, 64QAM, 128QAM, 1024QAM]",
+  "10": "Please Enter ACM Status"
+}

@@ -1,0 +1,22 @@
+{
+  "11": "Enter correct 4G BBU1 MP IP value / 4G RA not found for popId MUM/AA1-Z1",
+  "12": "4G RA not found for popId MUM/AA1-Z1",
+  "13": "Enter correct 4G BBU1 UP VLAN value / 4G RA not found for popId MUM/AA1-Z1",
+  "14": "Enter correct 4G BBU1 UP GW value / 4G RA not found for popId MUM/AA1-Z1",
+  "15": "Enter correct 4G BBU1 UP IP value / 4G RA not found for popId MUM/AA1-Z1",
+  "16": "Enter correct 4G BBU1 CP VLAN value / 4G RA not found for popId MUM/AA1-Z1",
+  "17": "Enter correct 4G BBU1 CP GW value / 4G RA not found for popId MUM/AA1-Z1",
+  "18": "Enter correct 4G BBU1 CP IP value / 4G RA not found for popId MUM/AA1-Z1",
+  "19": "Enter correct 4G BBU1 MP VLAN value / 4G RA not found for popId MUM/AA1-Z1",
+  "2": "4G RA is Mandatory if any 4G BBU Field is Filled / Enter correct 5G Site On Air (Yes/No) / No technology RA present",
+  "3": "When 4G RA is filled, at least one complete set of UP attributes (IP, GW, VLAN) must be provided for any 4G BBU / 4G RA not found for popId MUM/AA1-Z1",
+  "4": "Enter correct 4G BBU1 UP GW value / When 4G RA is filled, at least one complete set of UP attributes (IP, GW, VLAN) must be provided for any 4G BBU / 4G RA not found for popId MUM/AA1-Z1",
+  "5": "Enter correct 4G BBU1 UP IP value / When 4G RA is filled, at least one complete set of UP attributes (IP, GW, VLAN) must be provided for any 4G BBU / 4G RA not found for popId MUM/AA1-Z1",
+  "6": "4G RA not found for popId MUM/AA1-Z1",
+  "7": "Enter correct 4G BBU1 CP GW value / 4G RA not found for popId MUM/AA1-Z1",
+  "8": "Enter correct 4G BBU1 CP IP value / 4G RA not found for popId MUM/AA1-Z1",
+  "9": "4G RA not found for popId MUM/AA1-Z1",
+  "20": "Enter correct 4G BBU1 MP GW value / 4G RA not found for popId MUM/AA1-Z1",
+  "10": "Enter correct 4G BBU1 MP GW value / 4G RA not found for popId MUM/AA1-Z1",
+  "21": "Enter correct 4G BBU1 MP IP value / 4G RA not found for popId MUM/AA1-Z1"
+}

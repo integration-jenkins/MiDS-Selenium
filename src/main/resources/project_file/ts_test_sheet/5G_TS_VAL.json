@@ -1,0 +1,20 @@
+{
+  "11": "Enter correct 5G Site On Air (Yes/No) / Entered IPs should be Unique",
+  "12": "5G RA not found for popId 1671 / Entered IPs should be Unique",
+  "13": "5G VLAN Mandatory for site on air yes / Entered IPs should be Unique",
+  "14": "5G GW Mandatory for site on air yes / Entered IPs should be Unique",
+  "15": "gNB IP1 Mandatory for site on air yes / Entered IPs should be Unique",
+  "16": "Enter correct gNB IP2 value / Entered IPs should be Unique",
+  "17": "Enter correct 5G Anchor GW value / Entered IPs should be Unique",
+  "18": "Enter correct Anchor eNB IP1 value / Entered IPs should be Unique",
+  "19": "Enter correct Anchor eNB IP2 value / Entered IPs should be Unique",
+  "2": "Entered IPs should be Unique",
+  "3": "5G RA is mandatory for site on air yes and category colo / Entered IPs should be Unique",
+  "4": "5G VLAN Mandatory for site on air yes / Entered IPs should be Unique",
+  "5": "5G GW Mandatory for site on air yes / Entered IPs should be Unique",
+  "6": "gNB IP1 Mandatory for site on air yes / Entered IPs should be Unique",
+  "7": "Entered IPs should be Unique",
+  "8": "Entered IPs should be Unique",
+  "9": "Enter correct Anchor eNB IP1 value / Entered IPs should be Unique",
+  "10": "Entered IPs should be Unique"
+}

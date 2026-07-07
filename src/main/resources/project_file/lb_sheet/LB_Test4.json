@@ -1,0 +1,22 @@
+{
+  "11": "Frequency Slot is Not Found in Frequency Detail",
+  "12": "Please Enter Tx Frequency Mhz",
+  "13": "Please Enter Rx Frequency Mhz",
+  "14": "Please Enter Tx Antenna/ Please Enter Tx Ant Azimuth",
+  "15": "Please Enter Correct Tx Ant Azimuth value b/w 0-360, up to 1 decimal allowed/ Please Enter Rx Ant Azimuth/ Please Enter Rx Antenna/ Please enter correct Antenna Size in Tx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]",
+  "16": "Please Enter Correct Rx Ant Azimuth value b/w 0-360, up to 1 decimal allowed/ Please Enter Correct Tx Ant Azimuth value b/w 0-360, up to 1 decimal allowed/ Please enter correct Antenna Size in Tx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]/ Please enter correct Antenna Size in Rx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]",
+  "17": "Please enter correct Antenna Size in Rx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]/ Please Enter Correct Rx Ant Azimuth value b/w 0-360, up to 1 decimal allowed/ Please Enter Ber10e6EffMargin Db",
+  "18": "Please Enter Correct Ber10e6EffMargin Db value as greater than or equal to 20",
+  "19": "Please Enter Correct Ber10e6EffMargin Db value as greater than or equal to 20, up to 1 decimal allowed",
+  "2": "Enter Channel Value",
+  "3": "Enter Correct Channel Value. Channel Name is Not Found in Frequency Detail",
+  "4": "Enter Correct Channel Value. Channel Name is Not Found in Frequency Detail",
+  "5": "Enter Correct Channel Value. Channel Name is Not Found in Frequency Detail",
+  "6": "Please Enter Tx Frequency Mhz",
+  "7": "Frequency Slot is Not Found in Frequency Detail",
+  "8": "Please Enter Rx Frequency Mhz",
+  "9": "Frequency Slot is Not Found in Frequency Detail",
+  "20": "Please Enter Polarisation",
+  "10": "Frequency Slot is Not Found in Frequency Detail",
+  "21": "Please Enter Correct Polarisation :- [H, V] for Hop Type :- 1+0"
+}

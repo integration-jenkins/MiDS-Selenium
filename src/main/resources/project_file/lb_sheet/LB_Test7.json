@@ -1,0 +1,16 @@
+{
+  "11": "Please enter correct Antenna Size in Tx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]",
+  "12": "Please Enter Site B Lat/ Please Enter Site B Long/ Please Enter Rx Site Elevation",
+  "13": "Please Enter Site B Long/ Please Enter Site B Lat",
+  "14": "Please Enter Rx Ant Height M/ Please Enter Rx Antenna/ Please Enter Rx Ant Azimuth/ Please Enter Rx Ant Gain",
+  "15": "Please Enter Correct Rx Ant Azimuth value b/w 0-360, up to 1 decimal allowed/ Please enter correct Antenna Size in Rx Antenna:-[0.1, 0.3, 0.6, 0.9, 1.2, 1.8, 2.4, 3.0]",
+  "16": "Please Enter BandWidth Mhz/ Please Enter Ber10e6EffMargin Db/ Please Enter Distance Km",
+  "17": "Please Enter Correct BER10e6 Rain Interference value b/w 0-4, up to 1 decimal allowed/ Please Enter Correct Ber10e6EffMargin Db value as greater than or equal to 20, up to 1 decimal allowed/ Please Enter Correct BandWidth Mhz :- 28 for this Hop Type :- 1+0",
+  "2": "Please Enter Site A Lat/ Please Enter Site A Long",
+  "3": "Please Enter Site A Lat/ Please Enter Site A Long",
+  "4": "Please Enter Tx Site Elevation M/ Please Enter Site A Lat",
+  "6": "Please Enter Ber10e6RxLevelDbm/ Please Enter Ber10e6TxPowerDbm",
+  "8": "Please Enter Tx Ant Gain/ Please Enter Tx Ant Azimuth/ Please Enter Tx Ant Azimuth",
+  "9": "Please Enter Correct Tx Ant Azimuth value b/w 0-360, up to 1 decimal allowed",
+  "10": "Please Enter Tx Antenna/ Please Enter Ber10e6EirpDbm"
+}

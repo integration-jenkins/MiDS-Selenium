@@ -1,0 +1,20 @@
+{
+  "11": "2G RA not found for popId BHI/RNR-H2",
+  "12": "Enter correct 2G UP VLAN (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "13": "Enter 2G UP Network IP (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "14": "Enter correct 2G UP GW (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "15": "Enter correct 2G UP IP (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "16": "Enter correct 2G MP VLAN (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "17": "Enter correct 2G MP Network IP (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "18": "Enter correct 2G MP GW (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "19": "Enter correct 2G MP IP (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "2": "2G RA is Mandatory if any 2G Technology Field is Filled / No technology RA present",
+  "3": "Enter correct 2G UP VLAN (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "4": "Enter 2G UP Network IP (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "5": "Enter correct 2G UP GW (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "6": "Enter correct 2G UP IP (ABIS) / 2G RA not found for popId BHI/RNR-H2",
+  "7": "Enter correct 2G MP Network IP (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "8": "Enter correct 2G MP GW (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "9": "Enter correct 2G MP IP (O&M) / 2G RA not found for popId BHI/RNR-H2",
+  "10": "Enter correct 2G (MPLS/MPBN/CEN) valid values are:-[MPLS, MPBN, CEN] / 2G RA not found for popId BHI/RNR-H2"
+}

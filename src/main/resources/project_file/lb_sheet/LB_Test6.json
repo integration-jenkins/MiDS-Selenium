@@ -1,0 +1,18 @@
+{
+  "11": "Please Enter Correct Modem Ethernet Site B :- [ISM6, HUAWEI_RTN_905, NA, OPTIX RTN 320, ISV3, ISU2, ISM8]",
+  "12": "Please Enter MW CHASIS Site B/ Please Enter MW Chasis Site B",
+  "13": "Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ FIBER POP ID Should Not Be Empty/ Please Enter Fiber Pop Id/ Please Enter Correct PCM Path",
+  "14": "Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Correct PCM Path",
+  "15": "PCM PATH Should Not Be Empty/ Please Enter PCM Path",
+  "16": "Please Enter Correct PCM Path",
+  "17": "Please Enter Correct PCM Path",
+  "2": "Please Enter Hop Nomenclature Site A/ Please Enter Tx Radion",
+  "3": "Please Enter Correct Tx Radio from the Radio Types Table/ Please Enter Hop Nomenclature Site B/ Tx Radion must contain XMC",
+  "4": "Please Enter Chassis Code Site-A",
+  "5": "Please Enter Chassis Code Site-B",
+  "6": "Please Enter Modem Ethernet Site A!!!",
+  "7": "Please Enter Correct Modem Ethernet Site A :- [ISM6, HUAWEI_RTN_905, NA, OPTIX RTN 320, ISV3, ISU2, ISM8]",
+  "8": "Please Enter MW CHASIS Site A!!/ Please Enter MW Chasis Site A",
+  "9": "Please Enter correct MW Chasis Site A , as Site A is Fiber Pop Id. Expected values are :MUX,EPT,NPT,CSR,CEN",
+  "10": "Please Enter Modem Ethernet Site B!!!"
+}

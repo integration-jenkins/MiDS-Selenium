@@ -1,0 +1,14 @@
+{
+  "2": "Plan Id not exists:",
+  "3": "Plan Id not exists: INVALID",
+  "4": "Please Enter RFC Confirmation Status",
+  "5": "The RFC Confirmation Status value must be Yes in order to request for cancellation",
+  "6": "Plan Id not exists: MW-U-AP-16022024-9307",
+  "7": "Please Enter RFC Additional Remark",
+  "8": "The RFC Confirmation Status value must be Yes in order to request for cancellation",
+  "9": "The RFC Confirmation Status value must be Yes in order to request for cancellation",
+  "10": "Plan Id not exists: MW-N-AP-17022024-9587",
+  "11": "Plan Id not exists: MW-N-AP-29022024-5012",
+  "12": "Please Enter Correct Reason For Cancellation, Valid Options:- [LOS ISSUE, INFRA ISSUE, MCD Sealed/Halted, Material not available, OEM change, Interference issue, Access issue, LB revision, Plan Not Required]",
+  "13": "Reason For Cancellation must be filled in order to request for cancellation"
+}

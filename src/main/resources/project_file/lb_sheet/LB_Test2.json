@@ -1,0 +1,19 @@
+{
+  "11": "For Plan Category Value :- FREQUENCY CHANGE Enter correct Hop Type:-[1+0, 1+0 dc, xpic, d-xpic, xpic+dc, d-xpic+dc]/ Please Enter Correct Hop Type for Plan Category FREQUENCY CHANGE. Valid options are: [1+0, 1+0 DC, XPIC, D-XPIC, XPIC+DC, D-XPIC+DC]",
+  "12": "Please Enter Correct Hop Type for Plan Category CARD UPGRADE. Valid options are: [1+0, 1+0 DC, XPIC, D-XPIC, XPIC+DC, D-XPIC+DC]/ For Plan Category Value :- CARD UPGRADE Enter correct Hop Type:-[1+0, 1+0 dc, xpic, d-xpic, xpic+dc, d-xpic+dc]",
+  "13": "There should be exactly 2 dual XPIC links in the sheet with same linkid for upload.",
+  "14": "There should be exactly 2 dual XPIC links in the sheet with same linkid for upload.",
+  "15": "There should be exactly 2 dual XPIC links in the sheet with same linkid for upload.",
+  "16": "There should be exactly 2 dual XPIC links in the sheet with same linkid for upload.",
+  "17": "Please Enter Correct Hop Type for Plan Category E BAND SDB(EXISTING). Valid options are: [E-BAND SDB(EXISTING)]",
+  "18": "Please Enter Correct Hop Type for Plan Category E BAND SDB(NEW). Valid options are: [E-BAND SDB(NEW)]",
+  "2": "Please Enter Plan Category/ Enter Correct Nominal Quarter Value :- Q1",
+  "3": "Please Enter Correct Hop Type for Plan Category INVALID. Valid options are: null/ Enter Correct Plan Category Value :- [new deployment hybrid/fo, new deployment xpic, mimo upgrade, existing 1+0 to xpic upgrade, capacity upgrade soft/dc, 1+0 to 1 gig upgrade, dual xpic upgrade, e band, frequency change, card upgrade, dual xpic new, e band sdb(existing), e band sdb(new)]/ Enter Correct Nominal Quarter Value :- Q1",
+  "4": "Enter Correct Nominal Quarter Value :- Q1 / Enter Nominal Aop Value",
+  "5": "Enter Correct Nominal Quarter Value :- Q1 / Enter Nominal Aop In Correct Format Eg. FY23_24!",
+  "6": "Enter correct Nominal Aop :- FY26_27",
+  "7": "Enter Nominal Quarter Value",
+  "8": "Enter Correct Nominal Quarter Value :- [Q1, Q2, Q3, Q4]",
+  "9": "Please Enter Correct Hop Type for Plan Category 1+0 TO 1 GIG UPGRADE. Valid options are: [D-XPIC, D-XPIC+DC, XPIC+DC]",
+  "10": "Please Enter Correct Hop Type for Plan Category E BAND. Valid options are: [E BAND]"
+}

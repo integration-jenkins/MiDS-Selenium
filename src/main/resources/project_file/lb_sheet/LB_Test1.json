@@ -1,0 +1,22 @@
+{
+  "11": "Validation issue in one of the Dual xpic links.Please check Both links / Please Enter Hop Type!!!",
+  "12": "Validation issue in one of the Dual xpic links.Please check Both links / Please Enter Hop Type!!!",
+  "13": "Validation issue in one of the Dual xpic links.Please check Both links / Please Enter Hop Type!!!",
+  "14": "Validation issue in one of the Dual xpic links.Please check Both links / Please Enter Hop Type!!!",
+  "15": "Please Enter Hop Type!!!",
+  "16": "Please Enter Hop Type!!!",
+  "17": "Please Enter Correct Hop Type for Plan Category NEW DEPLOYMENT HYBRID/FO. Valid options are: [1+0, 1+0 DC]",
+  "18": "Please Enter Correct Hop Type for Plan Category NEW DEPLOYMENT XPIC. Valid options are: [XPIC, D-XPIC, XPIC+DC]",
+  "19": "Please Enter Correct Hop Type for Plan Category MIMO UPGRADE. Valid options are: [MIMO]",
+  "2": "Please Enter Hop Type!!!",
+  "3": "Please Enter Hop Type!!!",
+  "4": "Please Enter Hop Type!!!",
+  "5": "Please Enter Hop Type!!!",
+  "6": "Please Enter Hop Type!!!",
+  "7": "Please Enter Hop Type!!!",
+  "8": "Please Enter Hop Type!!!",
+  "9": "For Plan Category Value :- FREQUENCY CHANGE Enter correct Hop Type:-[1+0, 1+0 dc, xpic, d-xpic, xpic+dc, d-xpic+dc]/ Please Enter Hop Type!!!",
+  "20": "Please Enter Correct Hop Type for Plan Category EXISTING 1+0 TO XPIC UPGRADE. Valid options are: [HARD UPGRADE XPIC]",
+  "10": "For Plan Category Value :- CARD UPGRADE Enter correct Hop Type:-[1+0, 1+0 dc, xpic, d-xpic, xpic+dc, d-xpic+dc]/ Please Enter Hop Type!!!",
+  "21": "Please Enter Correct Hop Type for Plan Category CAPACITY UPGRADE SOFT/DC. Valid options are: [SOFT XPIC, SOFT DC]"
+}

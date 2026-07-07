@@ -1,0 +1,15 @@
+{
+  "2": "Please Enter Plan Category/ Enter Nominal Aop Value/ Please Enter Correct Hop Type for Plan Category . Valid options are: null",
+  "3": "Enter Nominal Quarter Value/ Please Enter Final Project",
+  "4": "Please check data of the row",
+  "5": "Please Enter Link Id",
+  "6": "Please Enter Site Id A/ Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Correct PCM Path",
+  "7": "Please Enter Correct PCM Path/ Please Enter Site Id B",
+  "8": "Enter Channel Value",
+  "9": "Please Enter Tx Frequency Mhz/ Please Enter Correct PCM Path/ Please Enter Rx Frequency Mhz",
+  "10": "Please Enter Tx Radio",
+  "11": "Please Enter Chassis Code Site-A/ Please Enter Chassis Code Site-B",
+  "12": "Please Enter Modem Ethernet Site B!!!/ Please Enter Modem Ethernet Site A!!!",
+  "13": "Please Enter MW CHASIS Site A!!,Please Enter MW CHASIS Site B/ Please Enter MW Chasis Site B/ Please Enter MW Chasis Site A",
+  "14": "FIBER POP ID Should Not Be Empty/ Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Hop Type!!!/ Please Enter Correct PCM Path/ Please Enter Fiber Pop Id"
+}

@@ -1,0 +1,16 @@
+{
+  "11": "Please Enter Site Id A/ Please Enter Correct PCM Path/ Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Site Id B",
+  "12": "Please Enter Site Id A/ Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Correct PCM Path",
+  "13": "Please Enter Site Id B/ Please Enter Correct PCM Path",
+  "14": "Please Enter correct MW Chasis Site A.As Site A is not Fiber Pop Id , Values can not be :MUX,EPT,NPT,CSR,CEN/ Please Enter Correct PCM Path/ Please Enter Correct Link Id:-INVALID-AutoSiteB412 / AutoSiteB412-INVALID",
+  "15": "Please Enter Correct PCM Path/ Please Enter Correct Link Id:-AutoSiteA413-INVALID / INVALID-AutoSiteA413",
+  "2": "Please Enter Final Project",
+  "3": "Enter Correct Final Project Value :-junoon 3,network re-engineering,junoon 2,new rollout,relocation,e-band,mw utilization & twamp,usof (1+0),usof (xpic),new rollout_uls,owner issue,los block,site locked,rsl issue,frequency change,card upgrade,ubr to microwave upgrade,e-band sdb,mw link swap,dual xpic new h1,dual xpic new h2,fwa",
+  "4": "Please enter Equipment Make valueAllowed values: NOKIA, CERAGON, AVIAT, HUAWEI, ERICSSON",
+  "5": "Invalid Equipment Make value. Allowed values: NOKIA, CERAGON, AVIAT, HUAWEI, ERICSSON",
+  "6": "Please Enter Link Id",
+  "7": "Please Enter Correct Link Id:-AutoSiteA405-AutoSiteB405 / AutoSiteB405-AutoSiteA405",
+  "8": "Please Enter Correct Link Id:-AutoSiteA406-AutoSiteB406 / AutoSiteB406-AutoSiteA406",
+  "9": "Please Enter Correct Link Id:-AutoSiteA407-AutoSiteB407 / AutoSiteB407-AutoSiteA407",
+  "10": "Please Enter Correct Link Id:-AutoSiteA408-AutoSiteB408 / AutoSiteB408-AutoSiteA408"
+}

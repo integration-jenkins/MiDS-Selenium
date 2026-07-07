@@ -1,0 +1,10 @@
+{
+  "5": "Plan Id not exists: INVALID",
+  "10": "Soft upgrade BW should match With LB BandWidth i.e. 56",
+  "2": "Upgrade Already Completed for the Plan Id MW-U-RAJ-18122024-1690",
+  "8": "Please Enter Correct BandWidth From the Following: 28 or 56",
+  "6": "Please Enter Valid Soft Upgrade Status - YES/NO",
+  "3": "Plan Id : MW-N-AP-02052023-444 does not Belongs to selected circle RAJ",
+  "9": "Please Enter Correct BandWidth From the Following: 28 or 56",
+  "7": "Soft upgrade BW should match With LB BandWidth i.e. 56"
+}

@@ -1,0 +1,23 @@
+{
+  "11": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid",
+  "22": "Cannot Upload Multiple Other Project Type(JUNNON 1, Operational Issues, E-Band, Others, New Rollout, Relocation, Pop Loading, JUNNON 2, MW Utilization & TWAMP, UBR, LAN Port Utilization, E-BAND SDB, D-XPIC,UBR TO MW or HIGH CAP UBR) for site DC_TEST18 at once",
+  "12": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid",
+  "13": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid / DCN RA (HOP 1) not found for popId 4454",
+  "14": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid / Dcn Vlan(HOP 1) is not valid",
+  "15": "Dcn Site A(HOP 1) is not valid / Dcn Gw(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid",
+  "16": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "17": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "18": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid / DCN RA (HOP 2) not found for popId 4454",
+  "19": "Cannot Upload Multiple Other Project Type(JUNNON 1, Operational Issues, E-Band, Others, New Rollout, Relocation, Pop Loading, JUNNON 2, MW Utilization & TWAMP, UBR, LAN Port Utilization, E-BAND SDB, D-XPIC,UBR TO MW or HIGH CAP UBR) for site DC_TEST18 at once",
+  "2": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid / DCN RA (HOP 1) not found for popId 4454",
+  "3": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "4": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "5": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "6": "Dcn Site A(HOP 1) is Mandatory / Dcn Site B(HOP 1) is not valid",
+  "7": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is Mandatory",
+  "8": "Dcn Site B(HOP 1) is not valid / Dcn Site A(HOP 1) is not valid",
+  "9": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid",
+  "20": "Cannot Upload Multiple Other Project Type(JUNNON 1, Operational Issues, E-Band, Others, New Rollout, Relocation, Pop Loading, JUNNON 2, MW Utilization & TWAMP, UBR, LAN Port Utilization, E-BAND SDB, D-XPIC,UBR TO MW or HIGH CAP UBR) for site DC_TEST18 at once",
+  "10": "Dcn Site A(HOP 1) is not valid / Dcn Site B(HOP 1) is not valid",
+  "21": "Cannot Upload Multiple Other Project Type(JUNNON 1, Operational Issues, E-Band, Others, New Rollout, Relocation, Pop Loading, JUNNON 2, MW Utilization & TWAMP, UBR, LAN Port Utilization, E-BAND SDB, D-XPIC,UBR TO MW or HIGH CAP UBR) for site DC_TEST18 at once"
+}
