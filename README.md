@@ -337,22 +337,3 @@ git push origin feature/new-feature
 4. Create Pull Request
 
 ---
-
-# 👨‍💻 Author
-
-**Kartik Lohate**
-
-Java Backend Developer | Automation Engineer
-
-Specialized in
-
-- Java
-- Spring Boot
-- Selenium Automation
-- REST APIs
-- SQL
-- Test Automation
-
----
-
-# ⭐ If you find this project useful, don't forget to star the repository.
